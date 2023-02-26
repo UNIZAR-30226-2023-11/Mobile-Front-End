@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet} from 'react-native';
+import Main from './src/components/Main.js';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hola Mundo</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Main></Main>
   );
 }
 
