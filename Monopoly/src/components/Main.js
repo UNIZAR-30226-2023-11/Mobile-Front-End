@@ -1,13 +1,19 @@
 import React from "react";
-import {Text, View } from 'react-native';
-import Constants from 'expo-constants'
+import {Text, View, Button,Alert } from 'react-native';
+import Constants from 'expo-constants';
+
 
 const Main = () => {
     return (
         <View style={{marginTop:Constants.statusBarHeight, flexGrow:1}}>
-            <Text>Hola Mundo</Text>
+            <Text>Hola Mdo</Text>
+            <Button
+                title='A ver si funciona esto'
+                onPress={()=> Alert.alert("PULSADO")}
+            />
         </View>
     );
 };
 
 export default Main
+  
