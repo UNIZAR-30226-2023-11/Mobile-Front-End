@@ -1,31 +1,13 @@
 import React from 'react'
-import {StyleSheet, Image, View} from'react-native'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import StyledButton from './src/components/StyledButton.js';
-import LogInPage from './src/pages/Login.js';
-import SignInPage from './src/pages/SignIn.js';
-import StyledText from './src/components/StyledText.js';
+
+import IndexScreen from './src/screens/Index.js';
+import LogInScreen from './src/screens/Login.js';
+import SignInScreen from './src/screens/SignIn.js';
+import HomeScreen from './src/screens/Home.js';
 
 const Stack = createNativeStackNavigator();
-
-const styles = StyleSheet.create({
-  logoJuego: {
-    width: 180,
-    height: 180,
-    alignSelf: 'center'
-  },
-  logoEmpresa: {
-    height: 80,
-    width: 150,
-    marginTop: 10,
-    alignSelf: 'center'
-  },
-  app :{
-    flex: 1,
-    backgroundColor: 'white'
-  }
-})
 
 export default function App() {
   return (
@@ -33,7 +15,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MONOPOLY INFORMÁTICO"
-          component={HomeScreen}
+          component={IndexScreen}
           optiones={{title: 'MONOPOLY'}}          
         />
         <Stack.Screen
@@ -46,54 +28,12 @@ export default function App() {
           component={SignInScreen}
           options={{title: 'SIGN IN'}}
         />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{title: 'Home'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const HomeScreen = ({navigation}) => {
-  return (
-    <View style={styles.app}>
-      <View>
-        <Image
-            style={styles.logoJuego}
-            source={require('./assets/logo_juego_monopoly.png')}
-        />
-      </View>
-      <View>
-        <StyledText monopoly>MONOPOLY INFORMÁTICO</StyledText>
-      </View>
-      <View>
-        <StyledButton
-          lightblue
-          title="Iniciar Sesión"
-          onPress={() => navigation.navigate('LogIn')}
-        />
-        <StyledButton
-          lightblue
-          title="Registrarse"
-          onPress={() => navigation.navigate('SignIn')}
-        />
-        <StyledButton
-          lightblue
-          title="Jugar como invitado"
-          onPress={() => navigation.navigate('Juego')}
-        />
-      </View>
-      <View style={{justifyContent: 'flex-end'}}>
-      <Image
-            style={styles.logoEmpresa}
-            source={require('./assets/logo_empresa.png')}
-        />
-      </View>
-    </View>
-  );
-};
-
-const LogInScreen = ({navigation, route}) => {
-  return <LogInPage></LogInPage>;
-};
-
-const SignInScreen = ({navigation, route}) => {
-  return <SignInPage></SignInPage>;
-};

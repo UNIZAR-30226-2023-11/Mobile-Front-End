@@ -3,7 +3,7 @@ import { Formik, useField } from 'formik'
 import { StyleSheet, Button, View } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
-import { loginValidationSchema } from '../validationSchemas/login'
+import { signinValidationSchema } from '../validationSchemas/signin'
 
 const initialValues = {
   email: '',
@@ -40,9 +40,9 @@ const FormikInputValue =({ name, ...props}) => {
   )
 }
 
-export default function LogInPage(){
-  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
-  onSubmit={values => console.log(values)}>
+export default function SignInScreen({navigation}){
+  return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
+  onSubmit={() => navigation.navigate('Home')}>
   {({handleChange, handleSubmit, values}) =>{
     return (
       <View style={styles.form}>
@@ -55,10 +55,15 @@ export default function LogInPage(){
         placeholder='Contraseña'
         secureTextEntry 
         />
+        <FormikInputValue 
+        name='confirm_password'
+        placeholder='Repite la contraseña'
+        secureTextEntry 
+        />
         <Button
-          color= '#CFA8FC'
-          title='Iniciar sesión'
-          onPress={handleSubmit} 
+            color='#CFA8FC'
+            title='Registrarse' 
+            onPress={handleSubmit} 
         />
       </View>
     )
