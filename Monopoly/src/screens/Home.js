@@ -55,6 +55,11 @@ export default function HomeScreen({navigation}){
             />
             <StyledButton
                 homeScreen
+                title="Unirse a una sala"
+                onPress={() => console.log(nickname)}
+            />
+            <StyledButton
+                homeScreen
                 title="Reglas"
                 onPress={() => console.log(nickname)}
             />
