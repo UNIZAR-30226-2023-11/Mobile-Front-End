@@ -10,9 +10,14 @@ import StyledText from './src/components/StyledText.js';
 const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
-  logo: {
+  logoJuego: {
     width: 200,
     height: 200,
+    alignSelf: 'center'
+  },
+  logoEmpresa: {
+    width: 200,
+    height: 30,
     alignSelf: 'center'
   },
   app :{
@@ -50,7 +55,7 @@ const HomeScreen = ({navigation}) => {
     <View style={styles.app}>
       <View>
         <Image
-            style={styles.logo}
+            style={styles.logoJuego}
             source={require('./assets/logo_juego_monopoly.png')}
         />
       </View>
@@ -72,6 +77,12 @@ const HomeScreen = ({navigation}) => {
           lightblue
           title="Jugar como invitado"
           onPress={() => navigation.navigate('Juego')}
+        />
+      </View>
+      <View style={{justifyContent: 'flex-end'}}>
+      <Image
+            style={styles.logoEmpresa}
+            source={require('./assets/logo_empresa.png')}
         />
       </View>
     </View>
