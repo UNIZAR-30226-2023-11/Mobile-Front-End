@@ -3,11 +3,11 @@ import * as yup from 'yup'
 export const loginValidationSchema = yup.object().shape({
     email: yup
         .string()
-        .email('Email must be a valid email address')
-        .required('Email is required'),
+        .email('Email tiene que ser un email valido')
+        .required('Campo obligatorio'),
     password: yup
         .string()
-        .min(5,'Too short!')
-        .max(1000, 'Too long!')
-        .required('Password is required')
+        .min(8,'La contraseña tiene que tener al menos 8 caracteres')
+        .max(1000, 'La contraseña tiene que tener menos de 1000 caracteres')
+        .required('Campo obligatorio'),
 })
