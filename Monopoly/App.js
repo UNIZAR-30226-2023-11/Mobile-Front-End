@@ -3,8 +3,7 @@ import {StyleSheet, Image, View} from'react-native'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import StyledButton from './src/components/StyledButton.js';
-import LogInPage from './src/pages/Login.js';
-import SignInPage from './src/pages/SignIn.js';
+import SettingsPage from './src/pages/Settings.js';
 import StyledText from './src/components/StyledText.js';
 
 const Stack = createNativeStackNavigator();
@@ -32,19 +31,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="MONOPOLY INFORMÁTICO"
-          component={HomeScreen}
-          optiones={{title: 'MONOPOLY'}}          
-        />
-        <Stack.Screen
-          name="LogIn"
-          component={LogInScreen}
-          options={{title: 'Iniciar Sesión'}}          
-        />
-        <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
-          options={{title: 'SIGN IN'}}
+          name="Ajustes"
+          component={SettingsScreen}
+          options={{title: 'Ajustes'}}          
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -61,39 +50,20 @@ const HomeScreen = ({navigation}) => {
         />
       </View>
       <View>
-        <StyledText monopoly>MONOPOLY INFORMÁTICO</StyledText>
+        <StyledText monopoly>Pruebas</StyledText>
       </View>
       <View>
         <StyledButton
           lightblue
-          title="Iniciar Sesión"
-          onPress={() => navigation.navigate('LogIn')}
+          title="Ajustes"
+          onPress={() => navigation.navigate('SettingsPage')}
         />
-        <StyledButton
-          lightblue
-          title="Registrarse"
-          onPress={() => navigation.navigate('SignIn')}
-        />
-        <StyledButton
-          lightblue
-          title="Jugar como invitado"
-          onPress={() => navigation.navigate('Juego')}
-        />
-      </View>
-      <View style={{justifyContent: 'flex-end'}}>
-      <Image
-            style={styles.logoEmpresa}
-            source={require('./assets/logo_empresa.png')}
-        />
-      </View>
+    </View>
     </View>
   );
 };
 
-const LogInScreen = ({navigation, route}) => {
-  return <LogInPage></LogInPage>;
+const SettingsScreen = ({navigation, route}) => {
+  return <SettingsPage></SettingsPage>;
 };
 
-const SignInScreen = ({navigation, route}) => {
-  return <SignInPage></SignInPage>;
-};
