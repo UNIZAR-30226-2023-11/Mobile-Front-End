@@ -21,14 +21,19 @@ const styles = StyleSheet.create({
     error: {
         color:'red'
     },
-    title: {
+    monopoly: {
         fontSize: 40,
+        fontFamily: 'sans-serif-medium',
+
+
+
+        fontWeight: 'bold',
         textAlign: 'center',
         color: '#CFA8FC'
     }
 })
 
-export default function StyledText({blue,bold,children,big,small,error,title}){
+export default function StyledText({blue,bold,children,big,small,error,monopoly}){
     
     const textStyles = [
         styles.text,
@@ -37,7 +42,7 @@ export default function StyledText({blue,bold,children,big,small,error,title}){
         big && styles.big,
         small && styles.small,
         error && styles.error,
-        title && styles.title
+        monopoly && styles.monopoly
     ]
 
     return (

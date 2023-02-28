@@ -11,13 +11,14 @@ const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   logoJuego: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
     alignSelf: 'center'
   },
   logoEmpresa: {
-    width: 200,
-    height: 30,
+    height: 80,
+    width: 150,
+    marginTop: 10,
     alignSelf: 'center'
   },
   app :{
@@ -60,7 +61,7 @@ const HomeScreen = ({navigation}) => {
         />
       </View>
       <View>
-        <StyledText title>MONOPOLY INFORMÁTICO</StyledText>
+        <StyledText monopoly>MONOPOLY INFORMÁTICO</StyledText>
       </View>
       <View>
         <StyledButton
