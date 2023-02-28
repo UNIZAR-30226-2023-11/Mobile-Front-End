@@ -1,35 +1,25 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 
-export function StyledUpperButton(props) {
-  const { onPress, title} = props;
-  return (
-    <Pressable style={styles.upperButton} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
-  );
-}
+export default function StyledButton({purple,lightblue, title, onPress}) {
 
-export function StyledLowerButton(props) {
-  const { onPress, title } = props;
-  return (
-    <Pressable style={styles.lowerButton} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
-  );
-}
+  
+  const buttonStyles = [
+    styles.button,
+    purple && styles.purple,
+    lightblue && styles.lightblue,
+    
+  ]
 
-export function StyledConfirmButton(props) {
-  const { onPress, title } = props;
   return (
-    <Pressable style={styles.lowerButton} onPress={onPress}>
+    <Pressable style={buttonStyles} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  upperButton: {
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -39,20 +29,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     marginLeft: 50,
     marginRight: 50,
-    marginTop: 200,
+    marginTop: 10,
     marginBottom: 10,
   },
-  lowerButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 10,
-    elevation: 3,
-    backgroundColor: 'black',
-    marginLeft: 50,
-    marginRight: 50,
-    marginTop: 10
+  purple: {
+    backgroundColor: '#CFA8FC',
+  },
+  lightblue: {
+    backgroundColor: '#A8FCFB',
   },
   text: {
     fontSize: 16,

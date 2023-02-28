@@ -20,10 +20,15 @@ const styles = StyleSheet.create({
     },
     error: {
         color:'red'
+    },
+    title: {
+        fontSize: 40,
+        textAlign: 'center',
+        color: '#CFA8FC'
     }
 })
 
-export default function StyledText({blue,bold,children,big,small,error}){
+export default function StyledText({blue,bold,children,big,small,error,title}){
     
     const textStyles = [
         styles.text,
@@ -31,7 +36,8 @@ export default function StyledText({blue,bold,children,big,small,error}){
         bold && styles.bold,
         big && styles.big,
         small && styles.small,
-        error && styles.error
+        error && styles.error,
+        title && styles.title
     ]
 
     return (
