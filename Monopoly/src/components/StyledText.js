@@ -17,17 +17,21 @@ const styles = StyleSheet.create({
     },
     small: {
         fonrSize: 10
+    },
+    error: {
+        color:'red'
     }
 })
 
-export default function StyledText({blue,bold,children,big,small}){
+export default function StyledText({blue,bold,children,big,small,error}){
     
     const textStyles = [
         styles.text,
         blue && styles.blue,
         bold && styles.bold,
         big && styles.big,
-        small && styles.small
+        small && styles.small,
+        error && styles.error
     ]
 
     return (
