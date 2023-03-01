@@ -6,6 +6,7 @@ import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
 import SignInScreen from './src/screens/SignIn.js';
 import HomeScreen from './src/screens/Home.js';
+import PerfilScreen from './src/screens/Perfil.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ export default function App() {
           name="Home"
           component={HomeScreen}
           options={{title: 'Home'}}
+        />
+        <Stack.Screen
+          name="Perfil"
+          component={PerfilScreen}
+          options={{title: 'Perfil'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
