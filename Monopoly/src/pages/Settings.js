@@ -1,7 +1,13 @@
 import React from 'react'
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native';
+import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
+
+import ChangeUsernamePage from './src/pages/Change_username.js';
+import ChangeMailPage from './src/pages/Change_mail.js';
+import ChangePasswordPage from './src/pages/ChangePassword.js';
 
 const Separator = () => <View style={styles.separator} />;
+
+const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
     container: {
@@ -27,6 +33,7 @@ const styles = StyleSheet.create({
 
 export default function SettingsPage(){
     return (
+    <NavigationContainer>
     <SafeAreaView style={styles.container}>
         <View>
 
@@ -38,7 +45,7 @@ export default function SettingsPage(){
         <Button 
             color='#6647e0'
             title="Cambiar nombre de usuario"
-            onPress={() => Alert.alert('Pantalla cambiar nombre')}
+            onPress={() => navigation.navigate('ChangeUsernamePage')}
         />
         </View>
 
@@ -46,7 +53,7 @@ export default function SettingsPage(){
         <Button
             color='#6647e0'
             title="Cambiar correo electronico"
-            onPress={() => Alert.alert('Pantalla cambiar correo')}
+            onPress={() => navigation.navigate('ChangeMailPage')}
         />
         </View>
 
@@ -54,7 +61,7 @@ export default function SettingsPage(){
         <Button
             color='#6647e0'
             title="Cambiar contraseña"
-            onPress={() => Alert.alert('Pantalla cambiar contraseña')}
+            onPress={() => navigation.navigate('ChangePasswordPage')}
         />
         </View>
 
@@ -62,12 +69,13 @@ export default function SettingsPage(){
         <Button
             color='#6647e0'
             title="Cerrar sesion"
-            onPress={() => Alert.alert('Pantalla cerrar sesion')}
+            onPress={() => navigation.navigate('HomePage')}
         />
         </View>
         
         </View>
         </SafeAreaView>
+        </NavigationContainer>
     );
 };  
 
