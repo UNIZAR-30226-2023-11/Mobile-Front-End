@@ -29,7 +29,7 @@ export default function App() {
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
-          options={{title: 'SIGN IN'}}
+          options={{title: 'Registrarse'}}
         />
         <Stack.Screen
           name="Home"
@@ -49,7 +49,7 @@ export default function App() {
         <Stack.Screen
           name="UnirseSala"
           component={UnirseSalaScreen}
-          options={{title: 'UNirse a Sala'}}
+          options={{title: 'Unirse a Sala'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
