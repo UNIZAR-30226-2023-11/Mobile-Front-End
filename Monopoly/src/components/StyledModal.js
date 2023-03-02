@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, ScrollView, StyleSheet } from 'react-native';
-
+import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -10,21 +10,37 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     modalView: {
-        marginTop: 30,
+        marginTop: 40,
         backgroundColor: 'white',
         borderRadius: 20,
         width: 300,
-        height:450,
+        height:475,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
         width: 0,
         height: 2,
         }
+    },
+    button :{
+        marginLeft: '80%',
+        marginTop: '5%'
+    },
+    modalText: {
+        fontSize: 20,
+        textAlign: 'justify',
+        color: '#000',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#000',
+        marginBottom: 20,
     }
 });
 
-export default function StyledModal({onClose, visible, onRequestClose}){
+export default function StyledModal({onClose, visible, onRequestClose, title, text}){
 
     return(
         <Modal
@@ -37,9 +53,12 @@ export default function StyledModal({onClose, visible, onRequestClose}){
             <View style={styles.modalView}>
             <Pressable
                 onPress={onClose}>
-                <Entypo name="circle-with-cross" size={24} color="red" style={styles.button}/>
+                <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
             </Pressable>
-            <Text style={styles.modalText}>SOBRE NOSOTROS</Text>
+            <Text style={styles.modalTitle}>{title}</Text>
+            <ScrollView style={{marginHorizontal: 20}}>
+                <Text style={styles.modalText}>{text}</Text>
+            </ScrollView>
             </View>
         </View>
         </Modal>

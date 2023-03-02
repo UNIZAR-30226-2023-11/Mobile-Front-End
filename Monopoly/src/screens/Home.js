@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Pressable, Modal } from "react-native";
-import { FontAwesome5, Entypo } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity    } from "react-native";
+import { FontAwesome5 } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
 import StyledTextInput from "../components/StyledTextInput";
 import StyledModal from "../components/StyledModal";
+
 
 const styles = StyleSheet.create({
     pantalla: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 
-export default function HomeScreen({navigation}){
+export default function HomeScreen({ navigation }){
 
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
@@ -49,51 +50,41 @@ export default function HomeScreen({navigation}){
             />
             <StyledButton
                 homeScreen
-                title="Crear sala pública"
-                onPress={() => console.log(nickname)}
-            />
-            <StyledButton
-                homeScreen
-                title="Crear sala privada"
-                onPress={() => console.log(nickname)}
+                title="Crear sala"
+                onPress={() => navigation.navigate('CrearSala')}
             />
             <StyledButton
                 homeScreen
                 title="Unirse a una sala"
-                onPress={() => console.log(nickname)}
+                onPress={() => navigation.navigate('UnirseSala')}
             />
-            <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalReglasVisible}
-            onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalReglasVisible({modalReglasVisible: !modalReglasVisible});
-            }}>
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                <Pressable
-                    onPress={() => setModalReglasVisible({modalReglasVisible: !modalReglasVisible})}>
-                    <Entypo name="circle-with-cross" size={24} color="red" style={styles.button}/>
-                </Pressable>
-                <Text style={styles.modalText}>REGLAS DEL JUEGO</Text>
-                </View>
-            </View>
-            </Modal>
+            <StyledModal
+                title="REGLAS"
+                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    Lorem ipsum dolor sit amet, con sectetuer adipiscing elit, sed do eiusmod tempor incididunt ut lab et d Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id odio ut aliquip ex ea commodo consequat"   
+                onClose = { () => {setModalReglasVisible({modalReglasVisible: !modalReglasVisible})}}
+                visible={modalReglasVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalReglasVisible({modalReglasVisible: !modalReglasVisible});
+                }} 
+            />
             <StyledButton
                 homeScreen
                 title="Reglas"
                 onPress={() => setModalReglasVisible(true)}
             />
-             {// <StyledModal
-            //   onClose = {setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible})}
-            //    visible={modalSobreNosotrosVisible}
-            //    onRequestClose={() => {
-            //        Alert.alert('Modal has been closed.');
-            //        setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible});
-            //    }} 
-            //></StyledModal>
-             }
+            <StyledModal
+                title="SOBRE NOSOTROS"
+                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    Lorem ipsum dolor sit amet, con sectetuer adipiscing elit, sed do eiusmod tempor incididunt ut lab et d Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id odio ut aliquip ex ea commodo consequat"   
+                onClose = { () => {setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible})}}
+                visible={modalSobreNosotrosVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible});
+                }} 
+            />
             <StyledButton
                 homeScreen
                 title="Sobre nosotros"

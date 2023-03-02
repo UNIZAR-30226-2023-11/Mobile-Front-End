@@ -7,6 +7,8 @@ import LogInScreen from './src/screens/Login.js';
 import SignInScreen from './src/screens/SignIn.js';
 import HomeScreen from './src/screens/Home.js';
 import PerfilScreen from './src/screens/Perfil.js';
+import CrearSalaScreen from './src/screens/CrearSala.js';
+import UnirseSalaScreen from './src/screens/UnirseSala.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +40,16 @@ export default function App() {
           name="Perfil"
           component={PerfilScreen}
           options={{title: 'Perfil'}}
+        />
+        <Stack.Screen
+          name="CrearSala"
+          component={CrearSalaScreen}
+          options={{title: 'Crear Sala'}}
+        />
+        <Stack.Screen
+          name="UnirseSala"
+          component={UnirseSalaScreen}
+          options={{title: 'UNirse a Sala'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
