@@ -1,13 +1,34 @@
 import React from 'react'
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
+import { Formik, useField } from 'formik'
+import StyledTextInput from '../components/StyledTextInput'
+import StyledText from '../components/StyledText'
+import { settingsValidationSchema } from '../validationSchemas/settings'
 
-import ChangeUsernamePage from './src/pages/Change_username.js';
-import ChangeMailPage from './src/pages/Change_mail.js';
-import ChangePasswordPage from './src/pages/ChangePassword.js';
+const initialValues = {
+    email: '',
+    oldpassword:'',
+    newpassword:'',
+    confirm_password:''
+  }
 
 const Separator = () => <View style={styles.separator} />;
 
-const Stack = createNativeStackNavigator();
+const FormikInputValue =({ name, ...props}) => {
+    const [field, meta, helpers] = useField(name);
+    
+    return (
+      <>
+      <StyledTextInput
+        error={meta.error} 
+        value={field.value} 
+        onChangeText={value => helpers.setValue(value)}
+        {... props}
+      />
+      {meta.error && <StyledText error style={styles.error}>{meta.error}</StyledText>}
+      </>
+    )
+  }
 
 const styles = StyleSheet.create({
     container: {
@@ -29,54 +50,60 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
     },
+    error: {
+        color: 'red',
+        fontSize: 12,
+        marginBottom: 20,
+        marginTop: -5
+      },
+      form: {
+        margin: 12,
+        marginTop: 100,
+        marginBottom: 20
+      }
 });
 
 export default function SettingsPage(){
-    return (
-    <NavigationContainer>
-    <SafeAreaView style={styles.container}>
-        <View>
+    return <Formik validationSchema={settingsValidationSchema} initialValues={initialValues} 
+    onSubmit={values => console.log(values)}>
+    {({handleChange, handleSubmit, values}) =>{
+      return (
+        <View style={styles.form}>
+            <Text>Cambiar correo electronico</Text>
 
-        <Text style={styles.text}>
-            @nombre_de_usuario
-        </Text>
+            <FormikInputValue 
+            name='email'
+            placeholder='Nuevo correo electronico'
+            />
 
-        <View style={styles.button}>
-        <Button 
-            color='#6647e0'
-            title="Cambiar nombre de usuario"
-            onPress={() => navigation.navigate('ChangeUsernamePage')}
-        />
+            <Text>Cambiar contraseña</Text>
+            <FormikInputValue 
+            name='oldpassword'
+            placeholder='Contraseña actual'
+            secureTextEntry 
+            />
+
+            <FormikInputValue 
+            name='newpassword'
+            placeholder='Nueva contraseña'
+            secureTextEntry 
+            />
+
+            <FormikInputValue 
+            name='confirm_password'
+            placeholder='Repite la nueva contraseña'
+            secureTextEntry 
+            />
+
+            <Button
+                color='#6647e0'
+                title='Guardar' 
+                onPress={handleSubmit} 
+            />
         </View>
 
-        <View style={styles.button}>
-        <Button
-            color='#6647e0'
-            title="Cambiar correo electronico"
-            onPress={() => navigation.navigate('ChangeMailPage')}
-        />
-        </View>
+    )
+}}
+ </Formik>
 
-        <View style={styles.button}>
-        <Button
-            color='#6647e0'
-            title="Cambiar contraseña"
-            onPress={() => navigation.navigate('ChangePasswordPage')}
-        />
-        </View>
-
-        <View style={styles.button}>
-        <Button
-            color='#6647e0'
-            title="Cerrar sesion"
-            onPress={() => navigation.navigate('HomePage')}
-        />
-        </View>
-        
-        </View>
-        </SafeAreaView>
-        </NavigationContainer>
-    );
-};  
-
-
+}
