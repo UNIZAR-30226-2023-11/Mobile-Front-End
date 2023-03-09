@@ -2,68 +2,81 @@ import React from 'react'
 import {StyleSheet, Image, View} from'react-native'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import StyledButton from './src/components/StyledButton.js';
+
+
+import React from 'react'
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import IndexScreen from './src/screens/Index.js';
+import LogInScreen from './src/screens/Login.js';
+import SignInScreen from './src/screens/SignIn.js';
+import HomeScreen from './src/screens/Home.js';
+import ProfilePage from './src/pages/Profile.js';
 import SettingsPage from './src/pages/Settings.js';
-import StyledText from './src/components/StyledText.js';
+import CrearSalaScreen from './src/screens/CrearSala.js';
+import UnirseSalaScreen from './src/screens/UnirseSala.js';
 
 const Stack = createNativeStackNavigator();
 
-const styles = StyleSheet.create({
-  logoJuego: {
-    width: 180,
-    height: 180,
-    alignSelf: 'center'
-  },
-  logoEmpresa: {
-    height: 80,
-    width: 150,
-    marginTop: 10,
-    alignSelf: 'center'
-  },
-  app :{
-    flex: 1,
-    backgroundColor: 'white'
-  }
-})
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Ajustes"
-          component={SettingsScreen}
-          options={{title: 'Ajustes'}}          
+
+      <Stack.Screen
+          name="MONOPOLY INFORMÁTICO"
+          component={IndexScreen}
+          optiones={{title: 'MONOPOLY'}}          
         />
+        <Stack.Screen
+          name="LogIn"
+          component={LogInScreen}
+          options={{title: 'Iniciar Sesión'}}          
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={{title: 'Registrarse'}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{title: 'Home'}}
+        />
+        <Stack.Screen
+          name="CrearSala"
+          component={CrearSalaScreen}
+          options={{title: 'Crear Sala'}}
+        />
+        <Stack.Screen
+          name="UnirseSala"
+          component={UnirseSalaScreen}
+          options={{title: 'Unirse a Sala'}}
+        />
+
+        <Stack.Screen
+          name="Perfil"
+          component={ProfileScreen}
+          options={{title: 'Perfil'}}          
+        />
+        <Stack.Screen 
+          name="Settings" 
+          component={SettingsScreen}
+          options={{title: 'Ajustes'}}   
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const HomeScreen = ({navigation}) => {
-  return (
-    <View style={styles.app}>
-      <View>
-        <Image
-            style={styles.logoJuego}
-            source={require('./assets/logo_juego_monopoly.png')}
-        />
-      </View>
-      <View>
-        <StyledText monopoly>Pruebas</StyledText>
-      </View>
-      <View>
-        <StyledButton
-          lightblue
-          title="Ajustes"
-          onPress={() => navigation.navigate('SettingsPage')}
-        />
-    </View>
-    </View>
-  );
-};
-
 const SettingsScreen = ({navigation, route}) => {
   return <SettingsPage></SettingsPage>;
 };
+
+const ProfileScreen = ({navigation, route}) => {
+  return <ProfilePage></ProfilePage>;
+};
+
 

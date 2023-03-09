@@ -24,16 +24,23 @@ const styles = StyleSheet.create({
     monopoly: {
         fontSize: 40,
         fontFamily: 'sans-serif-medium',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#CFA8FC'
+    },
 
-
-
+    profile: {
+        marginTop: 10,
+        marginLeft: 10,
+        fontSize: 80,
+        fontFamily:'sasn-serif-medium',
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#CFA8FC'
     }
 })
 
-export default function StyledText({blue,bold,children,big,small,error,monopoly}){
+export default function StyledText({blue,bold,children,big,small,error,monopoly, profile}){
     
     const textStyles = [
         styles.text,
