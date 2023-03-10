@@ -3,7 +3,7 @@ import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-nativ
 import { Formik, useField } from 'formik'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
-import { settingsValidationSchema } from '../validationSchemas/settings'
+import { settingsPasswordValidationSchema } from '../validationSchemas/settingsPassword'
 
 const initialValues = {
     email: '',
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
         backgroundColor: "black",
     },
     text: {
-        fontSize: 25,
-        fontWeight: '500',
-        margin: 12, 
-        marginLeft: 80,
-        marginTop: 20,
-        marginBottom: 20,
-        color: "white"
+      fontSize: 25,
+      fontWeight: '500',
+      margin: '10%', 
+      marginLeft: '1%',
+      marginTop: '5%',
+      marginBottom: '2%',
+      color: "black"
     },
     button: {
         marginTop: 12,
@@ -63,20 +63,14 @@ const styles = StyleSheet.create({
       }
 });
 
-export default function SettingsPage(){
-    return <Formik validationSchema={settingsValidationSchema} initialValues={initialValues} 
+export default function SettingsPassword(){
+    return <Formik validationSchema={settingsPasswordValidationSchema} initialValues={initialValues} 
     onSubmit={values => console.log(values)}>
     {({handleChange, handleSubmit, values}) =>{
       return (
         <View style={styles.form}>
-            <Text>Cambiar correo electronico</Text>
+            <Text style={styles.text}>Cambiar contraseña</Text>
 
-            <FormikInputValue 
-            name='email'
-            placeholder='Nuevo correo electronico'
-            />
-
-            <Text>Cambiar contraseña</Text>
             <FormikInputValue 
             name='oldpassword'
             placeholder='Contraseña actual'

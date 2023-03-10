@@ -77,7 +77,7 @@ export default function ProfilePage({ }){
         <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-end',  marginTop:'4%', marginRight: '4%'}}>
 
           {/* Boton de compras */}
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <TouchableOpacity>
             <AntDesign name="shoppingcart" size={30} color="black"/>
             <Text style={styles.descripcion}>tienda      </Text>
           </TouchableOpacity>
@@ -97,7 +97,7 @@ export default function ProfilePage({ }){
         <View style={styles.user}>
             
           <Text>nombre de usuario</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser')}>
             <AntDesign name="edit" size={24} color="black" />
           </TouchableOpacity>
           
