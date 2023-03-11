@@ -43,6 +43,14 @@ export default function SettingsPage(){
             />
             </View>
 
+            <View style={{ width: '90%', marginTop: '5%', marginLeft: '5%', marginRight: '3%'}}>
+            <Button
+                color='#6647e0'
+                title='Cerrar sesion' 
+                onPress={() => navigation.navigate('SignIn')}
+            />
+            </View>
+
             
         </View>
 

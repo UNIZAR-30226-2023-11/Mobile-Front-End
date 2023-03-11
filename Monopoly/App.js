@@ -3,6 +3,7 @@ import {StyleSheet, Image, View} from'react-native'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import SignInPage from './src/screens/SignIn.js';
 import ProfilePage from './src/screens/Profile.js';
 import SettingsPage from './src/screens/Settings.js';
 import SettingsMailPage from './src/screens/SettingsMail.js';
@@ -44,6 +45,12 @@ export default function App() {
           name="SettingsPassword" 
           component={SettingsPasswordPage}
           options={{title: 'Ajustes'}}   
+          />
+
+          <Stack.Screen 
+          name="SignIn" 
+          component={SignInPage}
+          options={{title: 'Registrarse'}}   
           />
 
       </Stack.Navigator>
