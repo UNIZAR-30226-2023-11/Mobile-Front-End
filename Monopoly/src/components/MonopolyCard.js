@@ -4,6 +4,8 @@ import { Card, Text, Image } from 'react-native-elements';
 
 //para exportarlo: import MonopolyCard from './components/MonopolyCard';
 
+//TODOS LOS PRECIOS HABRA QUE SACARLOS DE LA BASE DE DATOS
+
 const styles = StyleSheet.create({
   cardContainer: {
     borderColor: 'red',
@@ -17,13 +19,15 @@ const styles = StyleSheet.create({
   image: {
     height: 100,
     width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textContainer: {
     marginVertical: 10,
     marginHorizontal: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -108,8 +112,68 @@ const MonopolyCard = () => {
     </View>
   );
 };
-
-
+const Evento = ({title, description, subtitle, imageSource }) => {
+  return (
+    <View style={styles.container}>
+      <Card style={styles.cardContainer}>
+        <Image source={imageSource} style={styles.image} />
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.description}>{description}</Text>
+      </Card>
+    </View>
+  );
+};
+//-------------------------------------------------------------
+const Evento_1 = () => {
+  return (
+    <Evento
+      title="San Braulio"
+      description={`ALQUILER 3€\n
+    SI TIENES 2 EVENTOS......20€ \n
+    SI TIENES 3 EVENTOS......30 € \n
+    SI TIENES 4 EVENTOS......60 € \n`}
+    imageSource={require('../../assets/bob.png')}
+    />
+  );
+};
+const Evento_2 = () => {
+  return (
+    <Evento
+      title="Paso de Ecuador"
+      description={`ALQUILER 3€\n
+    SI TIENES 2 EVENTOS......20€ \n
+    SI TIENES 3 EVENTOS......30 € \n
+    SI TIENES 4 EVENTOS......60 € \n`}
+    imageSource={require('../../assets/bob.png')}
+    />
+  );
+};
+const Evento_3 = () => {
+  return (
+    <Evento
+      title="San Pepe"
+      description={`ALQUILER 3€\n
+    SI TIENES 2 EVENTOS......20€ \n
+    SI TIENES 3 EVENTOS......30 € \n
+    SI TIENES 4 EVENTOS......60 € \n`}
+    imageSource={require('../../assets/bob.png')}
+    />
+  );
+};
+const Evento_4 = () => {
+  return (
+    <Evento
+      title="Fin de Carrera"
+      description={`ALQUILER 3€\n
+    SI TIENES 2 EVENTOS......20€ \n
+    SI TIENES 3 EVENTOS......30 € \n
+    SI TIENES 4 EVENTOS......60 € \n`}
+    imageSource={require('../../assets/bob.png')}
+    />
+  );
+};
+//--------------------------------------------------------------
 const Suerte = ({description, subtitle }) => {
   return (
     <View style={styles.container}>
@@ -124,7 +188,6 @@ const Suerte = ({description, subtitle }) => {
     </View>
   );
 };
-
 const Boletin = ({description }) => {
   return (
     <View style={styles.container}>
@@ -139,7 +202,6 @@ const Boletin = ({description }) => {
     </View>
   );
 };
-
 const Asignatura_1 = ({title, subtitle, description }) => {
   return (
     <View style={styles.container}>
@@ -252,31 +314,38 @@ const Asignatura_8 = ({title, subtitle, description }) => {
     </View>
   );
 };
-
+//---------------------------------------------------------------
 const Asignatura_11 = () => {
   return (
     <Asignatura_1
       title="Programacion I"
-      subtitle="Coste: 200€"
-      description={`ALQUILERES 3\n
-    1 CRÉDITO ..............13 \n
-    2 CRÉDITOS ...........40 \n
-    3 CRÉDITOS .........120 \n
-    4 CRÉDITOS .........213 \n
-    HOTEL .................333 \n
-HIPOTECA 40 \n
-      PRECIO CRÉDITO............67 \n
-      PRECIO HOTEL.................67 \n
-      `}
+      subtitle="Coste: 80€"
+      description={`ALQUILERES 3€\n
+    1 CRÉDITO ........................13€ \n
+    2 CRÉDITOS .....................40€ \n
+    3 CRÉDITOS ...................120€ \n
+    4 CRÉDITOS ...................213€ \n
+    HOTEL ............................333€ \n
+HIPOTECA 40€ \n
+    PRECIO CRÉDITO..............67€ \n
+    PRECIO HOTEL.................67€ \n`}
     />
   );
 };
 const Asignatura_12 = () => {
   return (
     <Asignatura_1
-      title="Introducción a los Computadores"
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      title={`Introducción a los\n Computadores`}
+      subtitle="Coste: 80€"
+      description={`ALQUILERES 5€\n
+      1 CRÉDITO ........................27€ \n
+      2 CRÉDITOS .....................80€ \n
+      3 CRÉDITOS ...................240€ \n
+      4 CRÉDITOS ...................427€ \n
+      HOTEL ............................600€ \n
+HIPOTECA 40€ \n
+      PRECIO CRÉDITO..............67€ \n
+      PRECIO HOTEL.................67€ \n`}
     />
   );
 };
@@ -284,8 +353,16 @@ const Asignatura_21 = () => {
   return (
     <Asignatura_2
       title="Programacion II"
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      subtitle="Coste: 133€"
+      description={`ALQUILERES 8€\n
+      1 CRÉDITO ........................40€ \n
+      2 CRÉDITOS .....................120€ \n
+      3 CRÉDITOS ...................360€ \n
+      4 CRÉDITOS ...................533€ \n
+      HOTEL ............................533€ \n
+HIPOTECA 40€ \n
+      PRECIO CRÉDITO..............67€ \n
+      PRECIO HOTEL.................67€ \n`}
     />
   );
 };
@@ -293,17 +370,33 @@ const Asignatura_22 = () => {
   return (
     <Asignatura_2
       title="Física y electrónica"
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      subtitle="Coste: 133€"
+      description={`ALQUILERES 8€\n
+      1 CRÉDITO ........................40€ \n
+      2 CRÉDITOS .....................120€ \n
+      3 CRÉDITOS ...................360€ \n
+      4 CRÉDITOS ...................533€ \n
+      HOTEL ............................533€ \n
+HIPOTECA 40€ \n
+      PRECIO CRÉDITO..............67€ \n
+      PRECIO HOTEL.................67€ \n`}
     />
   );
 };
 const Asignatura_23 = () => {
   return (
     <Asignatura_2
-      title="Arquitectura y Organización de Computadores I" 
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      title={`Arquitectura y\n Organización de\n Computadores I`} 
+      subtitle="Coste: 160€"
+      description={`ALQUILERES 11€\n
+      1 CRÉDITO ........................53€ \n
+      2 CRÉDITOS .....................133€ \n
+      3 CRÉDITOS ...................400€ \n
+      4 CRÉDITOS ...................600€ \n
+      HOTEL ............................800€ \n
+  HIPOTECA 80€ \n
+      PRECIO CRÉDITO..............67€ \n
+      PRECIO HOTEL.................67€ \n`}
     />
   );
 };
@@ -311,17 +404,33 @@ const Asignatura_31 = () => {
   return (
     <Asignatura_3
       title="Sistemas operativos" 
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      subtitle="Coste: 187€"
+      description={`ALQUILERES 13€\n
+      1 CRÉDITO ........................67€ \n
+      2 CRÉDITOS .....................200€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_32 = () => {
   return (
     <Asignatura_3
-      title="Estructuras de datos y algoritmos" 
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      title={`Estructuras de datos\n y algoritmos`}
+      subtitle="Coste: 187€"
+      description={`ALQUILERES 13€\n
+      1 CRÉDITO ........................67€ \n
+      2 CRÉDITOS .....................200€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -329,35 +438,67 @@ const Asignatura_33 = () => {
   return (
     <Asignatura_3
       title="Redes de computadores" 
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      subtitle="Coste: 213€"
+      description={`ALQUILERES 16€\n
+      1 CRÉDITO ........................80€ \n
+      2 CRÉDITOS .....................240€ \n
+      3 CRÉDITOS ...................667€ \n
+      4 CRÉDITOS ...................933€ \n
+      HOTEL ............................1200€ \n
+HIPOTECA 107€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_41 = () => {
   return (
     <Asignatura_4
-      title="Tecnología de la Programación" 
-      subtitle="Coste: 200€"
-      description="Hipotecas..."
+      title={`Tecnología de la\n Programación ` }
+      subtitle="Coste: 240€"
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_42 = () => {
   return (
     <Asignatura_4
-      title="Interacción Persona Ordenador" 
+      title={`Interacción Persona\n Ordenador`}
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_43 = () => {
   return (
     <Asignatura_4
-      title="Arquitectura y Organización de Computadores II"  
+      title={`Arquitectura y\n Organización de\n Computadores II`}
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -366,7 +507,15 @@ const Asignatura_51 = () => {
     <Asignatura_5
       title="Inteliencia Artificial"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -375,7 +524,15 @@ const Asignatura_52 = () => {
     <Asignatura_5
       title="Sistemas Distribuidos"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -384,25 +541,49 @@ const Asignatura_53 = () => {
     <Asignatura_5
       title="Proyecto Hardware"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_61 = () => {
   return (
     <Asignatura_6
-      title="Sistemas de Información II"    
+      title={`Sistemas de\n Información II`} 
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_62 = () => {
   return (
     <Asignatura_6
-      title="Procesadores del Lenguaje"  
+      title={`Procesadores del\n Lenguaje`}  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -411,7 +592,15 @@ const Asignatura_63 = () => {
     <Asignatura_6
       title="Proyecto Software"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -420,16 +609,32 @@ const Asignatura_71 = () => {
     <Asignatura_7
       title="Robótica"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
 const Asignatura_72 = () => {
   return (
     <Asignatura_7
-      title="Sistemas y Tecnologías Web"     
+      title={`Sistemas y\n Tecnologías Web `}    
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -438,7 +643,15 @@ const Asignatura_73 = () => {
     <Asignatura_7
       title="Seguridad Informática"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -447,7 +660,15 @@ const Asignatura_81 = () => {
     <Asignatura_8
       title="Prácticas en Empresa"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
@@ -456,12 +677,19 @@ const Asignatura_82 = () => {
     <Asignatura_8
       title="TFG"  
       subtitle="Coste: 200€"
-      description="Hipotecas..."
+      description={`ALQUILERES 19€\n
+      1 CRÉDITO ........................93€ \n
+      2 CRÉDITOS .....................100€ \n
+      3 CRÉDITOS ...................600€ \n
+      4 CRÉDITOS ...................833€ \n
+      HOTEL ............................1000€ \n
+HIPOTECA 93€ \n
+      PRECIO CRÉDITO..............133€ \n
+      PRECIO HOTEL.................133€ \n`}
     />
   );
 };
-
-
+//-----------------------------------------------------------
 const Boletin_1 = () => {
   return (
     <Boletin
@@ -574,7 +802,7 @@ const Boletin_16 = () => {
     />
   );
 };
-
+//--------------------------------------------------------
 const Suerte_1 = () => {
   return (
     <Suerte
@@ -688,11 +916,11 @@ const Suerte_16 = () => {
   );
 };
 
-
 export {MonopolyCard, Boletin_1, Boletin_2, Boletin_3, Boletin_4, Boletin_5, Boletin_6, Boletin_7, Boletin_8,
   Boletin_9, Boletin_10, Boletin_11, Boletin_12, Boletin_13, Boletin_14, Boletin_15, Boletin_16,
   Suerte_1, Suerte_2, Suerte_3, Suerte_4, Suerte_5, Suerte_6, Suerte_7, 
   Suerte_8, Suerte_9, Suerte_10, Suerte_11, Suerte_12, Suerte_13, Suerte_14, Suerte_15, Suerte_16,
   Asignatura_11, Asignatura_12, Asignatura_21, Asignatura_22, Asignatura_23, Asignatura_31, Asignatura_32, Asignatura_33,
   Asignatura_41, Asignatura_42, Asignatura_43, Asignatura_51, Asignatura_52, Asignatura_53, Asignatura_61, Asignatura_62, 
-  Asignatura_63, Asignatura_71, Asignatura_72, Asignatura_73, Asignatura_81, Asignatura_82 };
+  Asignatura_63, Asignatura_71, Asignatura_72, Asignatura_73, Asignatura_81, Asignatura_82,
+  Evento_1, Evento_2, Evento_3, Evento_4 };
