@@ -9,6 +9,7 @@ import SettingsPage from './src/screens/Settings.js';
 import SettingsMailPage from './src/screens/SettingsMail.js';
 import SettingsPasswordPage from './src/screens/SettingsPassword.js';
 import SettingsUserPage from './src/screens/SettingsUser.js';
+import CardPage from './src/screens/TestCard.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
+      <Stack.Screen
+          name="TestCard"
+          component={CardPage}
+          options={{title: 'Card Title'}}          
+        />
 
         <Stack.Screen
           name="Perfil"
