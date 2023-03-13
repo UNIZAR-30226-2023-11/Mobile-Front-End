@@ -17,8 +17,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    height: 100,
-    width: 100,
+    height: 130,
+    width: 130,
+  },
+  imageView: {
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -112,16 +114,56 @@ const MonopolyCard = () => {
     </View>
   );
 };
-const Evento = ({title, description, subtitle, imageSource }) => {
+const Evento = ({title, description, imageSource }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.cardContainer}>
+        <View style={styles.imageView} >
         <Image source={imageSource} style={styles.image} />
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
           <Text style={styles.description}>{description}</Text>
+          </View>
       </Card>
     </View>
+  );
+};
+const Recurso = ({title, description, imageSource }) => {
+  return (
+    <View style={styles.container}>
+      <Card style={styles.cardContainer}>
+        <View style={styles.imageView}>
+          <Image source={imageSource} style={styles.image} />
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.description}>{description}</Text>
+        </View>
+      </Card>
+    </View>
+  );
+};
+const Recurso_1 = () => {
+  return (
+    <Recurso
+      title={`Ahorro energético\n calefacción`}
+      description={`Si posees una carta de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+Si posees dos cartas de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+        Valor de la Hipoteca 100€ \n`}
+    imageSource={require('../../assets/calefaccion.png')}
+    />
+  );
+};
+const Recurso_2 = () => {
+  return (
+    <Recurso
+      title={`Ahorro energético\n enchufes`}
+      description={`Si posees una carta de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+Si posees dos cartas de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+        Valor de la Hipoteca 100€ \n`}
+    imageSource={require('../../assets/enchufe.png')}
+    />
   );
 };
 //-------------------------------------------------------------
@@ -923,4 +965,4 @@ export {MonopolyCard, Boletin_1, Boletin_2, Boletin_3, Boletin_4, Boletin_5, Bol
   Asignatura_11, Asignatura_12, Asignatura_21, Asignatura_22, Asignatura_23, Asignatura_31, Asignatura_32, Asignatura_33,
   Asignatura_41, Asignatura_42, Asignatura_43, Asignatura_51, Asignatura_52, Asignatura_53, Asignatura_61, Asignatura_62, 
   Asignatura_63, Asignatura_71, Asignatura_72, Asignatura_73, Asignatura_81, Asignatura_82,
-  Evento_1, Evento_2, Evento_3, Evento_4 };
+  Evento_1, Evento_2, Evento_3, Evento_4, Recurso_1, Recurso_2 };

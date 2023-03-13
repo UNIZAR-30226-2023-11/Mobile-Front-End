@@ -18,6 +18,8 @@ export default function TestCard(){
         
         <ScrollView>
         <View style={styles.container}>
+            <Cards.Recurso_1 />
+            <Cards.Recurso_2 />
             <Cards.Evento_1 />
             <Cards.Evento_2 />
             <Cards.Evento_3 />
