@@ -9,6 +9,7 @@ import HomeScreen from './src/screens/Home.js';
 import PerfilScreen from './src/screens/Perfil.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
+import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ export default function App() {
           name="UnirseSala"
           component={UnirseSalaScreen}
           options={{title: 'Unirse a Sala'}}
+        />
+        <Stack.Screen
+          name="Tablero"
+          component={TableroScreen}
+          options={{title: 'Tablero'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

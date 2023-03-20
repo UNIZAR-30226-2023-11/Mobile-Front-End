@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
     app :{
       flex: 1,
-      backgroundColor: 'white'
+      backgroundColor: '#FFFFFF'
     }
 })
 

@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   form: {
+    backgroundColor: '#FFFFFF',
     margin: 12,
     marginTop: 100,
     marginBottom: 20

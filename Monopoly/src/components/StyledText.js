@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
     monopoly: {
         fontSize: 40,
         fontFamily: 'sans-serif-medium',
-
-
-
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#CFA8FC'
