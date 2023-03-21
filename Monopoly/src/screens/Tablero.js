@@ -1,6 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from'react-native';
-import { FontAwesome, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import 
+{   FontAwesome, 
+    FontAwesome5, 
+    MaterialCommunityIcons, 
+    Ionicons,
+    MaterialIcons 
+} from '@expo/vector-icons';
+
 import StyledText from '../components/StyledText';
 
 const ancho = 34.3;
@@ -102,6 +109,13 @@ const styles = StyleSheet.create({
     },
     precio_horizontal_1linea:{
         marginTop:'7%'
+    },
+    julio:{
+        width: ancho*1.1,
+        height: ancho*1.1,
+        borderColor:'#000000',
+        borderWidth:1,
+        alignSelf:'flex-end'
     }
 });
 
@@ -115,7 +129,8 @@ export default function TableroScreen() {
         <View style={styles.tablero}>
             <View style={styles.curso2}>
                 <View style={styles.casilla_esquina}>
-                    <Text>BECA</Text>
+                    <Ionicons name="school" size={26} color="black" style={{marginLeft:'22%', marginTop:'5%'}} />
+                    <StyledText titulo_casilla>BECA</StyledText>
                 </View>
                 <View style={[styles.casilla_vertical, styles.grupo_4]}>
                     <StyledText titulo_casilla>AOC 2</StyledText>
@@ -147,15 +162,25 @@ export default function TableroScreen() {
                     <StyledText titulo_casilla>EDA</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>187€</StyledText>
                 </View>
-                <View style={styles.casilla_vertical}>
-                    <Text>AHORRO ELECT</Text>
+                <View style={[styles.casilla_vertical, {flexDirection:'row'}]}>
+                    <MaterialIcons name="electrical-services" size={26} color="black" />
+                    <StyledText precio_casilla>ELE</StyledText>
                 </View>
                 <View style={[styles.casilla_vertical, styles.grupo_3]}>
                     <StyledText titulo_casilla>SO</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>187€</StyledText>
                 </View>
-                <View style={styles.casilla_esquina}>
-                    <Text>RECUS</Text>
+                <View style={[styles.casilla_esquina, {flex:1, flexDirection:'column'}]}>
+                    <View style={{flex:1, flexDirection:'row'}}>
+                    <View style={{flex:1, flexDirection:'column'}}>
+                    <StyledText titulo_casilla>D</StyledText>
+                    <StyledText titulo_casilla>E</StyledText>
+                    </View>
+                    <View style={styles.julio}>
+                        <StyledText titulo_casilla style={{marginTop:'25%'}}>JULIO</StyledText>
+                    </View>
+                    </View>
+                    <StyledText titulo_casilla>PASO</StyledText>
                 </View>
             </View>
             <View style={styles.cursos1_3}>
@@ -189,7 +214,8 @@ export default function TableroScreen() {
                         <StyledText precio_casilla style={styles.precio_vertical_2lineas}>347€</StyledText>
                     </View>
                     <View style={styles.casilla_horizontal}>
-                        <Text>AHORRO CALEF</Text>
+                        <MaterialCommunityIcons name="air-conditioner" size={26} color="black" style={{marginLeft:'10%', marginTop:'5%'}} />
+                        <StyledText precio_casilla style={{marginTop:'15%'}}>CALEF</StyledText>
                     </View>
                     <View style={[styles.casilla_horizontal, styles.grupo_6]}>
                         <StyledText titulo_casilla>PS</StyledText>
@@ -219,7 +245,7 @@ export default function TableroScreen() {
                     </View>
                     <View style={styles.casilla_horizontal}>
                         <StyledText casillas_fiesta style={{marginTop:'35%'}}>ABRIR</StyledText>
-                        <StyledText casillas_fiesta>EXPEDIENTE</StyledText>
+                        <StyledText casillas_fiesta>EXPDTE</StyledText>
                     </View>
                     <View style={[styles.casilla_horizontal, styles.grupo_1]}>
                         <StyledText titulo_casilla>IC</StyledText>
@@ -236,7 +262,8 @@ export default function TableroScreen() {
             </View>
             <View style={styles.curso4}>
                 <View style={styles.casilla_esquina}>
-                    <Text>VE A RECUPERAR</Text>
+                    <MaterialCommunityIcons name="file-remove-outline" size={26} color="black" style={{marginLeft:'25%', marginTop:'5%'}} />
+                    <StyledText titulo_casilla style={{marginTop:'2%'}}>A JULIO</StyledText>
                 </View>
                 <View style={[styles.casilla_vertical, styles.grupo_7]}>
                     <StyledText titulo_casilla>ROB</StyledText>
@@ -268,7 +295,8 @@ export default function TableroScreen() {
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>467€</StyledText>
                 </View>
                 <View style={styles.casilla_vertical}>
-                    <Text>SEGURO ESCOLAR</Text>
+                    <StyledText casillas_fiesta style={{marginTop:'10%'}}>SEGURO</StyledText>
+                    <StyledText casillas_fiesta>ESCOLAR</StyledText>
                 </View>
                 <View style={[styles.casilla_vertical, styles.grupo_8]}>
                     <StyledText titulo_casilla>TFG</StyledText>
