@@ -5,6 +5,8 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
 
+import { comprobarUsuario } from '../url/users'
+
 const initialValues = {
   email: '',
   password:''
@@ -42,7 +44,26 @@ const FormikInputValue =({ name, ...props}) => {
 
 export default function LogInScreen({navigation}){
   return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
-  onSubmit={() => navigation.navigate('Home')}>
+  onSubmit={values => {
+    const response =  fetch(comprobarUsuario, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(values)
+    })
+    .then((response) => {
+      if(response.status === 201){
+        console.log(response.json);
+        navigation.navigate('Home'); 
+      }else {
+          console.log("SOMETHING WENT WRONG");
+      }})
+  .catch((error) => {
+    //Error
+    alert(JSON.stringify(error));
+    console.error(error);
+  });
+  }}>
+
   {({handleChange, handleSubmit, values}) =>{
     return (
       <View style={styles.form}>
