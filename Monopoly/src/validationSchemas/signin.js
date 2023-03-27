@@ -1,6 +1,10 @@
 import * as yup from 'yup'
 
 export const signinValidationSchema = yup.object().shape({
+    username: yup
+        .string()
+        .min(5, 'El username tiene que tener al menos 5 caracteres')
+        .required('Campo obligatiorio'),
     email: yup
         .string()
         .email('Email tiene que ser un email valido')

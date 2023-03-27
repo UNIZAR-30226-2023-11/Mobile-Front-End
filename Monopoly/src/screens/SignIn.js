@@ -55,7 +55,7 @@ export default function SignInScreen({navigation}){
         console.log(response.json);
         navigation.navigate('Home'); 
       }else {
-          console.log("SOMETHING WENT WRONG");
+          console.log(response.text);
       }})
   .catch((error) => {
     //Error
@@ -67,6 +67,10 @@ export default function SignInScreen({navigation}){
   {({handleChange, handleSubmit, values}) =>{
     return (
       <View style={styles.form}>
+        <FormikInputValue 
+        name='username'
+        placeholder='Username' 
+        />
         <FormikInputValue 
         name='email'
         placeholder='E-mail' 
