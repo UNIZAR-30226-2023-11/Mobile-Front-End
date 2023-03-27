@@ -53,9 +53,14 @@ export default function SignInScreen({navigation}){
     .then((response) => {
       if(response.status === 201){
         console.log(response.json);
-        navigation.navigate('Home'); 
+        navigation.navigate('Home');
+      }
+      else if (response.status ===400){
+        
+        
       }else {
-          console.log(response.text);
+          console.log(response.status);
+          console.log(response.json);
       }})
   .catch((error) => {
     //Error
