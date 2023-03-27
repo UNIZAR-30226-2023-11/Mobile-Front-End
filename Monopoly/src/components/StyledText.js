@@ -33,10 +33,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function StyledText({blue,bold,children,big,small,error,monopoly}){
+export default function StyledText({style = {}, blue,bold,children,big,small,error,monopoly}){
     
     const textStyles = [
         styles.text,
+        style, 
         blue && styles.blue,
         bold && styles.bold,
         big && styles.big,
