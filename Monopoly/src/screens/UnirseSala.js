@@ -13,12 +13,9 @@ export default function UnirseSalaScreen({ navigation }) {
 
     return (
         <View style={styles.barra}>
-        <View style={StyleSheet.barra}>
             <Searchbar
-            styled
                 placeholder="Buscar partida (#123456)"
             />
-        </View>
         </View>
     );
 }
