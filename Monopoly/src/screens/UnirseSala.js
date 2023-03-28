@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from'react-native';
+import { View, StyleSheet } from'react-native';
 import {Searchbar} from 'react-native-paper';
 
 
