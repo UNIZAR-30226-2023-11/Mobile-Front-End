@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 export default function CrearSalaScreen({ navigation }) {
 
     const [players, setPlayers] = React.useState("");
+    const [money, setMoney] = React.useState("");
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
@@ -44,6 +45,23 @@ export default function CrearSalaScreen({ navigation }) {
                     <Select.Item label="Seis" value="6" />
                     <Select.Item label="Siete" value="7" />
                     <Select.Item label="Ocho" value="8" />
+                </Select>
+                </View>
+            </View>
+            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
+                <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Dinero inicial</StyledText>
+                <View style={{marginLeft:'7%'}}>
+                <Select selectedValue={money} 
+                    minWidth="200" 
+                    accessibilityLabel="Money" 
+                    placeholder="Dinero inicial" 
+                    mt={1} 
+                    onValueChange={(itemValue) => setMoney(itemValue)}>
+                    <Select.Item label="1000" value="1000" />
+                    <Select.Item label="1500" value="1500" />
+                    <Select.Item label="2000" value="2000" />
+                    <Select.Item label="2500" value="2500" />
+                    <Select.Item label="3000" value="3000" />
                 </Select>
                 </View>
             </View>

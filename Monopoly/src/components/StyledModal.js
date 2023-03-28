@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
         marginTop: 40,
         backgroundColor: 'white',
         borderRadius: 20,
-        width: 300,
-        height:475,
+        width:'85%',
+        height: '80%',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -40,7 +40,13 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModal({onClose, visible, onRequestClose, title, text}){
+export default function StyledModal({style={}, onClose, visible, onRequestClose, title, text}){
+
+    const modalStyles = [
+        styles.modalView,
+        style
+    
+    ]
 
     return(
         <Modal
@@ -50,7 +56,7 @@ export default function StyledModal({onClose, visible, onRequestClose, title, te
         transparent={true}
         props>
         <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View style={modalStyles}>
             <Pressable
                 onPress={onClose}>
                 <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>

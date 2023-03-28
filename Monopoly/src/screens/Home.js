@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity    } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity    } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
 import StyledTextInput from "../components/StyledTextInput";
@@ -11,22 +11,26 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "white",
     },
     icon:{
         position:'absolute',
         top:'3%',
         right:'5%'
     },
-    header: {
-        height: '20%'
-    },
+    logoJuego: {
+        height: '35%',
+        width: '50%',
+        alignSelf: 'center'
+      },
     nickname: {
         height: '7%',
         width: '70%',
         textAlign: 'center',
-        marginLeft: 50,
-        marginRight: 50,   
+        marginTop:'5%',
+        marginLeft: '13%',
+        marginRight: '13%',   
     }
 });
 
@@ -35,19 +39,20 @@ export default function HomeScreen({ navigation }){
 
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
-    const [modalSobreNosotrosVisible, setModalSobreNosotrosVisible] = React.useState(false);
-
     return(
         <View style={styles.pantalla}>
         <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil')}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
-        <View style={styles.header}><Text>HEADER</Text></View>
-            <StyledTextInput style={styles.nickname}
+        <Image
+            style={styles.logoJuego}
+            source={require('../../assets/logo_juego_monopoly.png')}
+        />
+        <StyledTextInput style={styles.nickname}
                 placeholder="Ingresa tu nickname"
-                onChangeText={setNickname}
+                onChangeText={value => setNickname(value)}
                 value={nickname}
-            />
+         />
             <StyledButton
                 homeScreen
                 title="Crear sala"
@@ -73,22 +78,6 @@ export default function HomeScreen({ navigation }){
                 homeScreen
                 title="Reglas"
                 onPress={() => setModalReglasVisible(true)}
-            />
-            <StyledModal
-                title="SOBRE NOSOTROS"
-                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    Lorem ipsum dolor sit amet, con sectetuer adipiscing elit, sed do eiusmod tempor incididunt ut lab et d Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id odio ut aliquip ex ea commodo consequat"   
-                onClose = { () => {setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible})}}
-                visible={modalSobreNosotrosVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible});
-                }} 
-            />
-            <StyledButton
-                homeScreen
-                title="Sobre nosotros"
-                onPress={() => setModalSobreNosotrosVisible(true)}
             />
         </View>
     );

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 
-export default function StyledButton({ style={}, title, onPress, purple, lightblue, homeScreen }) {
+export default function StyledButton({ 
+  style={}, title, onPress, 
+  purple, lightblue, homeScreen, 
+  textblack, small }) {
 
   
   const buttonStyles = [
@@ -13,9 +16,15 @@ export default function StyledButton({ style={}, title, onPress, purple, lightbl
 
   ]
 
+  const textStyles = [
+    styles.text,
+    textblack && styles.textblack,
+    small && styles.small
+  ]
+
   return (
     <Pressable style={buttonStyles} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={textStyles}>{title}</Text>
     </Pressable>
   );
 }
@@ -52,4 +61,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
+  textblack:{
+    color: 'black'
+  },
+  small:{
+    fontSize: 14,
+    marginLeft:0,
+  }
 });
