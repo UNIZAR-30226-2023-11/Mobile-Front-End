@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from'react-native';
+import { View, Image, StyleSheet, Text, Pressable } from'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 
@@ -9,6 +9,7 @@ import
 } from '@expo/vector-icons';
 
 import StyledText from '../components/StyledText';
+import Die from '../components/Die';
 
 const ancho = 34.3;
 
@@ -25,15 +26,16 @@ const styles = StyleSheet.create({
     },
     cursos3_1:{
         flex: 5,
+        flexDirection:'column',
+        position: 'relative',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     curso1:{
         position: 'absolute',
         flex: 1,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        marginLeft: ancho*1.5,
         marginTop: ancho*9 + (ancho*1.5)
     },
     curso2: {
@@ -43,17 +45,23 @@ const styles = StyleSheet.create({
         flexDirection:'column',
     },
     curso3:{
-        position: 'relative',
+        position: 'absolute',
         flex: 1,
         alignItems: 'flex-start',
         flexDirection: 'row',
-        marginLeft: ancho*1.5,
     },
     curso4:{
-        position: 'relative',
+        position: 'absolute',
         alignItems: 'flex-end',
         flex: 1,
-        flexDirection:'column'
+        flexDirection:'column',
+        marginLeft: '88%'
+    },
+    dados:{
+        flex:1,
+        position: 'absolute',
+        alignItems: 'center',
+        marginTop:'40%'
     },
     space:{
         alignSelf: 'stretch',
@@ -119,12 +127,61 @@ const styles = StyleSheet.create({
     }
 });
 
+
 export default function TableroScreen() {
+
+    const [die1, setDie1] = React.useState(1);
+    const [die2, setDie2] = React.useState(1);
+    const [suma, setSuma] = React.useState(die1+die2);
+    const [casilla_horizontal, setCasillaHorizontal]=React.useState(10);
+    const [casilla_vertical, setCasillaVertical]=React.useState(10);
+
+    const stylestoken = StyleSheet.create({
+        token1:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        }
+    })
+
+    function Dice(){
+        const sides = [
+            1, 2, 3, 
+            4, 5, 6
+        ]
+    
+        function roll(){
+            setDie1(sides[Math.floor(Math.random() * sides.length)])
+            setDie2(sides[Math.floor(Math.random() * sides.length)])
+            setSuma(die1+die2);
+            if (casilla_horizontal-suma<=0){
+                setCasillaHorizontal(0)
+                setCasillaVertical(10-Math.abs(casilla_horizontal-suma))
+            }
+            else{
+                setCasillaHorizontal(casilla_horizontal-suma);
+            }
+        }
+    
+        return(
+            <View>
+                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => roll()}>
+                    <Die face={die1}></Die>
+                    <Die face = {die2}></Die>
+                </Pressable>
+            </View>
+        )
+    }
 
     return (
         <View style={{flex:1,flexDirection:'column'}}>
         <View style={styles.header}>
             <StyledText bold big> HEADER </StyledText>
+            <Text>La suma es {suma}</Text>
+            <Text>La casilla horizontal es {casilla_horizontal}</Text>
+            <Text>La casilla vertical es {casilla_vertical}</Text>
         </View>
         <View style={styles.tablero}>
             <View style={styles.curso2}>
@@ -183,7 +240,7 @@ export default function TableroScreen() {
                     <StyledText titulo_casilla>PASO</StyledText>
                 </View>
             </View>
-            <View style={styles.cursos1_3}>
+            <View style={styles.cursos3_1}>
                 <View style={styles.curso3}>
                     <View style={[styles.casilla_horizontal, styles.grupo_5]}>
                     <StyledText titulo_casilla>IA</StyledText>
@@ -221,6 +278,9 @@ export default function TableroScreen() {
                         <StyledText titulo_casilla>PS</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>373€</StyledText>
                     </View>
+                </View>
+                <View style={styles.dados}>
+                    <Dice></Dice>
                 </View>
                 <View style={styles.curso1}>
                     <View style={[styles.casilla_horizontal, styles.grupo_2]}>
@@ -307,6 +367,10 @@ export default function TableroScreen() {
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>
             </View>
+            <Image
+            style={stylestoken.token1}
+            source={require('../../assets/token.png')}   
+        />
         </View>
     </View>
     );
