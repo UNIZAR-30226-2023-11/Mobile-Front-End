@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, Pressable } from'react-native';
 import 
 {   FontAwesome, 
@@ -132,9 +132,10 @@ export default function TableroScreen() {
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
-    const [suma, setSuma] = React.useState(die1+die2);
     const [casilla_horizontal, setCasillaHorizontal]=React.useState(10);
     const [casilla_vertical, setCasillaVertical]=React.useState(10);
+    const [curso, setCurso] = React.useState(1);
+    const [rolling, setRolling] = React.useState(false);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -151,27 +152,77 @@ export default function TableroScreen() {
             1, 2, 3, 
             4, 5, 6
         ]
-    
+
         function roll(){
             setDie1(sides[Math.floor(Math.random() * sides.length)])
             setDie2(sides[Math.floor(Math.random() * sides.length)])
-            setSuma(die1+die2);
-            if (casilla_horizontal-suma<=0){
-                setCasillaHorizontal(0)
-                setCasillaVertical(10-Math.abs(casilla_horizontal-suma))
-            }
-            else{
-                setCasillaHorizontal(casilla_horizontal-suma);
-            }
         }
+        
+        const avanzar = useCallback(() => {
+            switch (curso) {
+                case 1:
+                    if (casilla_horizontal-(die1+die2)<=0){
+                        setCasillaHorizontal(0)
+                        setCasillaVertical(10-Math.abs(casilla_horizontal-(die1+die2)))
+                        setCurso(2);
+                    }
+                    else{
+                        setCasillaHorizontal(casilla_horizontal-(die1+die2));
+                    }
+                    break;
+            
+                case 2:
+                    if (casilla_vertical-(die1+die2)<=0){
+                        setCasillaVertical(0);
+                        setCasillaHorizontal(Math.abs(casilla_vertical-(die1+die2)));
+                        setCurso(3);
+                    }
+                    else{
+                        setCasillaVertical(casilla_vertical-(die1+die2));
+                    }
+                    break;
+                
+                case 3:
+                    if(casilla_horizontal+(die1+die2)>=10){
+                        setCasillaHorizontal(10);
+                        setCasillaVertical(Math.abs(casilla_horizontal+(die1+die2)-10));
+                        setCurso(4);
+                    }
+                    else{
+                        setCasillaHorizontal(casilla_horizontal+(die1+die2));
+                    }
+                    break;
+
+                case 4:
+                    if(casilla_vertical+(die1+die2)>=10){
+                        setCasillaVertical(10);
+                        setCasillaHorizontal(10-Math.abs(casilla_vertical+(die1+die2)-10));
+                        setCurso(1);
+                    }
+                    else{
+                        setCasillaVertical(casilla_vertical+(die1+die2));
+                    }
+                    break;
+            }
+        },[]);
+
+        useEffect(() => {
+            if(rolling){
+                setRolling(false);
+                avanzar();
+            };
+        },[rolling]);
+
+        
     
         return(
             <View>
-                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => roll()}>
-                    <Die face={die1}></Die>
+                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {setRolling(true);roll();}}>
+                    <Die face = {die1}></Die>
                     <Die face = {die2}></Die>
                 </Pressable>
             </View>
+            
         )
     }
 
@@ -179,7 +230,8 @@ export default function TableroScreen() {
         <View style={{flex:1,flexDirection:'column'}}>
         <View style={styles.header}>
             <StyledText bold big> HEADER </StyledText>
-            <Text>La suma es {suma}</Text>
+            <Text>La suma es {(die1+die2)}</Text>
+            <Text>Dado 1 {die1} Dado 2 {die2}</Text>
             <Text>La casilla horizontal es {casilla_horizontal}</Text>
             <Text>La casilla vertical es {casilla_vertical}</Text>
         </View>
