@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     tablero:{
-        flex:5,
+        flex:3.5,
         flexDirection: 'column',
         marginTop:'5%'
     },
@@ -146,7 +146,12 @@ const styles = StyleSheet.create({
 });
 
 
-export default function TableroScreen() {
+export default function TableroScreen({route, navigation}) {
+
+    console.log("Recibiendo datos");
+    const { nJugadores } = route.params;
+    console.log("Recibidos");
+    console.log(nJugadores);
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
@@ -154,12 +159,17 @@ export default function TableroScreen() {
     const [casilla_vertical, setCasillaVertical]=React.useState(10);
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
-    const [jugador3, setJugador3] = React.useState(true);
-    const [jugador4, setJugador4] = React.useState(true);
-    const [jugador5, setJugador5] = React.useState(false);
-    const [jugador6, setJugador6] = React.useState(false);
-    const [jugador7, setJugador7] = React.useState(false);
-    const [jugador8, setJugador8] = React.useState(false);
+
+    const aux = [];
+    let i=0;
+    //while (i< nJugadores){
+      //  aux.push(true);
+    //}
+    //while(i< 8){
+    //    aux.push(false);
+    //}
+
+    const [jugadores, setJugadores] = React.useState(aux);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -446,14 +456,9 @@ export default function TableroScreen() {
         </View>
         <View style={styles.info}>
             <View style={styles.jugador}>
-                <Text>PLAYER1 XXXX€</Text>
-                <Text>PLAYER2 XXXX€</Text>
-                {jugador3 ? <Text>PLAYER3 XXXX€</Text> : null}
-                {jugador4 ? <Text>PLAYER4 XXXX€</Text> : null}
-                {jugador5 ? <Text>PLAYER5 XXXX€</Text> : null}
-                {jugador6 ? <Text>PLAYER6 XXXX€</Text> : null}
-                {jugador7 ? <Text>PLAYER7 XXXX€</Text> : null}
-                {jugador8 ? <Text>PLAYER8 XXXX€</Text> : null}
+                {jugadores.map((jugador, i) =>(
+                    jugador && <Text>PLAYER {i+1} XXXX€</Text>
+                ))}
             </View>
             <View style={styles.asignaturas}>
                 <Text>ASIGNATURAS</Text>
