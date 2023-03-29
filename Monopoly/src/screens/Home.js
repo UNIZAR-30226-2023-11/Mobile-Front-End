@@ -52,7 +52,7 @@ export default function HomeScreen({ navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => {console.log("Navegando"); navigation.navigate('Tablero', {nJugadores:2});}}
+                onPress={() => navigation.navigate('Tablero', {nJugadores:2})}
             />
             <StyledButton
                 homeScreen

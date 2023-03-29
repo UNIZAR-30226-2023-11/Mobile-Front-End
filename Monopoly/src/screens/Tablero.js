@@ -146,12 +146,8 @@ const styles = StyleSheet.create({
 });
 
 
-export default function TableroScreen({route, navigation}) {
+export default function TableroScreen() {
 
-    console.log("Recibiendo datos");
-    const { nJugadores } = route.params;
-    console.log("Recibidos");
-    console.log(nJugadores);
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
@@ -160,14 +156,20 @@ export default function TableroScreen({route, navigation}) {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
 
+    const nJugadores = 4;
     const aux = [];
     let i=0;
-    //while (i< nJugadores){
-      //  aux.push(true);
-    //}
-    //while(i< 8){
-    //    aux.push(false);
-    //}
+    console.log("empezando bucle");
+    while (i< nJugadores){
+        console.log("true");
+        aux.push(true);
+        i++
+    }
+    while(i< 8){
+        console.log("false");
+        aux.push(false);
+        i++
+    }
 
     const [jugadores, setJugadores] = React.useState(aux);
 
