@@ -14,15 +14,33 @@ import Die from '../components/Die';
 const ancho = 34.3;
 
 const styles = StyleSheet.create({
-    header:{
-        flex: 1,
-        alignItems:'center',
+    pantalla:{
+        flex:1,
+        flexDirection:'column',
         backgroundColor: '#B5F2B3'
     },
+    header:{
+        flex: 0.3,
+        alignItems:'center',
+    },
     tablero:{
-        backgroundColor: '#B5F2B3',
-        flex:4,
-        flexDirection: 'column'
+        flex:5,
+        flexDirection: 'column',
+        marginTop:'5%'
+    },
+    info:{
+        flex:1,
+        flexDirection:'row'
+    },
+    jugador:{
+        flex:0.5,
+        marginLeft:'5%',
+        justifyContent: 'flex-start'
+    },
+    asignaturas:{
+        flex:0.5,
+        marginLeft:'40%',
+        justifyContent: 'flex-start'
     },
     cursos3_1:{
         flex: 5,
@@ -136,6 +154,12 @@ export default function TableroScreen() {
     const [casilla_vertical, setCasillaVertical]=React.useState(10);
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
+    const [jugador3, setJugador3] = React.useState(true);
+    const [jugador4, setJugador4] = React.useState(true);
+    const [jugador5, setJugador5] = React.useState(false);
+    const [jugador6, setJugador6] = React.useState(false);
+    const [jugador7, setJugador7] = React.useState(false);
+    const [jugador8, setJugador8] = React.useState(false);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -227,13 +251,9 @@ export default function TableroScreen() {
     }
 
     return (
-        <View style={{flex:1,flexDirection:'column'}}>
+        <View style={styles.pantalla}>
         <View style={styles.header}>
-            <StyledText bold big> HEADER </StyledText>
-            <Text>La suma es {(die1+die2)}</Text>
-            <Text>Dado 1 {die1} Dado 2 {die2}</Text>
-            <Text>La casilla horizontal es {casilla_horizontal}</Text>
-            <Text>La casilla vertical es {casilla_vertical}</Text>
+            <StyledText bold big purple> MONOPOLY </StyledText>
         </View>
         <View style={styles.tablero}>
             <View style={styles.curso2}>
@@ -353,7 +373,7 @@ export default function TableroScreen() {
                     <View style={styles.casilla_horizontal}>
                         <MaterialCommunityIcons name="party-popper" size={24} color="black" style={{marginLeft:'15%'}}/>
                         <StyledText casillas_fiesta>SAN</StyledText>
-                        <StyledText casillas_fiesta>BRAULIO</StyledText>
+                        <StyledText casillas_fiesta>BRAU.</StyledText>
                     </View>
                     <View style={styles.casilla_horizontal}>
                         <StyledText casillas_fiesta style={{marginTop:'35%'}}>ABRIR</StyledText>
@@ -422,7 +442,22 @@ export default function TableroScreen() {
             <Image
             style={stylestoken.token1}
             source={require('../../assets/token.png')}   
-        />
+            />
+        </View>
+        <View style={styles.info}>
+            <View style={styles.jugador}>
+                <Text>PLAYER1 XXXX€</Text>
+                <Text>PLAYER2 XXXX€</Text>
+                {jugador3 ? <Text>PLAYER3 XXXX€</Text> : null}
+                {jugador4 ? <Text>PLAYER4 XXXX€</Text> : null}
+                {jugador5 ? <Text>PLAYER5 XXXX€</Text> : null}
+                {jugador6 ? <Text>PLAYER6 XXXX€</Text> : null}
+                {jugador7 ? <Text>PLAYER7 XXXX€</Text> : null}
+                {jugador8 ? <Text>PLAYER8 XXXX€</Text> : null}
+            </View>
+            <View style={styles.asignaturas}>
+                <Text>ASIGNATURAS</Text>
+            </View>
         </View>
     </View>
     );
