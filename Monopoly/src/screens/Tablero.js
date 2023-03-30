@@ -11,6 +11,7 @@ import
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
+import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
 
 const ancho = 34.3;
@@ -158,8 +159,19 @@ export default function TableroScreen() {
     const [casilla_vertical, setCasillaVertical]=React.useState(10);
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
+    const [dobles, setDobles] = React.useState(false);
+    const casillas_suerte=[
+        [3,10], [2,0], [10,6]
+    ];
+    const casillas_boletin=[
+        [8,10], [0,3], [10,3]
+    ];
+    const casillas_esquinas=[
+        [10,10],[0,10],[0,0],[0,10]
+    ];
 
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
+    const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     
     const nJugadores = 8;
     const aux = [];
@@ -192,11 +204,15 @@ export default function TableroScreen() {
         ]
 
         function roll(){
+            setDobles(false);
             setDie1(sides[Math.floor(Math.random() * sides.length)])
             setDie2(sides[Math.floor(Math.random() * sides.length)])
         }
         
         const avanzar = useCallback(() => {
+            if(die1==die2){
+                setDobles(true);
+            }
             switch (curso) {
                 case 1:
                     if (casilla_horizontal-(die1+die2)<=0){
@@ -242,6 +258,7 @@ export default function TableroScreen() {
                     }
                     break;
             }
+            setModalCompraVisible(true);
         },[]);
 
         useEffect(() => {
@@ -251,7 +268,38 @@ export default function TableroScreen() {
             };
         },[rolling]);
 
-        
+        const infoCasilla = useCallback(() => {
+            let aux=[casilla_horizontal, casilla_vertical];
+            let found = casillas_suerte.find(element => element=aux);
+            if(found===undefined){
+                let found = casillas_boletin.find(element => element=aux);
+                if(found === undefined){
+                    let found = casillas_esquinas.find(element => element=aux);
+                    if( found === undefined){
+                        console.log("found");
+                        setModalCompraVisible(true);
+                        console.log("esquina");
+                        //accion
+                    }else{
+                        console.log("esquina");
+                        //accion
+                    }
+                }else{
+                    console.log("boletin");
+                    //Obtener carta boletin
+                }
+                console.log("suerte");
+                //Obtener carta suerte
+            }else{
+                console.log("suerte");
+                //Obtener carta suerte  
+            }
+        },[]);
+
+        /*{useEffect(() => {
+            infoCasilla();
+        },[casilla_horizontal,casilla_vertical]);
+        }*/
     
         return(
             <View>
@@ -487,6 +535,18 @@ export default function TableroScreen() {
                 </Pressable>
             </View>
         </View>
+        <StyledModalCompra
+            doubles={dobles}
+            title="Comprar"
+            text="¿Desea comprar la asignatura xxxxx?"
+            onClose={() => {setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
+            visible={modalCompraVisible}
+            onRequestClose={() =>{
+                Alert.alert('Modal has been closed.');
+                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+            }}
+        >
+        </StyledModalCompra>
     </View>
     );
 }

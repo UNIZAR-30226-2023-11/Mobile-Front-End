@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 
-export default function StyledButton({title, onPress, purple, lightblue, homeScreen }) {
+export default function StyledButton({style={},title, onPress, purple, lightblue, homeScreen }) {
 
   
   const buttonStyles = [
     styles.button,
+    style,
     purple && styles.purple,
     lightblue && styles.lightblue,
     homeScreen && styles.homeScreen
