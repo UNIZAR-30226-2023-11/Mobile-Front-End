@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, Pressable } from'react-native';
+import { View, Image, StyleSheet, Pressable } from'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 
     MaterialCommunityIcons, 
     Ionicons,
-    MaterialIcons 
+    MaterialIcons,
+    AntDesign 
 } from '@expo/vector-icons';
 
 import StyledText from '../components/StyledText';
+import StyledModal from '../components/StyledModal';
 import Die from '../components/Die';
 
 const ancho = 34.3;
@@ -26,11 +28,12 @@ const styles = StyleSheet.create({
     tablero:{
         flex:3.5,
         flexDirection: 'column',
-        marginTop:'5%'
+        marginTop:'10%'
     },
     info:{
         flex:1,
-        flexDirection:'row'
+        flexDirection:'row',
+        marginTop:'20%'
     },
     jugador:{
         flex:0.5,
@@ -39,8 +42,8 @@ const styles = StyleSheet.create({
     },
     asignaturas:{
         flex:0.5,
-        marginLeft:'40%',
-        justifyContent: 'flex-start'
+        marginLeft:'5%',
+        justifyContent: 'flex-start',
     },
     cursos3_1:{
         flex: 5,
@@ -156,17 +159,16 @@ export default function TableroScreen() {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
 
-    const nJugadores = 4;
+    const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
+    
+    const nJugadores = 8;
     const aux = [];
     let i=0;
-    console.log("empezando bucle");
-    while (i< nJugadores){
-        console.log("true");
+    while (i < nJugadores){
         aux.push(true);
         i++
     }
     while(i< 8){
-        console.log("false");
         aux.push(false);
         i++
     }
@@ -459,11 +461,30 @@ export default function TableroScreen() {
         <View style={styles.info}>
             <View style={styles.jugador}>
                 {jugadores.map((jugador, i) =>(
-                    jugador && <Text>PLAYER {i+1} XXXX€</Text>
+                    (i<4) && jugador && <StyledText key={i+1}>PLAYER {i+1} XXXX€</StyledText>
+                ))}
+            </View>
+            <View style={styles.jugador}>
+                {jugadores.map((jugador, i) =>(
+                    (i>=4) && jugador && <StyledText key={i+1}>PLAYER {i+1} XXXX€</StyledText>
                 ))}
             </View>
             <View style={styles.asignaturas}>
-                <Text>ASIGNATURAS</Text>
+                <StyledText style={{alignSelf:'center'}}>MIS</StyledText>
+                <StyledText style={{alignSelf:'center'}}>ASIGNATURAS</StyledText>
+                <StyledModal
+                title="MIS ASIGNATURAS"
+                text="Aquí se mostratá la lista de asignaturas de las que eres dueño."   
+                onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
+                visible={modalAsignaturasVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible});
+                }} 
+            />
+                <Pressable onPress={() => setModalAsignaturasVisible(true)}>
+                <AntDesign name="pluscircleo" size={28} color="black" style={{alignSelf:'center', marginTop:'5%'}} />
+                </Pressable>
             </View>
         </View>
     </View>
