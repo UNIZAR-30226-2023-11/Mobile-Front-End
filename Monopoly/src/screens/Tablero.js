@@ -161,17 +161,25 @@ export default function TableroScreen() {
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
     const casillas_suerte=[
-        [3,10], [2,0], [10,6]
+        {horizontal: 3, vertical:10},
+        {horizontal: 2, vertical:0},
+        {horizontal: 10, vertical:6}
     ];
     const casillas_boletin=[
-        [8,10], [0,3], [10,3]
+        {horizontal: 8, vertical:10},
+        {horizontal: 0, vertical:3},
+        {horizontal: 10, vertical:3},
     ];
     const casillas_esquinas=[
-        [10,10],[0,10],[0,0],[0,10]
+        {horizontal: 10, vertical:10},
+        {horizontal: 0, vertical:10},
+        {horizontal: 0, vertical:0},
+        {horizontal: 10, vertical:0}
     ];
 
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
+    const [compra, setCompra] = React.useState(false);
     
     const nJugadores = 8;
     const aux = [];
@@ -258,7 +266,7 @@ export default function TableroScreen() {
                     }
                     break;
             }
-            setModalCompraVisible(true);
+            setCompra(true);
         },[]);
 
         useEffect(() => {
@@ -269,17 +277,14 @@ export default function TableroScreen() {
         },[rolling]);
 
         const infoCasilla = useCallback(() => {
-            let aux=[casilla_horizontal, casilla_vertical];
-            let found = casillas_suerte.find(element => element=aux);
-            if(found===undefined){
-                let found = casillas_boletin.find(element => element=aux);
+            let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+            if(found === undefined){
+                let found = casillas_boletin.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                 if(found === undefined){
-                    let found = casillas_esquinas.find(element => element=aux);
+                    let found = casillas_esquinas.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                     if( found === undefined){
-                        console.log("found");
+                        console.log("casilla normal");
                         setModalCompraVisible(true);
-                        console.log("esquina");
-                        //accion
                     }else{
                         console.log("esquina");
                         //accion
@@ -288,18 +293,18 @@ export default function TableroScreen() {
                     console.log("boletin");
                     //Obtener carta boletin
                 }
-                console.log("suerte");
-                //Obtener carta suerte
             }else{
                 console.log("suerte");
                 //Obtener carta suerte  
             }
         },[]);
 
-        /*{useEffect(() => {
-            infoCasilla();
-        },[casilla_horizontal,casilla_vertical]);
-        }*/
+        {useEffect(() => {
+            if(compra){
+                infoCasilla();
+            }
+        },[compra]);
+        }
     
         return(
             <View>
@@ -526,7 +531,6 @@ export default function TableroScreen() {
                 onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
                 visible={modalAsignaturasVisible}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
                     setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible});
                 }} 
             />
@@ -539,10 +543,10 @@ export default function TableroScreen() {
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura xxxxx?"
-            onClose={() => {setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
+            onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
             visible={modalCompraVisible}
             onRequestClose={() =>{
-                Alert.alert('Modal has been closed.');
+                setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
             }}
         >
