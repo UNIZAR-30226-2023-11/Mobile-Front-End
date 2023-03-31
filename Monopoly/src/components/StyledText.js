@@ -3,7 +3,7 @@ import {Text,StyleSheet} from 'react-native'
 
 const styles = StyleSheet.create({
     text: {
-        fontsize: 12,
+        fontSize: 12,
         color: 'black'
     },
     bold: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     small: {
-        fonrSize: 10
+        fontSize: 10
     },
     error: {
         color:'red'

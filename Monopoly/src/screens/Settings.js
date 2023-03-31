@@ -47,7 +47,7 @@ export default function SettingsPage(){
             <Button
                 color='#6647e0'
                 title='Cerrar sesion' 
-                onPress={() => navigation.navigate('SignIn')}
+                onPress={() => navigation.navigate('MONOPOLY INFORMÁTICO')}
             />
             </View>
 

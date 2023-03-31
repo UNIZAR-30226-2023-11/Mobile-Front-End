@@ -2,21 +2,17 @@ import React from 'react'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import SignInPage from './src/screens/SignIn.js';
+import IndexScreen from './src/screens/Index.js';
+import LogInScreen from './src/screens/Login.js';
+import SignInScreen from './src/screens/SignIn.js';
+import HomeScreen from './src/screens/Home.js';
+import CrearSalaScreen from './src/screens/CrearSala.js';
+import UnirseSalaScreen from './src/screens/UnirseSala.js';
 import ProfilePage from './src/screens/Profile.js';
 import SettingsPage from './src/screens/Settings.js';
 import SettingsMailPage from './src/screens/SettingsMail.js';
 import SettingsPasswordPage from './src/screens/SettingsPassword.js';
 import SettingsUserPage from './src/screens/SettingsUser.js';
-import CardPage from './src/screens/TestCard.js';
-
-import IndexScreen from './src/screens/Index.js';
-import LogInScreen from './src/screens/Login.js';
-import SignInScreen from './src/screens/SignIn.js';
-import HomeScreen from './src/screens/Home.js';
-import PerfilScreen from './src/screens/Perfil.js';
-import CrearSalaScreen from './src/screens/CrearSala.js';
-import UnirseSalaScreen from './src/screens/UnirseSala.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
@@ -31,7 +27,31 @@ export default function App() {
           component={IndexScreen}
           optiones={{title: 'MONOPOLY'}}          
         />
-
+        <Stack.Screen
+          name="LogIn"
+          component={LogInScreen}
+          options={{title: 'Iniciar Sesión'}}          
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={{title: 'Registrarse'}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{title: 'Home'}}
+        />
+        <Stack.Screen
+          name="CrearSala"
+          component={CrearSalaScreen}
+          options={{title: 'Crear Sala'}}
+        />
+        <Stack.Screen
+          name="UnirseSala"
+          component={UnirseSalaScreen}
+          options={{title: 'Unirse a Sala'}}
+        />
         <Stack.Screen
           name="Perfil"
           component={ProfilePage}
@@ -61,37 +81,6 @@ export default function App() {
           options={{title: 'Ajustes'}}   
           />
 
-          <Stack.Screen 
-          name="SignIn" 
-          component={SignInPage}
-          options={{title: 'Registrarse'}}   
-          />
-
-        <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
-          options={{title: 'Registrarse'}}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Home'}}
-        />
-        <Stack.Screen
-          name="Perfil"
-          component={PerfilScreen}
-          options={{title: 'Perfil'}}
-        />
-        <Stack.Screen
-          name="CrearSala"
-          component={CrearSalaScreen}
-          options={{title: 'Crear Sala'}}
-        />
-        <Stack.Screen
-          name="UnirseSala"
-          component={UnirseSalaScreen}
-          options={{title: 'Unirse a Sala'}}
-        />
         <Stack.Screen
           name="Tablero"
           component={TableroScreen}
