@@ -9,6 +9,7 @@ import HomeScreen from './src/screens/Home.js';
 import PerfilScreen from './src/screens/Perfil.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
+import EsperaUnirseScreen from './src/screens/EsperaUnirse.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,12 @@ export default function App() {
           component={TableroScreen}
           options={{title: 'Tablero'}}
         />
+        <Stack.Screen
+          name="EsperaUnirse"
+          component={EsperaUnirseScreen}
+          options={{title: 'EsperaUnirse'}}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
