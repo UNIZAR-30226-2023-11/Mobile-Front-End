@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Text, Image } from 'react-native-elements';
 
-//para exportarlo: import MonopolyCard from './components/MonopolyCard';
+//para importarlo: import MonopolyCard from './components/MonopolyCard';
 
 //TODOS LOS PRECIOS HABRA QUE SACARLOS DE LA BASE DE DATOS
 

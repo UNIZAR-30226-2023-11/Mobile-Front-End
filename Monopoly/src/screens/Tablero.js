@@ -13,6 +13,7 @@ import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
+import { MonopolyCard } from '../components/MonopolyCard';
 
 const ancho = 34.3;
 
