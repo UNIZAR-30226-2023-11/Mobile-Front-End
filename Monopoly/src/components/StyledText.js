@@ -31,6 +31,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#CFA8FC'
     },
+
+    profile: {
+        marginTop: 10,
+        marginLeft: 10,
+        fontSize: 80,
+        fontFamily:'sasn-serif-medium',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#CFA8FC'
+    },
     titulo_casilla:{
         fontSize: 11,
         fontWeight: 'bold',

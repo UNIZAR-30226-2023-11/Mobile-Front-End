@@ -2,14 +2,6 @@ import React from 'react'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import SignInPage from './src/screens/SignIn.js';
-import ProfilePage from './src/screens/Profile.js';
-import SettingsPage from './src/screens/Settings.js';
-import SettingsMailPage from './src/screens/SettingsMail.js';
-import SettingsPasswordPage from './src/screens/SettingsPassword.js';
-import SettingsUserPage from './src/screens/SettingsUser.js';
-import CardPage from './src/screens/TestCard.js';
-
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
 import SignInScreen from './src/screens/SignIn.js';
@@ -17,9 +9,6 @@ import HomeScreen from './src/screens/Home.js';
 import PerfilScreen from './src/screens/Perfil.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
-import TableroScreen from './src/screens/Tablero.js';
-
-const Stack = createNativeStackNavigator();
 
 
 export default function App() {
@@ -31,42 +20,11 @@ export default function App() {
           component={IndexScreen}
           optiones={{title: 'MONOPOLY'}}          
         />
-
         <Stack.Screen
-          name="Perfil"
-          component={ProfilePage}
-          options={{title: 'Perfil'}}          
+          name="LogIn"
+          component={LogInScreen}
+          options={{title: 'Iniciar Sesión'}}          
         />
-        <Stack.Screen 
-          name="Settings" 
-          component={SettingsPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-        <Stack.Screen 
-          name="SettingsUser" 
-          component={SettingsUserPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-          <Stack.Screen 
-          name="SettingsMail" 
-          component={SettingsMailPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-        <Stack.Screen 
-          name="SettingsPassword" 
-          component={SettingsPasswordPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-          <Stack.Screen 
-          name="SignIn" 
-          component={SignInPage}
-          options={{title: 'Registrarse'}}   
-          />
-
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
@@ -92,15 +50,7 @@ export default function App() {
           component={UnirseSalaScreen}
           options={{title: 'Unirse a Sala'}}
         />
-        <Stack.Screen
-          name="Tablero"
-          component={TableroScreen}
-          options={{title: 'Tablero'}}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
-
