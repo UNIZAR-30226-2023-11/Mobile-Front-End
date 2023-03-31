@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, StyleSheet , Text , Button, Pressable} from'react-native';
 import {Searchbar} from 'react-native-paper';
-import StyledModal from "../components/StyledModal";
-import StyledButton from "../components/StyledButton";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import StyledModalSala from "../components/StyledModalSala";
 
 
 const styles = StyleSheet.create({
@@ -39,10 +37,12 @@ export default function UnirseSalaScreen({ navigation }) {
                 onSubmitEditing={() => setModalPartidaVisible(true)}
             />
 
-            <StyledModal
+            <StyledModalSala
                 title="Únete a la partida"
                 text="Partida #123456"   
                 style={styles.modal}
+                buttonText="Unirme"
+                goTo= {() => navigation.navigate('EsperaUnirse')}
                 onClose = { () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
                 visible={modalPartidaVisible}
                 onRequestClose={() => {
@@ -50,13 +50,7 @@ export default function UnirseSalaScreen({ navigation }) {
                     setModalReglasVisible({modalPartidaVisible: !modalPartidaVisible});
                 }} 
             >
-                <View>
-                    <Pressable
-                    title="Unirme"
-                    onPress={() => navigation.navigate('CrearSala')}
-                    />
-                </View>
-            </StyledModal> 
+            </StyledModalSala> 
 
         </View>
     );
