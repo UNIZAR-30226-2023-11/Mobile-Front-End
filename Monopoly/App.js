@@ -13,6 +13,7 @@ import SettingsPage from './src/screens/Settings.js';
 import SettingsMailPage from './src/screens/SettingsMail.js';
 import SettingsPasswordPage from './src/screens/SettingsPassword.js';
 import SettingsUserPage from './src/screens/SettingsUser.js';
+import EsperaUnirseScreen from './src/screens/EsperaUnirse.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
@@ -86,6 +87,12 @@ export default function App() {
           component={TableroScreen}
           options={{title: 'Tablero'}}
         />
+        <Stack.Screen
+          name="EsperaUnirse"
+          component={EsperaUnirseScreen}
+          options={{title: 'EsperaUnirse'}}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
