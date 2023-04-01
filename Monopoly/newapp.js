@@ -6,16 +6,9 @@ import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
 import SignInScreen from './src/screens/SignIn.js';
 import HomeScreen from './src/screens/Home.js';
+import PerfilScreen from './src/screens/Perfil.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
-import ProfilePage from './src/screens/Profile.js';
-import SettingsPage from './src/screens/Settings.js';
-import SettingsMailPage from './src/screens/SettingsMail.js';
-import SettingsPasswordPage from './src/screens/SettingsPassword.js';
-import SettingsUserPage from './src/screens/SettingsUser.js';
-import TableroScreen from './src/screens/Tablero.js';
-
-const Stack = createNativeStackNavigator();
 
 
 export default function App() {
@@ -43,6 +36,11 @@ export default function App() {
           options={{title: 'Home'}}
         />
         <Stack.Screen
+          name="Perfil"
+          component={PerfilScreen}
+          options={{title: 'Perfil'}}
+        />
+        <Stack.Screen
           name="CrearSala"
           component={CrearSalaScreen}
           options={{title: 'Crear Sala'}}
@@ -52,44 +50,7 @@ export default function App() {
           component={UnirseSalaScreen}
           options={{title: 'Unirse a Sala'}}
         />
-        <Stack.Screen
-          name="Perfil"
-          component={ProfilePage}
-          options={{title: 'Perfil'}}          
-        />
-        <Stack.Screen 
-          name="Settings" 
-          component={SettingsPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-        <Stack.Screen 
-          name="SettingsUser" 
-          component={SettingsUserPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-          <Stack.Screen 
-          name="SettingsMail" 
-          component={SettingsMailPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-        <Stack.Screen 
-          name="SettingsPassword" 
-          component={SettingsPasswordPage}
-          options={{title: 'Ajustes'}}   
-          />
-
-        <Stack.Screen
-          name="Tablero"
-          component={TableroScreen}
-          options={{title: 'Tablero'}}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-
-

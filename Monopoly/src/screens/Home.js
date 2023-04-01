@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: '#FFFFFF'
     },
     icon:{
         position:'absolute',
@@ -56,7 +56,7 @@ export default function HomeScreen({ navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => navigation.navigate('CrearSala')}
+                onPress={() => navigation.navigate('Tablero', {nJugadores:2})}
             />
             <StyledButton
                 homeScreen
