@@ -8,12 +8,12 @@ import SignInScreen from './src/screens/SignIn.js';
 import HomeScreen from './src/screens/Home.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
+import EsperaUnirseScreen from './src/screens/EsperaUnirse.js';
 import ProfilePage from './src/screens/Profile.js';
 import SettingsPage from './src/screens/Settings.js';
 import SettingsMailPage from './src/screens/SettingsMail.js';
 import SettingsPasswordPage from './src/screens/SettingsPassword.js';
 import SettingsUserPage from './src/screens/SettingsUser.js';
-import EsperaUnirseScreen from './src/screens/EsperaUnirse.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
