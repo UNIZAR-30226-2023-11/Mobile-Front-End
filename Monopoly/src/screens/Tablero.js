@@ -559,7 +559,7 @@ export default function TableroScreen() {
             title="Comprar"
             text="¿Desea comprar la asignatura?"
             onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
-            carta={() => Carta({casilla_horizontal, casilla_vertical})}
+            carta={() => Component = Carta({casilla_horizontal, casilla_vertical})}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);

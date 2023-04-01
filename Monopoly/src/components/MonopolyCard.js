@@ -965,14 +965,17 @@ const Suerte_16 = () => {
 */
 
 export default function Carta({casilla_horizontal, casilla_vertical}){
+  console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
   switch (casilla_horizontal){
     case 0:
       switch(casilla_vertical){
         case 1:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_1></Carta_0_1>
           )
         case 2:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_2></Carta_0_2>
           )
@@ -981,26 +984,32 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
             <Carta_0_3></Carta_0_3>
           )*/
         case 4:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_4></Carta_0_4>
           )
         case 5:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_5></Carta_0_5>
           )
         case 6:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_6></Carta_0_6>
           )
         case 7:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_7></Carta_0_7>
           )
         case 8:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_8></Carta_0_8>
           )
         case 9:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_0_9></Carta_0_9>
           )
@@ -1009,13 +1018,16 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
     case 1: // Carta_1_10, Carta_1_0,
       switch (casilla_vertical){
         case 10:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_1_10></Carta_1_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_1_0></Carta_1_0>)
       }
     case 2: //Carta_2_10,
       switch (casilla_vertical){
         case 10:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_2_10></Carta_2_10>)
         //case 0: 
           //return(<Carta_2_0></Carta_2_0>)
@@ -1025,20 +1037,25 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
         //case 10:
           //return(<Carta_3_10></Carta_3_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_3_0></Carta_3_0>)
       }
     case 4: //Carta_4_10,Carta_4_0
       switch (casilla_vertical){
         case 10:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_4_10></Carta_4_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_4_0></Carta_4_0>)
       }
     case 5: //Carta_5_0,Carta_5_10,
       switch (casilla_vertical){
         case 10:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_5_10></Carta_5_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_5_0></Carta_5_0>)
       }
     case 6: //Carta_6_0,
@@ -1046,13 +1063,16 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
         //case 10:
           //return(<Carta_6_10></Carta_6_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_6_0></Carta_6_0>)
       }
     case 7: //Carta_7_0,Carta_7_10,
       switch (casilla_vertical){
         case 10:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_7_10></Carta_7_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_7_0></Carta_7_0>)
       }
     case 8: //Carta_8_0
@@ -1060,22 +1080,27 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
         //case 10:
           //return(<Carta_8_10></Carta_8_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_8_0></Carta_8_0>)
       }
     case 9: //Carta_9_10,Carta_9_0
       switch (casilla_vertical){
         case 10:
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_9_10></Carta_9_10>)
         case 0: 
+        console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return(<Carta_9_0></Carta_9_0>)
       }
     case 10:
       switch(casilla_vertical){
         case 1:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_1></Carta_10_1>
           )
         case 2:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_2></Carta_10_2>
           )
@@ -1084,26 +1109,32 @@ export default function Carta({casilla_horizontal, casilla_vertical}){
             <Carta_10_3></Carta_10_3>
           )*/
         case 4:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_4></Carta_10_4>
           )
         case 5:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_5></Carta_10_5>
           )
-        case 6:
+        /*case 6:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_6></Carta_10_6>
-          )
+          )*/
         case 7:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_7></Carta_10_7>
           )
-        case 8:
+        /*case 8:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_8></Carta_10_8>
-          )
+          )*/
         case 9:
+          console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
           return (
             <Carta_10_9></Carta_10_9>
           )
