@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, StyleSheet, View, Text } from 'react-native';
 
+
 import StyledButton from "./StyledButton"
 
 const styles = StyleSheet.create({
@@ -33,14 +34,10 @@ const styles = StyleSheet.create({
         color: '#000',
     },
     carta:{
-        flex:1.6,
-        width: '70%',
-        height: '70%',
-        borderColor:'black',
-        borderWidth:1
+        flex:1.8
     },
     botones:{
-        flex:0.48,
+        flex:0.52,
         marginTop:'5%',
         flexDirection:'row', 
         justifyContent:'flex-start'
@@ -55,11 +52,9 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModalCompra(
-    {onClose, visible, onRequestClose, doubles, text, 
-    carta}
+export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text}
     ){
-
+   
     return(
         <Modal
         animationType="slide"
@@ -71,7 +66,7 @@ export default function StyledModalCompra(
             <View style={styles.modalView}>
                 <Text style={styles.modalText}>{text}</Text>
                 <View style={styles.carta}>
-                    {carta}
+                    <InfoCarta></InfoCarta>
                 </View>
                 <View style={styles.botones}>
                     {!doubles &&

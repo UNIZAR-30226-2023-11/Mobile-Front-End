@@ -14,7 +14,7 @@ import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
 
-import { Carta } from '../components/MonopolyCard';
+import Carta from '../components/MonopolyCard';
 
 const ancho = 34.3;
 
@@ -314,12 +314,11 @@ export default function TableroScreen() {
             }
         },[]);
 
-        {useEffect(() => {
+        useEffect(() => {
             if(compra){
                 infoCasilla();
             }
         },[compra]);
-        }
     
         return(
             <View>
@@ -555,11 +554,11 @@ export default function TableroScreen() {
             </View>
         </View>
         <StyledModalCompra
+            InfoCarta = {() => Carta({casilla_horizontal, casilla_vertical})}
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
             onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
-            carta={() => Component = Carta({casilla_horizontal, casilla_vertical})}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);
