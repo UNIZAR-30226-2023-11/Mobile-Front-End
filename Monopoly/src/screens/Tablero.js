@@ -13,7 +13,8 @@ import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
-import { MonopolyCard } from '../components/MonopolyCard';
+
+import { Carta } from '../components/MonopolyCard';
 
 const ancho = 34.3;
 
@@ -161,6 +162,7 @@ export default function TableroScreen() {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
+    
     const casillas_suerte=[
         {horizontal: 3, vertical:10},
         {horizontal: 2, vertical:0},
@@ -177,11 +179,16 @@ export default function TableroScreen() {
         {horizontal: 0, vertical:0},
         {horizontal: 10, vertical:0}
     ];
+    const casillas_pagos=[
+        {horizontal: 6, vertical:10},
+        {horizontal: 10, vertical:8},
+    ]
 
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
-    
+    const [card, setCard] = React.useState("");
+
     const nJugadores = 8;
     const aux = [];
     let i=0;
@@ -284,8 +291,15 @@ export default function TableroScreen() {
                 if(found === undefined){
                     let found = casillas_esquinas.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                     if( found === undefined){
-                        console.log("casilla normal");
-                        setModalCompraVisible(true);
+                        let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                        if( found === undefined){
+                            console.log("casilla normal");
+                            setCard("Carta_"+casilla_horizontal+"_"+casilla_vertical);
+                            setModalCompraVisible(true);
+                        }else{
+                            console.log("pagos");
+                            //accion
+                        }
                     }else{
                         console.log("esquina");
                         //accion
@@ -543,8 +557,9 @@ export default function TableroScreen() {
         <StyledModalCompra
             doubles={dobles}
             title="Comprar"
-            text="¿Desea comprar la asignatura xxxxx?"
+            text="¿Desea comprar la asignatura?"
             onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
+            carta={() => Carta({casilla_horizontal, casilla_vertical})}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   container: {
-    flex: 0,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -140,7 +140,7 @@ const Recurso = ({title, description, imageSource }) => {
     </View>
   );
 };
-const Recurso_1 = () => {
+const Carta_8_0 = () => {
   return (
     <Recurso
       title={`Ahorro energético\n calefacción`}
@@ -153,7 +153,7 @@ de servicio público, el alquiler es 10\nveces el número salido en los dados\n
     />
   );
 };
-const Recurso_2 = () => {
+const Carta_0_8 = () => {
   return (
     <Recurso
       title={`Ahorro energético\n enchufes`}
@@ -167,7 +167,7 @@ de servicio público, el alquiler es 10\nveces el número salido en los dados\n
   );
 };
 //-------------------------------------------------------------
-const Evento_1 = () => {
+const Carta_5_10 = () => {
   return (
     <Evento
       title="San Braulio"
@@ -179,7 +179,7 @@ const Evento_1 = () => {
     />
   );
 };
-const Evento_2 = () => {
+const Carta_0_5 = () => {
   return (
     <Evento
       title="Paso de Ecuador"
@@ -191,7 +191,7 @@ const Evento_2 = () => {
     />
   );
 };
-const Evento_3 = () => {
+const Carta_5_0 = () => {
   return (
     <Evento
       title="San Pepe"
@@ -203,7 +203,7 @@ const Evento_3 = () => {
     />
   );
 };
-const Evento_4 = () => {
+const Carta_10_5 = () => {
   return (
     <Evento
       title="Fin de Carrera"
@@ -342,7 +342,7 @@ const Asignatura_7 = ({title, subtitle, description }) => {
     </View>
   );
 };
-const Asignatura_8 = ({title, subtitle, description }) => {
+const Asignatura_8 = ({title, subtitle, description, grupo }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -357,7 +357,7 @@ const Asignatura_8 = ({title, subtitle, description }) => {
   );
 };
 //---------------------------------------------------------------
-const Asignatura_11 = () => {
+const Carta_9_10 = () => {
   return (
     <Asignatura_1
       title="Programacion I"
@@ -374,7 +374,7 @@ HIPOTECA 40€ \n
     />
   );
 };
-const Asignatura_12 = () => {
+const Carta_7_10 = () => {
   return (
     <Asignatura_1
       title={`Introducción a los\n Computadores`}
@@ -391,7 +391,7 @@ HIPOTECA 40€ \n
     />
   );
 };
-const Asignatura_21 = () => {
+const Carta_4_10 = () => {
   return (
     <Asignatura_2
       title="Programacion II"
@@ -408,7 +408,7 @@ HIPOTECA 40€ \n
     />
   );
 };
-const Asignatura_22 = () => {
+const Carta_2_10 = () => {
   return (
     <Asignatura_2
       title="Física y electrónica"
@@ -425,7 +425,7 @@ HIPOTECA 40€ \n
     />
   );
 };
-const Asignatura_23 = () => {
+const Carta_1_10 = () => {
   return (
     <Asignatura_2
       title={`Arquitectura y\n Organización de\n Computadores I`} 
@@ -442,7 +442,7 @@ const Asignatura_23 = () => {
     />
   );
 };
-const Asignatura_31 = () => {
+const Carta_0_9 = () => {
   return (
     <Asignatura_3
       title="Sistemas operativos" 
@@ -459,7 +459,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_32 = () => {
+const Carta_0_7 = () => {
   return (
     <Asignatura_3
       title={`Estructuras de datos\n y algoritmos`}
@@ -476,7 +476,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_33 = () => {
+const Carta_0_6 = () => {
   return (
     <Asignatura_3
       title="Redes de computadores" 
@@ -493,7 +493,7 @@ HIPOTECA 107€ \n
     />
   );
 };
-const Asignatura_41 = () => {
+const Carta_0_4 = () => {
   return (
     <Asignatura_4
       title={`Tecnología de la\n Programación ` }
@@ -510,7 +510,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_42 = () => {
+const Carta_0_2 = () => {
   return (
     <Asignatura_4
       title={`Interacción Persona\n Ordenador`}
@@ -527,7 +527,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_43 = () => {
+const Carta_0_1 = () => {
   return (
     <Asignatura_4
       title={`Arquitectura y\n Organización de\n Computadores II`}
@@ -544,7 +544,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_51 = () => {
+const Carta_1_0 = () => {
   return (
     <Asignatura_5
       title="Inteliencia Artificial"  
@@ -561,7 +561,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_52 = () => {
+const Carta_3_0 = () => {
   return (
     <Asignatura_5
       title="Sistemas Distribuidos"  
@@ -578,7 +578,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_53 = () => {
+const Carta_4_0 = () => {
   return (
     <Asignatura_5
       title="Proyecto Hardware"  
@@ -595,7 +595,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_61 = () => {
+const Carta_6_0 = () => {
   return (
     <Asignatura_6
       title={`Sistemas de\n Información II`} 
@@ -612,7 +612,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_62 = () => {
+const Carta_7_0 = () => {
   return (
     <Asignatura_6
       title={`Procesadores del\n Lenguaje`}  
@@ -629,7 +629,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_63 = () => {
+const Carta_9_0 = () => {
   return (
     <Asignatura_6
       title="Proyecto Software"  
@@ -646,7 +646,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_71 = () => {
+const Carta_10_1 = () => {
   return (
     <Asignatura_7
       title="Robótica"  
@@ -663,7 +663,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_72 = () => {
+const Carta_10_2 = () => {
   return (
     <Asignatura_7
       title={`Sistemas y\n Tecnologías Web `}    
@@ -680,7 +680,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_73 = () => {
+const Carta_10_4 = () => {
   return (
     <Asignatura_7
       title="Seguridad Informática"  
@@ -697,7 +697,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_81 = () => {
+const Carta_10_7 = () => {
   return (
     <Asignatura_8
       title="Prácticas en Empresa"  
@@ -714,7 +714,7 @@ HIPOTECA 93€ \n
     />
   );
 };
-const Asignatura_82 = () => {
+const Carta_10_9 = () => {
   return (
     <Asignatura_8
       title="TFG"  
@@ -958,11 +958,155 @@ const Suerte_16 = () => {
   );
 };
 
-export {MonopolyCard, Boletin_1, Boletin_2, Boletin_3, Boletin_4, Boletin_5, Boletin_6, Boletin_7, Boletin_8,
+/*export {MonopolyCard, Boletin_1, Boletin_2, Boletin_3, Boletin_4, Boletin_5, Boletin_6, Boletin_7, Boletin_8,
   Boletin_9, Boletin_10, Boletin_11, Boletin_12, Boletin_13, Boletin_14, Boletin_15, Boletin_16,
   Suerte_1, Suerte_2, Suerte_3, Suerte_4, Suerte_5, Suerte_6, Suerte_7, 
   Suerte_8, Suerte_9, Suerte_10, Suerte_11, Suerte_12, Suerte_13, Suerte_14, Suerte_15, Suerte_16,
-  Asignatura_11, Asignatura_12, Asignatura_21, Asignatura_22, Asignatura_23, Asignatura_31, Asignatura_32, Asignatura_33,
-  Asignatura_41, Asignatura_42, Asignatura_43, Asignatura_51, Asignatura_52, Asignatura_53, Asignatura_61, Asignatura_62, 
-  Asignatura_63, Asignatura_71, Asignatura_72, Asignatura_73, Asignatura_81, Asignatura_82,
-  Evento_1, Evento_2, Evento_3, Evento_4, Recurso_1, Recurso_2 };
+*/
+
+export default function Carta({casilla_horizontal, casilla_vertical}){
+  switch (casilla_horizontal){
+    case 0:
+      switch(casilla_vertical){
+        case 1:
+          return (
+            <Carta_0_1></Carta_0_1>
+          )
+        case 2:
+          return (
+            <Carta_0_2></Carta_0_2>
+          )
+        /*case 3:
+          return(
+            <Carta_0_3></Carta_0_3>
+          )*/
+        case 4:
+          return (
+            <Carta_0_4></Carta_0_4>
+          )
+        case 5:
+          return (
+            <Carta_0_5></Carta_0_5>
+          )
+        case 6:
+          return (
+            <Carta_0_6></Carta_0_6>
+          )
+        case 7:
+          return (
+            <Carta_0_7></Carta_0_7>
+          )
+        case 8:
+          return (
+            <Carta_0_8></Carta_0_8>
+          )
+        case 9:
+          return (
+            <Carta_0_9></Carta_0_9>
+          )
+      }
+      break;
+    case 1: // Carta_1_10, Carta_1_0,
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_1_10></Carta_1_10>)
+        case 0: 
+          return(<Carta_1_0></Carta_1_0>)
+      }
+    case 2: //Carta_2_10,
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_2_10></Carta_2_10>)
+        //case 0: 
+          //return(<Carta_2_0></Carta_2_0>)
+      }
+    case 3: //Carta_3_0,
+      switch (casilla_vertical){
+        //case 10:
+          //return(<Carta_3_10></Carta_3_10>)
+        case 0: 
+          return(<Carta_3_0></Carta_3_0>)
+      }
+    case 4: //Carta_4_10,Carta_4_0
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_4_10></Carta_4_10>)
+        case 0: 
+          return(<Carta_4_0></Carta_4_0>)
+      }
+    case 5: //Carta_5_0,Carta_5_10,
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_5_10></Carta_5_10>)
+        case 0: 
+          return(<Carta_5_0></Carta_5_0>)
+      }
+    case 6: //Carta_6_0,
+      switch (casilla_vertical){
+        //case 10:
+          //return(<Carta_6_10></Carta_6_10>)
+        case 0: 
+          return(<Carta_6_0></Carta_6_0>)
+      }
+    case 7: //Carta_7_0,Carta_7_10,
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_7_10></Carta_7_10>)
+        case 0: 
+          return(<Carta_7_0></Carta_7_0>)
+      }
+    case 8: //Carta_8_0
+      switch (casilla_vertical){
+        //case 10:
+          //return(<Carta_8_10></Carta_8_10>)
+        case 0: 
+          return(<Carta_8_0></Carta_8_0>)
+      }
+    case 9: //Carta_9_10,Carta_9_0
+      switch (casilla_vertical){
+        case 10:
+          return(<Carta_9_10></Carta_9_10>)
+        case 0: 
+          return(<Carta_9_0></Carta_9_0>)
+      }
+    case 10:
+      switch(casilla_vertical){
+        case 1:
+          return (
+            <Carta_10_1></Carta_10_1>
+          )
+        case 2:
+          return (
+            <Carta_10_2></Carta_10_2>
+          )
+        /*case 3:
+          return(
+            <Carta_10_3></Carta_10_3>
+          )*/
+        case 4:
+          return (
+            <Carta_10_4></Carta_10_4>
+          )
+        case 5:
+          return (
+            <Carta_10_5></Carta_10_5>
+          )
+        case 6:
+          return (
+            <Carta_10_6></Carta_10_6>
+          )
+        case 7:
+          return (
+            <Carta_10_7></Carta_10_7>
+          )
+        case 8:
+          return (
+            <Carta_10_8></Carta_10_8>
+          )
+        case 9:
+          return (
+            <Carta_10_9></Carta_10_9>
+          )
+      }
+  }
+}

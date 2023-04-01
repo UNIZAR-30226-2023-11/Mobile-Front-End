@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
+import { Modal, StyleSheet, View, Text } from 'react-native';
 
 import StyledButton from "./StyledButton"
 
@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     modalView: {
-        flex:0.4,
+        flex:0.9,
         flexDirection:'column',
         marginTop: 40,
         backgroundColor: 'white',
         borderRadius: 20,
-        width: '95%',
-        height:'70%',
+        width: 300,
+        height:500,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -26,27 +26,39 @@ const styles = StyleSheet.create({
         }
     },
     modalText: {
-        flex:0.5,
+        flex:0.2,
         fontSize: 20,
-        marginTop:'15%',
+        marginTop:'5%',
         textAlign: 'justify',
         color: '#000',
     },
+    carta:{
+        flex:1.6,
+        width: '70%',
+        height: '70%',
+        borderColor:'black',
+        borderWidth:1
+    },
     botones:{
-        flex:1,
+        flex:0.48,
+        marginTop:'5%',
         flexDirection:'row', 
         justifyContent:'flex-start'
     },
     boton:{
         flex:2,
         justifyContent:'flex-start',
+        height:'60%',
         marginLeft:'2%', 
         marginRight:'2%',
         marginBottom:'16%'
     }
 });
 
-export default function StyledModalCompra({onClose, visible, onRequestClose, doubles, text}){
+export default function StyledModalCompra(
+    {onClose, visible, onRequestClose, doubles, text, 
+    carta}
+    ){
 
     return(
         <Modal
@@ -58,6 +70,9 @@ export default function StyledModalCompra({onClose, visible, onRequestClose, dou
         <View style={styles.centeredView}>
             <View style={styles.modalView}>
                 <Text style={styles.modalText}>{text}</Text>
+                <View style={styles.carta}>
+                    {carta}
+                </View>
                 <View style={styles.botones}>
                     {!doubles &&
                     <StyledButton
