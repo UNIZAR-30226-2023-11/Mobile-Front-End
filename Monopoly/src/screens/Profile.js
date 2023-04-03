@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
 
     page: {
       flex: 1,
-      backgroundColor: 'light grey',
+      backgroundColor: 'lightgrey',
     },
 
     user: {
-      flex: 4, 
+      flex: 3, 
       flexDirection: 'row',
       marginTop: '4%',
       alignSelf: 'center',
@@ -47,18 +47,22 @@ const styles = StyleSheet.create({
      },
 
     stadistics: {
-      flex: 13, 
+      flex: 18, 
       flexDirection: 'column',
-      marginLeft: '10%',
-      marginRight: '20%',
-      marginBottom: '30%',
-      padding: '2%',
-      borderWidth: 0,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
+      marginLeft: '5%',
+      marginRight: '5%',
+      marginBottom: '5%',
+      padding: '4%',
+      borderWidth: 1,
+      borderColor: 'lightgrey',
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10,
       justifyContent: 'center',
+      alignContent: 'center',
+      backgroundColor: 'pink',
+      //alignSelf: 'center',
       
      },
      descripcion: {
