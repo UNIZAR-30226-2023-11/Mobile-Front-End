@@ -5,8 +5,12 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsPasswordValidationSchema } from '../validationSchemas/settingsPassword'
 
+
+import { updatePassword } from '../url/users'
+
+//confirmar los campos con backend que campos son
 const initialValues = {
-    email: '',
+    username: '',
     oldpassword:'',
     newpassword:'',
     confirm_password:''
