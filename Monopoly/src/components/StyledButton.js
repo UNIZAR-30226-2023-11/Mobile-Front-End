@@ -3,7 +3,7 @@ import { Text, StyleSheet, Pressable } from 'react-native';
 
 export default function StyledButton({ 
   style={}, title, onPress, 
-  purple, lightblue, homeScreen, 
+  purple, lightblue, red, homeScreen, 
   textblack, small }) {
 
   
@@ -12,6 +12,7 @@ export default function StyledButton({
     style,
     purple && styles.purple,
     lightblue && styles.lightblue,
+    red && styles.red,
     homeScreen && styles.homeScreen
 
   ]
@@ -49,6 +50,9 @@ const styles = StyleSheet.create({
   lightblue: {
     backgroundColor: '#A8FCFB',
   },
+  red:{
+    backgroundColor: 'red'
+  },
   homeScreen: {
     backgroundColor: '#C0EED4',
     height: '8%',
@@ -66,6 +70,5 @@ const styles = StyleSheet.create({
   },
   small:{
     fontSize: 14,
-    marginLeft:0,
   }
 });

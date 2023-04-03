@@ -5,7 +5,7 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { signinValidationSchema } from '../validationSchemas/signin'
 
-import { crearUsuario } from '../url/users'
+import { registro } from '../url/users'
 const initialValues = {
   email: '',
   password:''
@@ -46,7 +46,7 @@ export default function SignInScreen({navigation}){
  
   return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
   onSubmit={values => {
-    const response =  fetch(crearUsuario, {
+    const response =  fetch(registro, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(values)

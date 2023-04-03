@@ -15,6 +15,7 @@ import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
 
 import Carta from '../components/MonopolyCard';
+import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
 
@@ -35,18 +36,31 @@ const styles = StyleSheet.create({
     },
     info:{
         flex:1,
-        flexDirection:'row',
-        marginTop:'20%'
+        flexDirection:'column',
+        marginTop:'10%'
+    },
+    jugadores:{
+        flex:0.5,
+        flexDirection:'column',
+        justifyContent: 'flex-start'
     },
     jugador:{
         flex:0.5,
-        marginLeft:'5%',
+        flexDirection:'row',
         justifyContent: 'flex-start'
     },
     asignaturas:{
-        flex:0.5,
-        marginLeft:'5%',
+        flex:0.6,
         justifyContent: 'flex-start',
+        flexDirection:'row', 
+        width:'100%',
+    },
+    botones:{
+        flex: 1,
+        marginLeft:'5%',
+        marginRight: '5%',
+        marginTop:'0%',
+        marginBottom:'3.5%',
     },
     cursos3_1:{
         flex: 5,
@@ -526,19 +540,19 @@ export default function TableroScreen() {
             />
         </View>
         <View style={styles.info}>
-            <View style={styles.jugador}>
-                {jugadores.map((jugador, i) =>(
-                    (i<4) && jugador && <StyledText key={i+1}>PLAYER {i+1} XXXX€</StyledText>
-                ))}
-            </View>
-            <View style={styles.jugador}>
-                {jugadores.map((jugador, i) =>(
-                    (i>=4) && jugador && <StyledText key={i+1}>PLAYER {i+1} XXXX€</StyledText>
-                ))}
+            <View style={styles.jugadores}>
+                <View style={styles.jugador}>
+                    {jugadores.map((jugador, i) =>(
+                        (i<4) && jugador && <StyledText key={i+1} style={{marginLeft:'2%'}}>PLAYER {i+1} XXXX€</StyledText>
+                    ))}
+                </View>
+                <View style={styles.jugador}>
+                    {jugadores.map((jugador, i) =>(
+                        (i>=4) && jugador && <StyledText key={i+1} style={{marginLeft:'2%'}}>PLAYER {i+1} XXXX€</StyledText>
+                    ))}
+                </View>
             </View>
             <View style={styles.asignaturas}>
-                <StyledText style={{alignSelf:'center'}}>MIS</StyledText>
-                <StyledText style={{alignSelf:'center'}}>ASIGNATURAS</StyledText>
                 <StyledModal
                 title="MIS ASIGNATURAS"
                 text="Aquí se mostratá la lista de asignaturas de las que eres dueño."   
@@ -547,10 +561,20 @@ export default function TableroScreen() {
                 onRequestClose={() => {
                     setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible});
                 }} 
-            />
-                <Pressable onPress={() => setModalAsignaturasVisible(true)}>
-                <AntDesign name="pluscircleo" size={28} color="black" style={{alignSelf:'center', marginTop:'5%'}} />
-                </Pressable>
+                />
+                <StyledButton
+                style={styles.botones}
+                purple
+                small
+                title="Asignaturas"
+                onPress={() => setModalAsignaturasVisible(true)}
+                /><StyledButton
+                style={styles.botones}
+                red
+                small
+                title="Bancarrota"
+                onPress={() => console.log("Bancarrota")}
+                />
             </View>
         </View>
         <StyledModalCompra
