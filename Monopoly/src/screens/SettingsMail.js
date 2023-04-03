@@ -5,19 +5,14 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsMailValidationSchema } from '../validationSchemas/settingsEmail'
 
+import { updateCorreoUsuario } from '../url/users'
+
 const initialValues = {
-    email: '',
+    username: '',
+    correo: '',
   }
 
 const Separator = () => <View style={styles.separator} />;
-
-function MyButton() {
-  const handleSubmit = () => {
-    // Manejo del envío del formulario
-    // Muestra una alerta después de enviar el formulario
-    Alert.alert('Correo actualizada');
-  };
-}
 
 const FormikInputValue =({ name, ...props}) => {
     const [field, meta, helpers] = useField(name);
@@ -78,19 +73,47 @@ const styles = StyleSheet.create({
 
 export default function SettingsMail(){
     return <Formik validationSchema={settingsMailValidationSchema} initialValues={initialValues} 
-    onSubmit={values => console.log(values)}>
+    onSubmit={(values) => {
+      // Manejo del envío del formulario
+      // Muestra una alerta después de enviar el formulario ok
+      console.log(values);
+  
+        const response =  fetch(updateCorreoUsuario, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(values)
+        })
+        .then((response) => {
+          if(response.status === 201){
+            Alert.alert('Correo actualizado');
+            console.log(response.json);
+            navigation.navigate('Settings');
+          }
+          else if (response.status === 400){
+            console.log("Algo ha ido mal.")
+          }else {
+              console.log(response.status);
+              console.log(response.json);
+          }})
+      .catch((error) => {
+        //Error
+        alert(JSON.stringify(error));
+        console.error(error);
+        console.log("Algo ha ido mal.")
+      });
+    }}>
+
     {({handleChange, handleSubmit, values}) =>{
       return (
         <View style={styles.form}>
 
             <Text style={styles.text}>Correo electronico actual </Text>
-            <Text style={styles.correo}>juan@monopoly.es </Text>
+            <Text style={styles.correo}>{initialValues.correo}</Text>
 
             <Text style={styles.text}>Cambiar correo electronico</Text>
             <FormikInputValue 
-            name='email'
+            name='correo'
             placeholder='Nuevo correo electronico'
-            secureTextEntry 
             />
 
             <Button
