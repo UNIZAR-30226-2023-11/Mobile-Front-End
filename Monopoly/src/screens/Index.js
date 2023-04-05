@@ -90,7 +90,7 @@ export default function IndexScreen({navigation}) {
           <StyledButton
             lightblue
             title="Jugar como invitado"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Home', {user: null})}
           />
         </View>
       </View>

@@ -9,6 +9,10 @@ import { updateUsuario } from '../url/users'
 
 const Separator = () => <View style={styles.separator} />;
 
+const initialValues = {
+  newusername: ''
+}
+
 const FormikInputValue =({ name, ...props}) => {
     const [field, meta, helpers] = useField(name);
     
@@ -66,39 +70,28 @@ const styles = StyleSheet.create({
       }
 });
 
-export default function SettingsUser({navigation}){
-    
-  const initialValues = {
-    username: 'usernam',
-    newusername: ''
-  }
+export default function SettingsUserScreen({ route, navigation }){
 
-  const handleChange = (name, value) => {
-    setValues({ ...values, [name]: value });
-    console.log(values);
-  };
+  const user = route.params.user;
+  console.log(user);
   
   return <Formik validationSchema={settingsUserValidationSchema} 
     initialValues={initialValues}
-    onChangeText={handleChange}
-    onSubmit={(values) => {
+    onSubmit={values => {
       // Manejo del envío del formulario
       // Muestra una alerta después de enviar el formulario ok
       console.log(values);
   
         const response =  fetch(updateUsuario, {
-        method: 'POST',
+        method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(values)
+        body: JSON.stringify({username: user, newusername: values.newusername})
         })
         .then((response) => {
-          if(response.status === 201){
+          if(response.status === 200){
             Alert.alert('Usuario actualizado');
             console.log(response.json);
-            navigation.navigate('Settings');
-          }
-          else if (response.status === 400){
-            console.log("Algo ha ido mal.")
+            navigation.navigate('Perfil', {user: values.newusername});
           }else {
               console.log(response.status);
               console.log(response.json);
@@ -116,7 +109,7 @@ export default function SettingsUser({navigation}){
         <View style={styles.form}>
 
             <Text style={styles.text}>Nombre de usuario actual </Text>
-            <Text style={styles.correo}>{initialValues.username}</Text>
+            <Text style={styles.correo}>{user}</Text>
 
             <Text style={styles.text}>Cambiar nombre</Text>
             <FormikInputValue 
@@ -135,5 +128,4 @@ export default function SettingsUser({navigation}){
     }
   }
  </Formik> 
- 
 }

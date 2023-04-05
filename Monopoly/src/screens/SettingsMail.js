@@ -8,8 +8,7 @@ import { settingsMailValidationSchema } from '../validationSchemas/settingsEmail
 import { updateCorreoUsuario } from '../url/users'
 
 const initialValues = {
-    username: '',
-    correo: '',
+    email: '',
   }
 
 const Separator = () => <View style={styles.separator} />;
@@ -71,26 +70,27 @@ const styles = StyleSheet.create({
       }
 });
 
-export default function SettingsMail(){
+export default function SettingsMailScreen({ route, navigation }){
+
+  const user = route.params.user;
+  console.log(user);
+
     return <Formik validationSchema={settingsMailValidationSchema} initialValues={initialValues} 
     onSubmit={(values) => {
       // Manejo del envío del formulario
       // Muestra una alerta después de enviar el formulario ok
-      console.log(values);
+      console.log(user, values);
   
         const response =  fetch(updateCorreoUsuario, {
-        method: 'POST',
+        method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(values)
+        body: JSON.stringify({username: user , correo: values.email})
         })
         .then((response) => {
-          if(response.status === 201){
+          if(response.status === 200){
             Alert.alert('Correo actualizado');
             console.log(response.json);
-            navigation.navigate('Settings');
-          }
-          else if (response.status === 400){
-            console.log("Algo ha ido mal.")
+            navigation.navigate('Perfil', {user: user});
           }else {
               console.log(response.status);
               console.log(response.json);
@@ -112,7 +112,7 @@ export default function SettingsMail(){
 
             <Text style={styles.text}>Cambiar correo electronico</Text>
             <FormikInputValue 
-            name='correo'
+            name='email'
             placeholder='Nuevo correo electronico'
             />
 

@@ -9,11 +9,11 @@ import HomeScreen from './src/screens/Home.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
 import EsperaUnirseScreen from './src/screens/EsperaUnirse.js';
-import ProfilePage from './src/screens/Profile.js';
-import SettingsPage from './src/screens/Settings.js';
-import SettingsMailPage from './src/screens/SettingsMail.js';
-import SettingsPasswordPage from './src/screens/SettingsPassword.js';
-import SettingsUserPage from './src/screens/SettingsUser.js';
+import ProfileScreen from './src/screens/Profile.js';
+import SettingsScreen from './src/screens/Settings.js';
+import SettingsMailScreen from './src/screens/SettingsMail.js';
+import SettingsPasswordScreen from './src/screens/SettingsPassword.js';
+import SettingsUserScreen from './src/screens/SettingsUser.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +24,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="MONOPOLY INFORMÁTICO"
+          name="Index"
           component={IndexScreen}
           optiones={{title: 'MONOPOLY'}}          
         />
@@ -55,30 +55,30 @@ export default function App() {
         />
         <Stack.Screen
           name="Perfil"
-          component={ProfilePage}
+          component={ProfileScreen}
           options={{title: 'Perfil'}}          
         />
         <Stack.Screen 
           name="Settings" 
-          component={SettingsPage}
+          component={SettingsScreen}
           options={{title: 'Ajustes'}}   
           />
 
         <Stack.Screen 
           name="SettingsUser" 
-          component={SettingsUserPage}
+          component={SettingsUserScreen}
           options={{title: 'Ajustes'}}   
           />
 
           <Stack.Screen 
           name="SettingsMail" 
-          component={SettingsMailPage}
+          component={SettingsMailScreen}
           options={{title: 'Ajustes'}}   
           />
 
         <Stack.Screen 
           name="SettingsPassword" 
-          component={SettingsPasswordPage}
+          component={SettingsPasswordScreen}
           options={{title: 'Ajustes'}}   
           />
 

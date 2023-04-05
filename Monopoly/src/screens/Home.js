@@ -35,13 +35,16 @@ const styles = StyleSheet.create({
 });
 
 
-export default function HomeScreen({ navigation }){
+export default function HomeScreen({ route, navigation }){
+
+    const user = route.params.user;
+    console.log(user);
 
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
     return(
         <View style={styles.pantalla}>
-        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil', {user: user})}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
         <Image
@@ -56,12 +59,12 @@ export default function HomeScreen({ navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => navigation.navigate('CrearSala')}
+                onPress={() => navigation.navigate('CrearSala', {user: user})}
             />
             <StyledButton
                 homeScreen
                 title="Unirse a una sala"
-                onPress={() => navigation.navigate('UnirseSala')}
+                onPress={() => navigation.navigate('UnirseSala', {user: user})}
             />
             <StyledModal
                 title="REGLAS"

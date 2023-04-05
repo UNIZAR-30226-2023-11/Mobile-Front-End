@@ -54,9 +54,10 @@ export default function LogInScreen({navigation}){
     .then((response) => {
       if(response.status === 200){
         console.log(response.json);
-        navigation.navigate('Home'); 
+        navigation.navigate('Home',{user: values.username}); 
       }else {
-          console.log("SOMETHING WENT WRONG");
+          console.log(response.status);
+          console.log(response.json);
       }})
   .catch((error) => {
     //Error

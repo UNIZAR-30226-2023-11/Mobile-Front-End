@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
 
   })
 
-export default function ProfilePage({ }){
-    const navigation = useNavigation();
+export default function ProfileScreen({ route, navigation }){
+    let user = route.params.user;
+    
     return (
 
       <View style={styles.page}>
@@ -87,7 +88,7 @@ export default function ProfilePage({ }){
           </TouchableOpacity>
 
           {/* Boton de ajustes*/}
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings', {user: user})}>
             <Feather name="settings" size={30} color="black" />
             <Text style={styles.descripcion}>ajustes  </Text>
           </TouchableOpacity>
@@ -100,8 +101,8 @@ export default function ProfilePage({ }){
 
         <View style={styles.user}>
             
-          <Text>nombre de usuario</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser')}>
+          <Text>{user}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser', {user: user})}>
             <AntDesign name="edit" size={24} color="black" />
           </TouchableOpacity>
           

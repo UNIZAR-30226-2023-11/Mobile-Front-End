@@ -2,10 +2,6 @@ import * as yup from 'yup'
 
 export const settingsPasswordValidationSchema = yup.object().shape({
 
-    oldpassword: yup
-    .string()
-    .required('Campo obligatorio'),
-
     newpassword: yup
     .string()
     .min(8,'La contraseña tiene que tener al menos 8 caracteres')

@@ -1,8 +1,8 @@
-export const registro = 'https://monopoly-inoformatico.azurewebsites.net/users/register'
-export const login = 'https://monopoly-inoformatico.azurewebsites.net/users/login'
+export const registro = 'http://nerks.net:7003/users/register'
+export const login = 'http://nerks.net:7003/users/login'
 
-export const updateUsuario = 'https://monopoly-inoformatico.azurewebsites.net/users/updateUsername'
-export const updateCorreoUsuario = 'https://monopoly-inoformatico.azurewebsites.net/users/updateCorreo'
+export const updateUsuario = 'http://nerks.net:7003/users/updateUsername'
+export const updateCorreoUsuario = 'http://nerks.net:7003/users/updateCorreo'
 
-export const updatePassword = 'https://monopoly-inoformatico.azurewebsites.net/users/updatePassword'
-export const deleteUsuario = 'https://monopoly-inoformatico.azurewebsites.net/users/delete'
+export const updatePassword = 'http://nerks.net:7003/users/updatePassword'
+export const deleteUsuario = 'http://nerks.net:7003/users/delete'
