@@ -52,7 +52,7 @@ const FormikInputValue =({ name, ...props}) => {
 }
 
 export default function LogInScreen({navigation}){
-  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
+  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues}  
   onSubmit={values => {
     const response =  fetch(login, {
     method: 'POST',
@@ -76,6 +76,7 @@ export default function LogInScreen({navigation}){
 
   {({handleChange, handleSubmit, values}) =>{
     return (
+      <View style={{flex:1, backgroundColor:'white'}}>
       <View style={styles.form}>
         <FormikInputValue 
         name='username'
@@ -97,6 +98,7 @@ export default function LogInScreen({navigation}){
             <StyledText medium blue>Registrarse</StyledText>
           </TouchableOpacity>
         </View>
+      </View>
       </View>
     )
   }}

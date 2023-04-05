@@ -52,8 +52,8 @@ const FormikInputValue =({ name, ...props}) => {
 
 export default function SignUpScreen({navigation}){
  
-  return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} style={{backgroundColor:'white'}}
-  onSubmit={values => {
+  return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
+    onSubmit={values => {
     const response =  fetch(registro, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
