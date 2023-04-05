@@ -83,7 +83,7 @@ export default function CrearSalaScreen({ navigation }) {
             </View>
             <View style={{flex:1}}></View>
             <StyledButton
-                purple 
+                lightblue 
                 title="JUGAR"
                 onPress={() => navigation.navigate('Tablero')}
             />

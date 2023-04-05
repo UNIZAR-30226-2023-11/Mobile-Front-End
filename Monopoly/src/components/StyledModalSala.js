@@ -69,7 +69,7 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
             <Text style={styles.modalTitle}>{title}</Text>
             <ScrollView style={{marginHorizontal: 20}}>
                 <Text style={styles.modalText}>{text}</Text>
-                <StyledButton title={buttonText} onPress={goTo}></StyledButton>
+                <StyledButton lightblue title={buttonText} onPress={goTo}></StyledButton>
             </ScrollView>
             </View>
         </View>

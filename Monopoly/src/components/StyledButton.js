@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red'
   },
   homeScreen: {
-    backgroundColor: '#C0EED4',
+    backgroundColor: '#A8FCFB',
     height: '8%',
     width: '70%',
   },
