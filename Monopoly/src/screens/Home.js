@@ -68,8 +68,22 @@ export default function HomeScreen({ route, navigation }){
             />
             <StyledModal
                 title="REGLAS"
-                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    Lorem ipsum dolor sit amet, con sectetuer adipiscing elit, sed do eiusmod tempor incididunt ut lab et d Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id odio ut aliquip ex ea commodo consequat"   
+                text="- Número de jugadores: de 2 a 8
+- Duración: 60-120 minutos
+- Edad mínima: 8 años
+- Al pasar por la casilla de salida el jugador recibe un salario de 267€
+- Al caer en una casilla que permite compra y que no tiene propietario, un jugador la puede comprar.
+- Al caer en una casilla que tiene propietario, un jugador debe pagarle el dinero establecido en la carta de la casilla.
+- Cuando un jugador posee todas las casillas de un grupo de color cobra el doble en cada una de ellas y puede aumentar los créditos de dichas casillas.
+- Al caer en una casilla de suerte o de boletiín diario, el jugador recibe una acción a realizar.
+- Si un jugador saca tres veces dobles, cae en la casilla de Ve a Julio o recibe una acción de ir a julio, se desplazará a la casilla de Julio sin cobrar si pasa por la salida.
+- Un jugador desde la carcel puede modificar sus propiedades.
+- Para salir de la carcel, se puede pagar 67€, sacar dobles, usar una carta de Salir de Julio o esperar 3 turnos.
+- Los jugadores pueden realizar transacciones económicas entre ellos y con la Banca.
+- Un jugador puede poner una asignatura optativa si no está mejorada. Cuando otros jugadores caen en dicha casilla no pagaría.
+- Para candelar la optatividad hay que pagar el precio original más un 10% de interés.
+- Cuando un jugadores debe más dinero de lo que tiene se declara en bancarrota.
+- El juego finaliza cuando solo queda un jugador en pie."
                 onClose = { () => {setModalReglasVisible({modalReglasVisible: !modalReglasVisible})}}
                 visible={modalReglasVisible}
                 onRequestClose={() => {
