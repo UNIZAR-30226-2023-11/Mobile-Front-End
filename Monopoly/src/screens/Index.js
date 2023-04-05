@@ -85,7 +85,7 @@ export default function IndexScreen({navigation}) {
           <StyledButton
             lightblue
             title="Registrarse"
-            onPress={() => navigation.navigate('SignUn')}
+            onPress={() => navigation.navigate('SignUp')}
           />
           <StyledButton
             lightblue
