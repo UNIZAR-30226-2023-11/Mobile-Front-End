@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik, useField } from 'formik'
-import { StyleSheet, Button, View } from 'react-native'
+import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
@@ -20,10 +20,18 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   form: {
+    flex:1,
+    flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     margin: 12,
     marginTop: 100,
     marginBottom: 20
+  },
+  registro:{
+    flex:1, 
+    flexDirection:'row', 
+    justifyContent:'center',
+    marginTop:'10%'
   }
 })
 
@@ -83,6 +91,12 @@ export default function LogInScreen({navigation}){
           title='Iniciar sesión'
           onPress={handleSubmit} 
         />
+        <View style={styles.registro}>
+          <StyledText medium>No tienes cuenta? </StyledText>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <StyledText medium blue>Registrarse</StyledText>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }}

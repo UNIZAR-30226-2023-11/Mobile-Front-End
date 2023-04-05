@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     big: {
         fontSize: 20
     },
+    medium:{
+        fontSize:16
+    },
     small: {
         fontSize: 10
     },
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
 })
 
 export default function StyledText(
-    {blue,purple, bold,children,big,small,error,
+    {blue,purple, bold, children, big, medium, small,error,
     monopoly, titulo_casilla, precio_casilla, casillas_fiesta,
     style = {}}){
     
@@ -73,6 +76,7 @@ export default function StyledText(
         purple && styles.purple,
         bold && styles.bold,
         big && styles.big,
+        medium && styles.medium,
         small && styles.small,
         error && styles.error,
         monopoly && styles.monopoly,

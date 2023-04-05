@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
-import SignInScreen from './src/screens/SignIn.js';
+import SignUpScreen from './src/screens/SignUp.js';
 import HomeScreen from './src/screens/Home.js';
 import CrearSalaScreen from './src/screens/CrearSala.js';
 import UnirseSalaScreen from './src/screens/UnirseSala.js';
@@ -34,8 +34,8 @@ export default function App() {
           options={{title: 'Iniciar Sesión'}}          
         />
         <Stack.Screen
-          name="SignIn"
-          component={SignInScreen}
+          name="SignUp"
+          component={SignUpScreen}
           options={{title: 'Registrarse'}}
         />
         <Stack.Screen

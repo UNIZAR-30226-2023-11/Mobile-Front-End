@@ -44,9 +44,16 @@ export default function HomeScreen({ route, navigation }){
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
     return(
         <View style={styles.pantalla}>
+        {user!= null &&
         <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil', {user: user})}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
+        }
+        {user === null &&
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('LogIn')}>
+            <FontAwesome5 name="user-alt" size={28} color="black" />
+        </TouchableOpacity>
+        }
         <Image
             style={styles.logoJuego}
             source={require('../../assets/logo_juego_monopoly.png')}

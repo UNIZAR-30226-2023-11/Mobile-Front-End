@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik, useField } from 'formik'
-import { StyleSheet, Button, View } from 'react-native'
+import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { signinValidationSchema } from '../validationSchemas/signin'
@@ -19,10 +19,18 @@ const styles = StyleSheet.create({
     marginTop: -5
   },
   form: {
+    flex:1,
+    flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     margin: 12,
     marginTop: 100,
     marginBottom: 20
+  },
+  login:{
+    flex:1, 
+    flexDirection:'row', 
+    justifyContent:'center',
+    marginTop:'10%'
   }
 })
 
@@ -42,9 +50,9 @@ const FormikInputValue =({ name, ...props}) => {
   )
 }
 
-export default function SignInScreen({navigation}){
+export default function SignUpScreen({navigation}){
  
-  return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
+  return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} style={{backgroundColor:'white'}}
   onSubmit={values => {
     const response =  fetch(registro, {
     method: 'POST',
@@ -68,6 +76,7 @@ export default function SignInScreen({navigation}){
   
   {({handleChange, handleSubmit, values}) =>{
     return (
+      <View style={{flex:1, backgroundColor:'white'}}>
       <View style={styles.form}>
         <FormikInputValue 
         name='username'
@@ -92,6 +101,13 @@ export default function SignInScreen({navigation}){
             title='Registrarse' 
             onPress={handleSubmit} 
         />
+        <View style={styles.login}>
+          <StyledText medium>¿Ya tienes cuenta? </StyledText>
+          <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+            <StyledText medium blue>Iniciar Sesión</StyledText>
+          </TouchableOpacity>
+      </View>
+      </View>
       </View>
     )
   }}
