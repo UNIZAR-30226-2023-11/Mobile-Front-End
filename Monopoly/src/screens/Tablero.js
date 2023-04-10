@@ -9,7 +9,7 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados } from '../url/partida';
+import { lanzarDados, listaJugadores } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -204,9 +204,10 @@ export default function TableroScreen({route}) {
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
+    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
     const [card, setCard] = React.useState("");
 
-    const nJugadores = 8;
+    /*const nJugadores = 8;
     const aux = [];
     let i=0;
     while (i < nJugadores){
@@ -216,9 +217,10 @@ export default function TableroScreen({route}) {
     while(i< 8){
         aux.push(false);
         i++
-    }
+    }*/
 
-    const [jugadores, setJugadores] = React.useState(aux);
+    const [jugadores, setJugadores] = React.useState([""]);
+    const [dinero, setDinero] = React.useState([""]);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -307,14 +309,47 @@ export default function TableroScreen({route}) {
                     break;
             }
             setCompra(true);
+            setActualizarPlayers(true);
         },[]);
+
+        const actualizarDinero = useCallback(() => 
+            {const response =  fetch(listaJugadores, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+              if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status);
+              }
+              return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setJugadores(data.listaJugadores);
+                setDinero(data.listaDineros);
+    
+            })
+            .catch((error) => {
+            //Error
+            alert(JSON.stringify(error));
+            console.error(error);
+            });
+            setActualizarPlayers(false);},[]);
+        
+        useEffect(() =>{
+            actualizarDinero();
+        },[])
 
         useEffect(() => {
             if(rolling){
                 setRolling(false);
                 avanzar();
             };
-        },[rolling]);
+            if(actualizarPlayers){
+                actualizarDinero();
+            }
+        },[rolling, actualizarPlayers]);
 
         const infoCasilla = useCallback(() => {
             let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
@@ -561,12 +596,7 @@ export default function TableroScreen({route}) {
             <View style={styles.jugadores}>
                 <View style={styles.jugador}>
                     {jugadores.map((jugador, i) =>(
-                        (i<4) && jugador && <StyledText key={i+1} style={{marginLeft:'2%'}}>PLAYER {i+1} XXXX€</StyledText>
-                    ))}
-                </View>
-                <View style={styles.jugador}>
-                    {jugadores.map((jugador, i) =>(
-                        (i>=4) && jugador && <StyledText key={i+1} style={{marginLeft:'2%'}}>PLAYER {i+1} XXXX€</StyledText>
+                        <StyledText key={i+1} style={{marginLeft:'2%'}}>{jugador} {dinero[i]}</StyledText>
                     ))}
                 </View>
             </View>

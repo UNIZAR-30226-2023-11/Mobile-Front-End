@@ -7,3 +7,6 @@ export const unirPartida = 'http://10.0.2.2:8080/partida/unirJugador'
 
 //export const lanzarDados = 'http://nerks.net:7003/partida/lanzarDados'
 export const lanzarDados = 'http://10.0.2.2:8080/partida/lanzarDados'
+
+//export const listaJugadores = 'http://nerks.net:7003/partida/listaJugadores'
+export const listaJugadores = 'http://10.0.2.2:8080/partida/listaJugadores'
