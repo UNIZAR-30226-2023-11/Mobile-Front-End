@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
 
 export default function TableroScreen({route}) {
 
-    const idPartida = route.params.idPartida;
+    //const idPartida = route.params.idPartida;
+    const [idPartida, setIdPartida] = React.useState(route.params.idPartida);
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
@@ -204,21 +205,8 @@ export default function TableroScreen({route}) {
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
-    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
+    const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
     const [card, setCard] = React.useState("");
-
-    /*const nJugadores = 8;
-    const aux = [];
-    let i=0;
-    while (i < nJugadores){
-        aux.push(true);
-        i++
-    }
-    while(i< 8){
-        aux.push(false);
-        i++
-    }*/
-
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
 
@@ -251,6 +239,7 @@ export default function TableroScreen({route}) {
                     console.log(data);
                     setDie1(data.dado1);
                     setDie2(data.dado2);
+                    setRolling(true);
                 })
                 .catch((error) => {
                 //Error
@@ -309,11 +298,10 @@ export default function TableroScreen({route}) {
                     break;
             }
             setCompra(true);
-            setActualizarPlayers(true);
         },[]);
 
-        const actualizarDinero = useCallback(() => 
-            {const response =  fetch(listaJugadores, {
+        const actualizarDinero = useCallback(() => {
+            const response =  fetch(listaJugadores, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({"idPartida": idPartida})
@@ -334,22 +322,7 @@ export default function TableroScreen({route}) {
             //Error
             alert(JSON.stringify(error));
             console.error(error);
-            });
-            setActualizarPlayers(false);},[]);
-        
-        useEffect(() =>{
-            actualizarDinero();
-        },[])
-
-        useEffect(() => {
-            if(rolling){
-                setRolling(false);
-                avanzar();
-            };
-            if(actualizarPlayers){
-                actualizarDinero();
-            }
-        },[rolling, actualizarPlayers]);
+            });},[]);
 
         const infoCasilla = useCallback(() => {
             let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
@@ -382,14 +355,28 @@ export default function TableroScreen({route}) {
         },[]);
 
         useEffect(() => {
+            if(rolling){
+                setRolling(false);
+                avanzar();
+            };            
+        },[rolling]);
+
+        useEffect(() => {
             if(compra){
                 infoCasilla();
             }
         },[compra]);
+
+        useEffect (() => {
+            if(actualizarPlayers){
+                setActualizarPlayers(false);
+                actualizarDinero();
+            }
+        },[actualizarPlayers]);
     
         return(
             <View>
-                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {setRolling(true);roll();}}>
+                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {roll();}}>
                     <Die face = {die1}></Die>
                     <Die face = {die2}></Die>
                 </Pressable>
@@ -630,11 +617,12 @@ export default function TableroScreen({route}) {
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
-            onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible})}}
+            onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible});setActualizarPlayers(true);}}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                setActualizarPlayers(true);
             }}
         >
         </StyledModalCompra>

@@ -73,8 +73,8 @@ export default function HomeScreen({ route, navigation }){
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"username": user,
-                                                          "dineroInicial": 1500,
-                                                          "nJugadores": 2})
+                                                          "dineroInicial": 0,
+                                                          "nJugadores": 0})
                                     })
                                     .then((response) => {
                                     if(response.status != 201){
