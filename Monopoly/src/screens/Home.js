@@ -66,7 +66,27 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => navigation.navigate('CrearSala', {user: user})}
+                onPress={() => {{const response =  fetch(crearPartida, {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"username": user,
+                                                          "dineroInicial": 1500,
+                                                          "nJugadores": 2})
+                                    })
+                                    .then((response) => {
+                                    if(response.status === 201){
+                                        console.log(response.json);
+                                        navigation.navigate('CrearSala', {user: user})
+                                    }else {
+                                        console.log(response.status);
+                                        console.log(response.json);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    alert(JSON.stringify(error));
+                                    console.error(error);
+                                });
+                            }}}
             />
             <StyledButton
                 homeScreen

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet , Text , Button, Pressable} from'react-native';
 import {Searchbar} from 'react-native-paper';
 import StyledModalSala from "../components/StyledModalSala";
-
+import { unirPartida } from '../url/partida';
 
 const styles = StyleSheet.create({
     barra: { 
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 export default function UnirseSalaScreen({ navigation }) {
 
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
+    const [idPartida, setIdPartida] = React.useState(0);
 
     return (
         <View style={styles.barra}>
@@ -34,15 +35,35 @@ export default function UnirseSalaScreen({ navigation }) {
             <Searchbar
                 placeholder="123456"
                 placeholderTextColor="grey"
+                onChangeText={(id) => setIdPartida(id)}
                 onSubmitEditing={() => setModalPartidaVisible(true)}
             />
 
             <StyledModalSala
                 title="Únete a la partida"
-                text="Partida #123456"   
+                text={"Partida #"+idPartida}
                 style={styles.modal}
                 buttonText="Unirme"
-                goTo= {() => navigation.navigate('EsperaUnirse')}
+                goTo= {() => {{const response =  fetch(unirPartida, {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"idPartida": idPartida,
+                                                          "username": user})
+                                    })
+                                    .then((response) => {
+                                    if(response.status === 200){
+                                        console.log(response.json);
+                                        navigation.navigate('EsperaUnirse', {user: user})
+                                    }else {
+                                        console.log(response.status);
+                                        console.log(response.json);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    alert(JSON.stringify(error));
+                                    console.error(error);
+                                });
+                            }}}
                 onClose = { () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
                 visible={modalPartidaVisible}
                 onRequestClose={() => {

@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
+import { crearPartida } from "../url/partida";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -23,38 +24,60 @@ const styles = StyleSheet.create({
 
 export default function CrearSalaScreen({ navigation }) {
 
-    const [players, setPlayers] = React.useState("");
-    const [money, setMoney] = React.useState("");
+    const user = route.params.user;
+    console.log(user);
+
+    const [players, setPlayers] = React.useState(2);
+    const [money, setMoney] = React.useState(1500);
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
             <StyledText style={styles.titulo} big bold>Partida #00001</StyledText>
-            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Nº jugadores</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={players} 
                     minWidth="200" 
                     accessibilityLabel="Jugadores" 
-                    placeholder="Nº Jugadores" 
+                    placeholder="2" 
                     mt={1} 
-                    onValueChange={(itemValue) => setPlayers(itemValue)}>
-                    <Select.Item label="Dos" value="2" />
-                    <Select.Item label="Tres" value="3" />
-                    <Select.Item label="Cuatro" value="4" />
-                    <Select.Item label="Cinco" value="5" />
-                    <Select.Item label="Seis" value="6" />
-                    <Select.Item label="Siete" value="7" />
-                    <Select.Item label="Ocho" value="8" />
+                    onValueChange={(itemValue) => {const response =  fetch(crearPartida, {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"username": user,
+                                                          "dineroInicial": money,
+                                                          "nJugadores": players})
+                                    })
+                                    .then((response) => {
+                                    if(response.status === 200){
+                                        console.log(response.json);
+                                        setPlayers(itemValue);
+                                    }else {
+                                        console.log(response.status);
+                                        console.log(response.json);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    alert(JSON.stringify(error));
+                                    console.error(error);
+                                });}}>
+                    <Select.Item label="2" value="2" />
+                    <Select.Item label="3" value="3" />
+                    <Select.Item label="4" value="4" />
+                    <Select.Item label="5" value="5" />
+                    <Select.Item label="6" value="6" />
+                    <Select.Item label="7" value="7" />
+                    <Select.Item label="8" value="8" />
                 </Select>
                 </View>
             </View>
-            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Dinero inicial</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={money} 
                     minWidth="200" 
                     accessibilityLabel="Money" 
-                    placeholder="Dinero inicial" 
+                    placeholder="1500" 
                     mt={1} 
                     onValueChange={(itemValue) => setMoney(itemValue)}>
                     <Select.Item label="1000" value="1000" />
@@ -69,15 +92,9 @@ export default function CrearSalaScreen({ navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pulvinar sapien vel arcu feugiat, at rutrum libero varius. Aenean quis accumsan enim, eu auctor augue. Maecenas non purus non lacus tempor porttitor nec at mi. Nam mattis vitae leo eget iaculis. Aenean luctus tempor odio eget ultrices. Integer viverra luctus erat, ut lobortis nibh placerat ut. Duis ac orci rutrum, cursus dui suscipit, rhoncus lacus. In sed molestie mi. Donec ullamcorper commodo suscipit. In condimentum, magna non interdum luctus, sapien lacus pellentesque leo, sed luctus nibh ex sed neque. Quisque sed ex diam. Suspendisse potenti. Nullam quam neque, pellentesque eget tristique vitae, accumsan vitae massa. Proin viverra odio id justo pretium hendrerit. Nulla varius molestie ultricies. Donec vehicula ut orci eu imperdiet.
-
-                Nullam metus enim, ultrices a eros viverra, dapibus tempor massa. Quisque sit amet suscipit enim. Sed consectetur nisl nec tellus volutpat dignissim. Suspendisse bibendum congue elit, ac elementum mi pretium ac. Sed pretium a nisl eu feugiat. Ut at erat ex. Vestibulum neque ligula, convallis quis condimentum elementum, blandit vel elit. Sed libero sapien, ultrices eget faucibus euismod, tincidunt vestibulum elit. Aliquam scelerisque tellus eu ligula feugiat, nec consectetur lacus egestas.
-
-                Fusce dignissim vitae eros ac eleifend. Curabitur aliquam dignissim augue eget suscipit. Vestibulum et mi orci. Fusce venenatis ultricies aliquam. Quisque non dolor condimentum, lobortis enim vitae, aliquet nisl. Phasellus mollis urna sit amet justo viverra bibendum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam sagittis tellus sed fringilla rutrum. Nullam in vehicula velit. Aenean non scelerisque velit.
-
-                Aenean ultrices, mauris vel luctus aliquet, orci ex pretium est, et accumsan enim quam vel nibh. Sed in rhoncus magna, vel fringilla enim. Aenean eleifend volutpat ante, in varius lectus tempor lobortis. Ut enim nunc, auctor ut egestas ut, porttitor et libero. Sed quis nisi scelerisque, consectetur nisi eleifend, consectetur mi. Nulla quis elit pretium, pharetra erat accumsan, varius lectus. Maecenas quis ex vitae tellus dignissim egestas sit amet sit amet sapien. Nam condimentum nibh ac elit placerat faucibus.
-
-                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum viverra nulla justo. Quisque dignissim nulla consectetur, aliquam nulla tristique, facilisis nibh. Etiam dignissim aliquam massa id pharetra. Duis rhoncus ligula nec dolor imperdiet, consequat tincidunt augue bibendum. Suspendisse non sagittis elit, dignissim interdum diam. Curabitur in porttitor sapien, in vulputate elit. Sed consectetur, ipsum id tincidunt volutpat, turpis mi volutpat mi, sed maximus mi odio vel erat. Ut hendrerit mi quis orci scelerisque, ac posuere turpis consectetur. Aenean euismod libero in congue scelerisque. Vivamus malesuada lorem at porta pulvinar.
+                Jugador 1
+                Jugador 2
+                Jugador 3
             </Text>
             </ScrollView>
             </View>
@@ -85,7 +102,27 @@ export default function CrearSalaScreen({ navigation }) {
             <StyledButton
                 lightblue 
                 title="JUGAR"
-                onPress={() => navigation.navigate('Tablero')}
+                onPress={() => {const response =  fetch(crearPartida, {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"username": user,
+                                                          "dineroInicial": money,
+                                                          "nJugadores": players})
+                                    })
+                                    .then((response) => {
+                                    if(response.status === 200){
+                                        console.log(response.json);
+                                        navigation.navigate('Tablero', {user: user});
+                                    }else {
+                                        console.log(response.status);
+                                        console.log(response.json);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    alert(JSON.stringify(error));
+                                    console.error(error);
+                                });
+                            }}
             />
             <View style={{flex:1}}></View>
         </View>

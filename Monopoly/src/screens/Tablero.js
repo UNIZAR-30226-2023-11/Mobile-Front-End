@@ -9,6 +9,8 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
+import { lanzarDados } from '../url/partida';
+
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
@@ -235,8 +237,27 @@ export default function TableroScreen() {
 
         function roll(){
             setDobles(false);
-            setDie1(sides[Math.floor(Math.random() * sides.length)])
-            setDie2(sides[Math.floor(Math.random() * sides.length)])
+            const response =  fetch(lanzarDados, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                })
+                .then((response) => {
+                  if(response.status === 404){
+                      console.log(response.status);
+                      console.log(response.json);
+                  }else if(response.status === 500) {
+                      console.log(response.status);
+                      console.log(response.json);
+                  }else{
+                    console.log(response.json);
+                    setDie1(sides[response.json.dado1])
+                    setDie2(sides[response.json.dado1])
+                  }})
+              .catch((error) => {
+                //Error
+                alert(JSON.stringify(error));
+                console.error(error);
+              });
         }
         
         const avanzar = useCallback(() => {
