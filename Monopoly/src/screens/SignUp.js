@@ -60,12 +60,12 @@ export default function SignUpScreen({navigation}){
     body: JSON.stringify(values)
     })
     .then((response) => {
-      if(response.status === 201){
-        console.log(response.json);
+      if(response.status != 201){
+        throw new Error('Error de estado: '+ response.status);
+      }
+      else {
+        console.log(response.json());
         navigation.navigate('Home', {user: values.username});
-      }else{
-          console.log(response.status);
-          console.log(response.json);
       }})
   .catch((error) => {
     //Error

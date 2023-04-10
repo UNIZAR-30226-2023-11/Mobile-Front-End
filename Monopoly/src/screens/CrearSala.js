@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import { crearPartida } from "../url/partida";
+import { actualizarPartida } from "../url/partida";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -22,17 +22,18 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function CrearSalaScreen({ navigation }) {
+export default function CrearSalaScreen({route, navigation }) {
 
     const user = route.params.user;
-    console.log(user);
+    const idPartida = route.params.idPartida;
+    console.log(user, idPartida);
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
-            <StyledText style={styles.titulo} big bold>Partida #00001</StyledText>
+            <StyledText style={styles.titulo} big bold>Partida #{idPartida}</StyledText>
             <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Nº jugadores</StyledText>
                 <View style={{marginLeft:'7%'}}>
@@ -41,20 +42,21 @@ export default function CrearSalaScreen({ navigation }) {
                     accessibilityLabel="Jugadores" 
                     placeholder="2" 
                     mt={1} 
-                    onValueChange={(itemValue) => {const response =  fetch(crearPartida, {
+                    onValueChange={(itemValue) => {const response =  fetch(actualizarPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"username": user,
+                                    body: JSON.stringify({"idPartida": idPartida,
+                                                          "username": user,
                                                           "dineroInicial": money,
                                                           "nJugadores": players})
                                     })
                                     .then((response) => {
-                                    if(response.status === 200){
-                                        console.log(response.json);
+                                    if(response.status != 200){                                        
+                                        throw new Error('Error de estado: '+ response.status);
+                                    }
+                                    else{
+                                        console.log(response.json());
                                         setPlayers(itemValue);
-                                    }else {
-                                        console.log(response.status);
-                                        console.log(response.json);
                                     }})
                                 .catch((error) => {
                                     //Error
@@ -92,9 +94,7 @@ export default function CrearSalaScreen({ navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             <Text>
-                Jugador 1
-                Jugador 2
-                Jugador 3
+                {user}
             </Text>
             </ScrollView>
             </View>
@@ -102,20 +102,21 @@ export default function CrearSalaScreen({ navigation }) {
             <StyledButton
                 lightblue 
                 title="JUGAR"
-                onPress={() => {const response =  fetch(crearPartida, {
+                onPress={() => {const response =  fetch(actualizarPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"username": user,
+                                    body: JSON.stringify({"idPartida": idPartida,
+                                                          "username": user,
                                                           "dineroInicial": money,
                                                           "nJugadores": players})
                                     })
                                     .then((response) => {
-                                    if(response.status === 200){
-                                        console.log(response.json);
-                                        navigation.navigate('Tablero', {user: user});
-                                    }else {
-                                        console.log(response.status);
-                                        console.log(response.json);
+                                    if(response.status != 200) {
+                                        throw new Error('Error de estado: '+ response.status);
+                                    }
+                                    else{
+                                        console.log(response.json());
+                                        navigation.navigate('Tablero', {user: user, idPartida: idPartida});
                                     }})
                                 .catch((error) => {
                                     //Error

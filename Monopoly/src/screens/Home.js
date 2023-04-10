@@ -5,6 +5,8 @@ import StyledButton from "../components/StyledButton";
 import StyledTextInput from "../components/StyledTextInput";
 import StyledModal from "../components/StyledModal";
 
+import { crearPartida } from "../url/partida";
+
 
 const styles = StyleSheet.create({
     pantalla: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
 
 export default function HomeScreen({ route, navigation }){
 
-    const user = route.params.user;
+    let user = route.params.user;
     console.log(user);
 
     const [nickname, setNickname] = React.useState("");
@@ -66,7 +68,8 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => {{const response =  fetch(crearPartida, {
+                onPress={() => {{ if(user==null){user = nickname}
+                                    const response =  fetch(crearPartida, {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"username": user,
@@ -74,13 +77,15 @@ export default function HomeScreen({ route, navigation }){
                                                           "nJugadores": 2})
                                     })
                                     .then((response) => {
-                                    if(response.status === 201){
-                                        console.log(response.json);
-                                        navigation.navigate('CrearSala', {user: user})
-                                    }else {
-                                        console.log(response.status);
-                                        console.log(response.json);
-                                    }})
+                                    if(response.status != 201){
+                                        throw new Error('Error de estado: '+ response.status);
+                                    }
+                                    return response.json();
+                                    })
+                                    .then(data => {
+                                        const idPartida = data.idPartida;
+                                        navigation.navigate('CrearSala', {user: user, idPartida: idPartida})
+                                    })
                                 .catch((error) => {
                                     //Error
                                     alert(JSON.stringify(error));

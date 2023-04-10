@@ -168,8 +168,9 @@ const styles = StyleSheet.create({
 });
 
 
-export default function TableroScreen() {
+export default function TableroScreen({route}) {
 
+    const idPartida = route.params.idPartida;
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
@@ -230,34 +231,30 @@ export default function TableroScreen() {
     })
 
     function Dice(){
-        const sides = [
-            1, 2, 3, 
-            4, 5, 6
-        ]
 
         function roll(){
             setDobles(false);
             const response =  fetch(lanzarDados, {
-                method: 'GET',
+                method: 'POST',
                 headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({"idPartida": idPartida})
                 })
                 .then((response) => {
-                  if(response.status === 404){
-                      console.log(response.status);
-                      console.log(response.json);
-                  }else if(response.status === 500) {
-                      console.log(response.status);
-                      console.log(response.json);
-                  }else{
-                    console.log(response.json);
-                    setDie1(sides[response.json.dado1])
-                    setDie2(sides[response.json.dado1])
-                  }})
-              .catch((error) => {
+                  if(response.status != 200){
+                    throw new Error('Error de estado: '+ response.status);
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    setDie1(data.dado1);
+                    setDie2(data.dado2);
+                })
+                .catch((error) => {
                 //Error
                 alert(JSON.stringify(error));
                 console.error(error);
-              });
+                });
         }
         
         const avanzar = useCallback(() => {

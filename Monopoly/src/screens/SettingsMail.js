@@ -87,13 +87,12 @@ export default function SettingsMailScreen({ route, navigation }){
         body: JSON.stringify({username: user , correo: values.email})
         })
         .then((response) => {
-          if(response.status === 200){
+          if(response.status != 200){
+            throw new Error('Error de estado: '+ response.status);
+          }
+          else{
             Alert.alert('Correo actualizado');
-            console.log(response.json);
             navigation.navigate('Perfil', {user: user});
-          }else {
-              console.log(response.status);
-              console.log(response.json);
           }})
       .catch((error) => {
         //Error

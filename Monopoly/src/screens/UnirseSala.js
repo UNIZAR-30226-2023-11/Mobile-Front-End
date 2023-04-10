@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function UnirseSalaScreen({ navigation }) {
+export default function UnirseSalaScreen({ route, navigation }) {
+
+    const user = route.params.user;
+    console.log(user);
 
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
     const [idPartida, setIdPartida] = React.useState(0);
@@ -44,19 +47,19 @@ export default function UnirseSalaScreen({ navigation }) {
                 text={"Partida #"+idPartida}
                 style={styles.modal}
                 buttonText="Unirme"
-                goTo= {() => {{const response =  fetch(unirPartida, {
+                goTo= {() => {{console.log("pulsado");const response =  fetch(unirPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"idPartida": idPartida,
                                                           "username": user})
                                     })
                                     .then((response) => {
-                                    if(response.status === 200){
-                                        console.log(response.json);
+                                        if(response.status != 200){
+                                            throw new Error('Error de estado: '+ response.status);
+                                        }
+                                    else{
+                                        console.log(response.json());
                                         navigation.navigate('EsperaUnirse', {user: user})
-                                    }else {
-                                        console.log(response.status);
-                                        console.log(response.json);
                                     }})
                                 .catch((error) => {
                                     //Error

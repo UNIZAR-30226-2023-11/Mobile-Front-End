@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Select,NativeBaseProvider, ScrollView  } from "native-base";
+import { Select, NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 
@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function CrearSalaScreen({ navigation }) {
+export default function CrearSalaScreen({ route, navigation }) {
+
+    const user = route.params.user;
+    console.log(user);
 
     const [players, setPlayers] = React.useState("");
     const [money, setMoney] = React.useState("");
@@ -39,9 +42,7 @@ export default function CrearSalaScreen({ navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             <Text>
-            Jugador1
-            Jugador2 
-            Jugador3
+            {{user}}
             </Text>
             </ScrollView>
             </View>
