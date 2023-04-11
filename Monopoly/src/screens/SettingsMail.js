@@ -73,41 +73,43 @@ const styles = StyleSheet.create({
 export default function SettingsMailScreen({ route, navigation }){
 
   const user = route.params.user;
-  console.log(user);
+  const email = route.params.email
+  console.log(user, email);
 
-    return <Formik validationSchema={settingsMailValidationSchema} initialValues={initialValues} 
-    onSubmit={(values) => {
-      // Manejo del envío del formulario
-      // Muestra una alerta después de enviar el formulario ok
-      console.log(user, values);
+
+  return (
+    <Formik
+      validationSchema={settingsMailValidationSchema}
+      initialValues={initialValues} 
+      onSubmit={(values) => {
   
-        const response =  fetch(updateCorreoUsuario, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: user , correo: values.email})
+        const response2 = fetch(updateCorreoUsuario, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username: user , email: values.email})
         })
         .then((response) => {
-          if(response.status != 200){
+          if(response.status !== 200){
             throw new Error('Error de estado: '+ response.status);
-          }
-          else{
+          } else {
             Alert.alert('Correo actualizado');
             navigation.navigate('Perfil', {user: user});
-          }})
-      .catch((error) => {
-        //Error
-        alert(JSON.stringify(error));
-        console.error(error);
-        console.log("Algo ha ido mal.")
-      });
-    }}>
+          }
+        })
+        .catch((error) => {
+          //Error
+          // alert(JSON.parse(JSON.stringify(error)));
+          console.error(error);
+          console.log("Algo ha ido mal.")
+        });
+      }} >
 
     {({handleChange, handleSubmit, values}) =>{
       return (
         <View style={styles.form}>
 
             <Text style={styles.text}>Correo electronico actual </Text>
-            <Text style={styles.correo}>{initialValues.correo}</Text>
+            <Text style={styles.correo}>{email}</Text>
 
             <Text style={styles.text}>Cambiar correo electronico</Text>
             <FormikInputValue 
@@ -123,7 +125,7 @@ export default function SettingsMailScreen({ route, navigation }){
         </View>
 
     )
-}}
+}} 
  </Formik>
-
+  )
 }

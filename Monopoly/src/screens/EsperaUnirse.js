@@ -24,14 +24,15 @@ const styles = StyleSheet.create({
 export default function CrearSalaScreen({ route, navigation }) {
 
     const user = route.params.user;
-    console.log(user);
+    const idPartida = route.params.idPartida;
+    console.log(user, idPartida);
 
     const [players, setPlayers] = React.useState("");
     const [money, setMoney] = React.useState("");
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
-            <StyledText style={styles.titulo} big bold>Partida #00001</StyledText>
+            <StyledText style={styles.titulo} big bold>Partida {idPartida}</StyledText>
             <View style={{marginTop:'8%', flex:1, flexDirection:'row', justifyContent: 'center'}}>
                 <StyledText style={{justifyContent: 'center', marginLeft:'8%', marginTop:'3%'}}>Esperando a que el anfitrión inicie la partida.</StyledText>
                 <View style={{marginLeft:'7%'}}>
@@ -42,7 +43,7 @@ export default function CrearSalaScreen({ route, navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             <Text>
-            {{user}}
+            {user}
             </Text>
             </ScrollView>
             </View>

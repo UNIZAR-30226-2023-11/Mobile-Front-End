@@ -59,7 +59,7 @@ export default function UnirseSalaScreen({ route, navigation }) {
                                         }
                                     else{
                                         console.log(response.json());
-                                        navigation.navigate('EsperaUnirse', {user: user})
+                                        navigation.navigate('EsperaUnirse', {user: user, idPartida: idPartida})
                                     }})
                                 .catch((error) => {
                                     //Error

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import StyledButton from '../components/StyledButton';
-import { deleteUsuario } from '../url/users'
+import { deleteUsuario, devolverCorreoUsuario } from '../url/users'
 
 const styles = StyleSheet.create({
     container: {
@@ -22,6 +22,7 @@ export default function SettingsScreen({ route, navigation }){
     const user = route.params.user;
     console.log(user);
 
+
     return (
         
         <View style={styles.container}>
@@ -38,7 +39,31 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cambiar correo electrónico' 
-                onPress={() => navigation.navigate('SettingsMail', {user: user})}
+                onPress={() => {
+                    const response =  fetch(devolverCorreoUsuario, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({username: user})
+                      })
+                      .then((response) => {
+                        if(response.status != 200){
+                          throw new Error('Error de estado: '+ response.status);
+                        } else {
+                          return response.json(); // devuelve el contenido de la respuesta como un objeto JSON
+                        }
+                      }) 
+                      .then((data) => {
+                        // actualiza el estado con el correo electrónico obtenido de la respuesta
+                        console.log(data.email);
+                        navigation.navigate('SettingsMail', {user: user, email: data.email});
+                      })
+                      .catch((error) => {
+                        //Error
+                        alert(JSON.parse(JSON.stringify(error)));
+                        //alert(JSON.stringify(error));
+                        console.error(error);
+                        console.log("Algo ha ido mal.")
+                      });}}
             />
             </View>
 
