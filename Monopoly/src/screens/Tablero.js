@@ -180,6 +180,8 @@ export default function TableroScreen({route}) {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
+    let tokensJugadores = [(10,10), (10,10), (10,10), (10,10), (10,10), (10, 10)]
+    //pedir a la base de datos
     
     const casillas_suerte=[
         {horizontal: 3, vertical:10},
@@ -212,6 +214,55 @@ export default function TableroScreen({route}) {
 
     const stylestoken = StyleSheet.create({
         token1:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token2:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token3:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token4:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token5:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token6:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token7:{
+            position: 'absolute',
+            width:ancho,
+            height:ancho,
+            marginLeft: casilla_horizontal*ancho + ancho*0.5,
+            marginTop: casilla_vertical*ancho + ancho*0.5
+        },
+        token8:{
             position: 'absolute',
             width:ancho,
             height:ancho,
@@ -576,6 +627,34 @@ export default function TableroScreen({route}) {
             </View>
             <Image
             style={stylestoken.token1}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token2}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token3}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token4}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token5}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token6}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token7}
+            source={require('../../assets/token.png')}   
+            />
+            <Image
+            style={stylestoken.token8}
             source={require('../../assets/token.png')}   
             />
         </View>
