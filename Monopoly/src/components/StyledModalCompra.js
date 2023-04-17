@@ -3,6 +3,7 @@ import { Modal, StyleSheet, View, Text } from 'react-native';
 
 
 import StyledButton from "./StyledButton"
+import { comprarAsignatura } from '../url/partida';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -52,9 +53,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text}
+export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text, 
+    c_hor, c_ver, username, idPartida}
     ){
-   
+    
+    let exito = false;
     return(
         <Modal
         animationType="slide"
@@ -86,7 +89,26 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                     <StyledButton
                         style={styles.boton}
                         title="Comprar"
-                        onPress={onClose}
+                        onPress={() => {
+                            const response =  fetch(comprarAsignatura, {
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({  "username": username,
+                                                    "coordenadas":{"h": c_ver,"v": c_hor},
+                                                    "idPartida": idPartida})
+                            })
+                            .then((response) => {
+                            if(response.status != 201){
+                                throw new Error('Error de estado: '+ response.status);
+                            }
+                            console.log("comprada");
+                            onClose();
+                            })
+                            .catch((error) => {
+                            //Error
+                            //alert(JSON.stringify(error));
+                            console.error(error);
+                            });}}
                         purple
                     />
                 </View>

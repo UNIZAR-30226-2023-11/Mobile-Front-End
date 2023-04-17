@@ -106,7 +106,7 @@ const MonopolyCard = () => {
         <View style={styles.rectangle} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>Propiedad</Text>
-          <Text style={styles.subtitle}>Costo: $200</Text>
+          <Text style={styles.subtitle}>Coste: $200</Text>
           <Text style={styles.description}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor lorem eget mi commodo, eu tempor felis vestibulum.
           </Text>
@@ -115,26 +115,28 @@ const MonopolyCard = () => {
     </View>
   );
 };
-const Evento = ({title, description, imageSource }) => {
+export const Evento = ({title, coste, description, imageSource }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.cardContainer}>
         <View style={styles.imageView} >
         <Image source={imageSource} style={styles.image} />
           <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
           </View>
       </Card>
     </View>
   );
 };
-const Recurso = ({title, description, imageSource }) => {
+export const Recurso = ({title, coste, description, imageSource }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.cardContainer}>
         <View style={styles.imageView}>
           <Image source={imageSource} style={styles.image} />
           <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
@@ -245,112 +247,119 @@ const Boletin = ({description }) => {
     </View>
   );
 };
-const Asignatura_1 = ({title, subtitle, description }) => {
+export const Asignatura_1 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleUno} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_2 = ({title, subtitle, description }) => {
+
+export const Asignatura_2 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleDos} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_3 = ({title, subtitle, description }) => {
+
+export const Asignatura_3 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleTres} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_4 = ({title, subtitle, description }) => {
+
+export const Asignatura_4 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card >
         <View style={styles.rectangleCuatro} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_5 = ({title, subtitle, description }) => {
+
+export const Asignatura_5 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleCinco} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_6 = ({title, subtitle, description }) => {
+
+export const Asignatura_6 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleSeis} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_7 = ({title, subtitle, description }) => {
+
+export const Asignatura_7 = ({title, coste, description }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleSiete} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
     </View>
   );
 };
-const Asignatura_8 = ({title, subtitle, description, grupo }) => {
+
+export const Asignatura_8 = ({title, coste, description, grupo }) => {
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.rectangleOcho} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={styles.subtitle}>Coste: {coste}€</Text>
           <Text style={styles.description}>{description}</Text>
         </View>
       </Card>
@@ -378,7 +387,7 @@ const Carta_7_10 = () => {
   return (
     <Asignatura_1
       title={`Introducción a los\n Computadores`}
-      subtitle="Coste: 80€"
+      coste={80}
       description={`ALQUILERES 5€\n
       1 CRÉDITO ........................27€ \n
       2 CRÉDITOS .....................80€ \n
@@ -937,186 +946,187 @@ const Suerte_16 = () => {
   );
 };
 
+
 /*export {MonopolyCard, Boletin_1, Boletin_2, Boletin_3, Boletin_4, Boletin_5, Boletin_6, Boletin_7, Boletin_8,
   Boletin_9, Boletin_10, Boletin_11, Boletin_12, Boletin_13, Boletin_14, Boletin_15, Boletin_16,
   Suerte_1, Suerte_2, Suerte_3, Suerte_4, Suerte_5, Suerte_6, Suerte_7, 
   Suerte_8, Suerte_9, Suerte_10, Suerte_11, Suerte_12, Suerte_13, Suerte_14, Suerte_15, Suerte_16,
 */
 
-export default function Carta({casilla_horizontal, casilla_vertical}){
-  //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-  switch (casilla_horizontal){
-    case 0:
-      switch(casilla_vertical){
-        case 1:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_1></Carta_0_1>
-          )
-        case 2:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_2></Carta_0_2>
-          )
-        /*case 3:
-          return(
-            <Carta_0_3></Carta_0_3>
-          )*/
-        case 4:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_4></Carta_0_4>
-          )
-        case 5:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_5></Carta_0_5>
-          )
-        case 6:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_6></Carta_0_6>
-          )
-        case 7:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_7></Carta_0_7>
-          )
-        case 8:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_8></Carta_0_8>
-          )
-        case 9:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_0_9></Carta_0_9>
-          )
-      }
-      break;
-    case 1: // Carta_1_10, Carta_1_0,
-      switch (casilla_vertical){
-        case 10:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_1_10></Carta_1_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_1_0></Carta_1_0>)
-      }
-    case 2: //Carta_2_10,
-      switch (casilla_vertical){
-        case 10:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_2_10></Carta_2_10>)
-        //case 0: 
-          //return(<Carta_2_0></Carta_2_0>)
-      }
-    case 3: //Carta_3_0,
-      switch (casilla_vertical){
-        //case 10:
-          //return(<Carta_3_10></Carta_3_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_3_0></Carta_3_0>)
-      }
-    case 4: //Carta_4_10,Carta_4_0
-      switch (casilla_vertical){
-        case 10:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_4_10></Carta_4_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_4_0></Carta_4_0>)
-      }
-    case 5: //Carta_5_0,Carta_5_10,
-      switch (casilla_vertical){
-        case 10:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_5_10></Carta_5_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_5_0></Carta_5_0>)
-      }
-    case 6: //Carta_6_0,
-      switch (casilla_vertical){
-        //case 10:
-          //return(<Carta_6_10></Carta_6_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_6_0></Carta_6_0>)
-      }
-    case 7: //Carta_7_0,Carta_7_10,
-      switch (casilla_vertical){
-        case 10:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_7_10></Carta_7_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_7_0></Carta_7_0>)
-      }
-    case 8: //Carta_8_0
-      switch (casilla_vertical){
-        //case 10:
-          //return(<Carta_8_10></Carta_8_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_8_0></Carta_8_0>)
-      }
-    case 9: //Carta_9_10,Carta_9_0
-      switch (casilla_vertical){
-        case 10:
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_9_10></Carta_9_10>)
-        case 0: 
-        //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return(<Carta_9_0></Carta_9_0>)
-      }
-    case 10:
-      switch(casilla_vertical){
-        case 1:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_1></Carta_10_1>
-          )
-        case 2:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_2></Carta_10_2>
-          )
-        /*case 3:
-          return(
-            <Carta_10_3></Carta_10_3>
-          )*/
-        case 4:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_4></Carta_10_4>
-          )
-        case 5:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_5></Carta_10_5>
-          )
-        /*case 6:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_6></Carta_10_6>
-          )*/
-        case 7:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_7></Carta_10_7>
-          )
-        /*case 8:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_8></Carta_10_8>
-          )*/
-        case 9:
-          //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
-          return (
-            <Carta_10_9></Carta_10_9>
-          )
-      }
-  }
-}
+// export default function Carta({casilla_horizontal, casilla_vertical}){
+//   //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//   switch (casilla_horizontal){
+//     case 0:
+//       switch(casilla_vertical){
+//         case 1:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_1></Carta_0_1>
+//           )
+//         case 2:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_2></Carta_0_2>
+//           )
+//         /*case 3:
+//           return(
+//             <Carta_0_3></Carta_0_3>
+//           )*/
+//         case 4:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_4></Carta_0_4>
+//           )
+//         case 5:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_5></Carta_0_5>
+//           )
+//         case 6:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_6></Carta_0_6>
+//           )
+//         case 7:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_7></Carta_0_7>
+//           )
+//         case 8:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_8></Carta_0_8>
+//           )
+//         case 9:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_0_9></Carta_0_9>
+//           )
+//       }
+//       break;
+//     case 1: // Carta_1_10, Carta_1_0,
+//       switch (casilla_vertical){
+//         case 10:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_1_10></Carta_1_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_1_0></Carta_1_0>)
+//       }
+//     case 2: //Carta_2_10,
+//       switch (casilla_vertical){
+//         case 10:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_2_10></Carta_2_10>)
+//         //case 0: 
+//           //return(<Carta_2_0></Carta_2_0>)
+//       }
+//     case 3: //Carta_3_0,
+//       switch (casilla_vertical){
+//         //case 10:
+//           //return(<Carta_3_10></Carta_3_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_3_0></Carta_3_0>)
+//       }
+//     case 4: //Carta_4_10,Carta_4_0
+//       switch (casilla_vertical){
+//         case 10:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_4_10></Carta_4_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_4_0></Carta_4_0>)
+//       }
+//     case 5: //Carta_5_0,Carta_5_10,
+//       switch (casilla_vertical){
+//         case 10:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_5_10></Carta_5_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_5_0></Carta_5_0>)
+//       }
+//     case 6: //Carta_6_0,
+//       switch (casilla_vertical){
+//         //case 10:
+//           //return(<Carta_6_10></Carta_6_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_6_0></Carta_6_0>)
+//       }
+//     case 7: //Carta_7_0,Carta_7_10,
+//       switch (casilla_vertical){
+//         case 10:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_7_10></Carta_7_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_7_0></Carta_7_0>)
+//       }
+//     case 8: //Carta_8_0
+//       switch (casilla_vertical){
+//         //case 10:
+//           //return(<Carta_8_10></Carta_8_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_8_0></Carta_8_0>)
+//       }
+//     case 9: //Carta_9_10,Carta_9_0
+//       switch (casilla_vertical){
+//         case 10:
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_9_10></Carta_9_10>)
+//         case 0: 
+//         //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return(<Carta_9_0></Carta_9_0>)
+//       }
+//     case 10:
+//       switch(casilla_vertical){
+//         case 1:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_1></Carta_10_1>
+//           )
+//         case 2:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_2></Carta_10_2>
+//           )
+//         /*case 3:
+//           return(
+//             <Carta_10_3></Carta_10_3>
+//           )*/
+//         case 4:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_4></Carta_10_4>
+//           )
+//         case 5:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_5></Carta_10_5>
+//           )
+//         /*case 6:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_6></Carta_10_6>
+//           )*/
+//         case 7:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_7></Carta_10_7>
+//           )
+//         /*case 8:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_8></Carta_10_8>
+//           )*/
+//         case 9:
+//           //console.log("casilla:"+ casilla_horizontal +","+casilla_vertical);
+//           return (
+//             <Carta_10_9></Carta_10_9>
+//           )
+//       }
+//}
+//}

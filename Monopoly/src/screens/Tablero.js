@@ -9,14 +9,25 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores } from '../url/partida';
+import { lanzarDados, listaJugadores, infoAsignatura } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
 
-import Carta from '../components/MonopolyCard';
+import {
+    Asignatura_1, 
+    Asignatura_2, 
+    Asignatura_3,
+    Asignatura_4,
+    Asignatura_5,
+    Asignatura_6,
+    Asignatura_7,
+    Asignatura_8,
+    Recurso,
+    Evento
+} from '../components/MonopolyCard';
 import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
@@ -171,6 +182,7 @@ const styles = StyleSheet.create({
 export default function TableroScreen({route}) {
 
     //const idPartida = route.params.idPartida;
+    const username = route.params.user;
     const [idPartida, setIdPartida] = React.useState(route.params.idPartida);
 
     const [die1, setDie1] = React.useState(1);
@@ -613,10 +625,117 @@ export default function TableroScreen({route}) {
             </View>
         </View>
         <StyledModalCompra
-            InfoCarta = {() => Carta({casilla_horizontal, casilla_vertical})}
+            InfoCarta = {() => {
+                const response = fetch(infoAsignatura,{
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"coordenadas":{"h": casilla_vertical,"v": casilla_horizontal}})
+                })
+                .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if(data.casillaInfo.tipo == 'A'){
+                        console.log("asignatura");
+                        switch(data.casillaInfo.cuatrimestre){
+        
+                            case 1:
+                                return (
+                                <Asignatura_1
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 2:
+                                return (
+                                <Asignatura_2
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 3:
+                                return (
+                                <Asignatura_3
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 4:
+                                return (
+                                <Asignatura_4
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 5:
+                                return (
+                                <Asignatura_5
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />);  
+                            case 6:
+                                return (
+                                <Asignatura_6
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 7:
+                                return (
+                                <Asignatura_7
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                            case 8:
+                                return (
+                                <Asignatura_8
+                                    title={data.casillaInfo.nombre}
+                                    coste={data.casillaInfo.precioCompra}
+                                    description={data.casillaInfo.description}
+                                />); 
+                        }
+                    }
+                    else if(data.casillaInfo.tipo == 'F'){
+                        console.log("evento");
+                        return (
+                        <Evento
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={data.casillaInfo.description}
+                            imageSource={require('../../assets/bob.png')}
+                        />)
+                    }
+                    else if(data.casillaInfo.tipo == 'I'){
+                        console.log("recurso");
+                       return (
+                       <Recurso
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={data.casillaInfo.description}
+                            imageSource={require('../../assets/bob.png')}
+                        />)
+                    }
+                    //Carta(data.casillaInfo.coordenadas.v, data.casillaInfo.coordenadas.h)
+                })
+                .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                });
+            }}//Carta({casilla_horizontal, casilla_vertical})}
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
+            c_hor={casilla_horizontal}
+            c_ver={casilla_vertical}
+            username={username}
+            idPartida={idPartida}
             onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible});setActualizarPlayers(true);}}
             visible={modalCompraVisible}
             onRequestClose={() =>{
