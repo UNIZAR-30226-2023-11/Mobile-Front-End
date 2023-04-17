@@ -56,8 +56,10 @@ const styles = StyleSheet.create({
 export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text, 
     c_hor, c_ver, username, idPartida}
     ){
-    
-    let exito = false;
+    //console.log("modal abierto");
+    console.log(InfoCarta);
+    //console.log("info mostrada")
+        
     return(
         <Modal
         animationType="slide"
@@ -69,7 +71,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
             <View style={styles.modalView}>
                 <Text style={styles.modalText}>{text}</Text>
                 <View style={styles.carta}>
-                    <InfoCarta></InfoCarta>
+                    {InfoCarta}
                 </View>
                 <View style={styles.botones}>
                     {!doubles &&

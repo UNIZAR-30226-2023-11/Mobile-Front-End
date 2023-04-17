@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, Component } from 'react';
 import { View, Image, StyleSheet, Pressable } from'react-native';
 import 
 {   FontAwesome, 
@@ -218,9 +218,10 @@ export default function TableroScreen({route}) {
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
-    const [card, setCard] = React.useState("");
+    const [info, setInfo] = React.useState(false);
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
+    const [carta,setCarta] = React.useState();
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -243,7 +244,7 @@ export default function TableroScreen({route}) {
                 })
                 .then((response) => {
                   if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status);
+                    throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
                   }
                   return response.json();
                 })
@@ -309,7 +310,7 @@ export default function TableroScreen({route}) {
                     }
                     break;
             }
-            setCompra(true);
+            setInfo(true);
         },[]);
 
         const actualizarDinero = useCallback(() => {
@@ -320,7 +321,7 @@ export default function TableroScreen({route}) {
             })
             .then((response) => {
               if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status);
+                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
               }
               return response.json();
             })
@@ -346,8 +347,107 @@ export default function TableroScreen({route}) {
                         let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                         if( found === undefined){
                             console.log("casilla normal");
-                            setCard("Carta_"+casilla_horizontal+"_"+casilla_vertical);
-                            setModalCompraVisible(true);
+                            const response = fetch(infoAsignatura,{
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({"coordenadas":{"h": casilla_vertical,"v": casilla_horizontal}})
+                            })
+                            .then((response) => {
+                                if(response.status != 200){
+                                    throw new Error('Error de estado: '+ response.statu+ ' en la funcion de obtener la info de las asignaturas');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log(data);
+                                if(data.casillaInfo.tipo == 'A'){
+                                    console.log("asignatura ", data.casillaInfo.cuatrimestre);
+                                    switch(data.casillaInfo.cuatrimestre){
+                                        case 1:
+                                            setCarta(<Asignatura_1
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 2:
+                                            setCarta(<Asignatura_2
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 3:
+                                            setCarta(
+                                            <Asignatura_3
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 4:
+                                            setCarta(                                            <Asignatura_4
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 5:
+                                            setCarta(                                            <Asignatura_5
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break;  
+                                        case 6:
+                                            setCarta(                                            <Asignatura_6
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 7:
+                                            setCarta(                                            <Asignatura_7
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 8:
+                                            setCarta(                                            <Asignatura_8
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                    }
+                                }
+                                else if(data.casillaInfo.tipo == 'F'){
+                                    console.log("evento");
+                                    setCarta(                                    <Evento
+                                        title={data.casillaInfo.nombre}
+                                        coste={data.casillaInfo.precioCompra}
+                                        description={""}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                else if(data.casillaInfo.tipo == 'I'){
+                                    console.log("recurso");
+                                    setCarta(                                   <Recurso
+                                        title={data.casillaInfo.nombre}
+                                        coste={data.casillaInfo.precioCompra}
+                                        description={""}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                setCompra(true);
+                                //console.log(carta);
+                            })
+                            .catch((error) => {
+                                //Error
+                                //alert(JSON.stringify(error));
+                                console.error(error);
+                            });
                         }else{
                             console.log("pagos");
                             //accion
@@ -374,8 +474,14 @@ export default function TableroScreen({route}) {
         },[rolling]);
 
         useEffect(() => {
-            if(compra){
+            if(info){
                 infoCasilla();
+            }
+        },[info]);
+
+        useEffect(() => {
+            if(compra){
+                setModalCompraVisible(true);
             }
         },[compra]);
 
@@ -625,110 +731,6 @@ export default function TableroScreen({route}) {
             </View>
         </View>
         <StyledModalCompra
-            InfoCarta = {() => {
-                const response = fetch(infoAsignatura,{
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"coordenadas":{"h": casilla_vertical,"v": casilla_horizontal}})
-                })
-                .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    if(data.casillaInfo.tipo == 'A'){
-                        console.log("asignatura");
-                        switch(data.casillaInfo.cuatrimestre){
-        
-                            case 1:
-                                return (
-                                <Asignatura_1
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 2:
-                                return (
-                                <Asignatura_2
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 3:
-                                return (
-                                <Asignatura_3
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 4:
-                                return (
-                                <Asignatura_4
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 5:
-                                return (
-                                <Asignatura_5
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />);  
-                            case 6:
-                                return (
-                                <Asignatura_6
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 7:
-                                return (
-                                <Asignatura_7
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                            case 8:
-                                return (
-                                <Asignatura_8
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={data.casillaInfo.description}
-                                />); 
-                        }
-                    }
-                    else if(data.casillaInfo.tipo == 'F'){
-                        console.log("evento");
-                        return (
-                        <Evento
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            description={data.casillaInfo.description}
-                            imageSource={require('../../assets/bob.png')}
-                        />)
-                    }
-                    else if(data.casillaInfo.tipo == 'I'){
-                        console.log("recurso");
-                       return (
-                       <Recurso
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            description={data.casillaInfo.description}
-                            imageSource={require('../../assets/bob.png')}
-                        />)
-                    }
-                    //Carta(data.casillaInfo.coordenadas.v, data.casillaInfo.coordenadas.h)
-                })
-                .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                });
-            }}//Carta({casilla_horizontal, casilla_vertical})}
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
@@ -736,6 +738,7 @@ export default function TableroScreen({route}) {
             c_ver={casilla_vertical}
             username={username}
             idPartida={idPartida}
+            InfoCarta = {carta}
             onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible});setActualizarPlayers(true);}}
             visible={modalCompraVisible}
             onRequestClose={() =>{
