@@ -627,35 +627,35 @@ export default function TableroScreen({route}) {
             </View>
             <Image
             style={stylestoken.token1}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token1.png')}   
             />
             <Image
             style={stylestoken.token2}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token2.png')}   
             />
             <Image
             style={stylestoken.token3}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token3.png')}   
             />
             <Image
             style={stylestoken.token4}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token4.png')}   
             />
             <Image
             style={stylestoken.token5}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token5.png')}   
             />
             <Image
             style={stylestoken.token6}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token6.png')}   
             />
             <Image
             style={stylestoken.token7}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token7.png')}   
             />
             <Image
             style={stylestoken.token8}
-            source={require('../../assets/token.png')}   
+            source={require('../../assets/token8.png')}   
             />
         </View>
         <View style={styles.info}>
