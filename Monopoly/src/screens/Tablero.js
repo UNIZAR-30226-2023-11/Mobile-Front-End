@@ -625,6 +625,18 @@ export default function TableroScreen({route}) {
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>
             </View>
+
+
+            {
+            listaJugadores.map((value, index) => (
+                <Image
+                key={index}
+                style={stylestoken[`token${index+1}`]}
+                source={require('../../assets/token1.png')}   
+                />
+            ))
+            }
+
             <Image
             style={stylestoken.token1}
             source={require('../../assets/token1.png')}   
@@ -657,7 +669,9 @@ export default function TableroScreen({route}) {
             style={stylestoken.token8}
             source={require('../../assets/token8.png')}   
             />
+
         </View>
+
         <View style={styles.info}>
             <View style={styles.jugadores}>
                 <View style={styles.jugador}>
