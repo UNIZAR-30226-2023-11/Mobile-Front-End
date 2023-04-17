@@ -215,59 +215,59 @@ export default function TableroScreen({route}) {
     const stylestoken = StyleSheet.create({
         token1:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.4,
+            marginTop: casilla_vertical*ancho + ancho*0.4
         },
         token2:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.4,
+            marginTop: casilla_vertical*ancho + ancho*0.75
         },
         token3:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.4,
+            marginTop: casilla_vertical*ancho + ancho*1.05
         },
         token4:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.4,
+            marginTop: casilla_vertical*ancho + ancho*1.35
         },
         token5:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.82,
+            marginTop: casilla_vertical*ancho + ancho*0.4
         },
         token6:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.82,
+            marginTop: casilla_vertical*ancho + ancho*0.75
         },
         token7:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.82,
+            marginTop: casilla_vertical*ancho + ancho*1.05
         },
         token8:{
             position: 'absolute',
-            width:ancho,
-            height:ancho,
-            marginLeft: casilla_horizontal*ancho + ancho*0.5,
-            marginTop: casilla_vertical*ancho + ancho*0.5
+            width:ancho-10,
+            height:ancho-10,
+            marginLeft: casilla_horizontal*ancho + ancho*0.82,
+            marginTop: casilla_vertical*ancho + ancho*1.35
         }
     })
 
