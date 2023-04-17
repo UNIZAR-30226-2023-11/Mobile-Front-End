@@ -96,7 +96,7 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Unirse a una sala"
-                onPress={() => navigation.navigate('UnirseSala', {user: user})}
+                onPress={() => {if(user==null){user = nickname} navigation.navigate('UnirseSala', {user: user})}}
             />
             <StyledModal
                 title="REGLAS"
