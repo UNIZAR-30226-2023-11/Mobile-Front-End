@@ -86,11 +86,11 @@ export default function HomeScreen({ route, navigation }){
                                         const idPartida = data.idPartida;
                                         navigation.navigate('CrearSala', {user: user, idPartida: idPartida})
                                     })
-                                .catch((error) => {
-                                    //Error
-                                    alert(JSON.stringify(error));
-                                    console.error(error);
-                                });
+                                    .catch((error) => {
+                                        //Error
+                                        //alert(JSON.stringify(error));
+                                        console.error(error);
+                                    });
                             }}}
             />
             <StyledButton

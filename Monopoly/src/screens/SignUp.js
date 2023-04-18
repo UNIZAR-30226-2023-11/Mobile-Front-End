@@ -63,10 +63,9 @@ export default function SignUpScreen({navigation}){
       if(response.status != 201){
         throw new Error('Error de estado: '+ response.status);
       }
-      else {
-        console.log(response.json());
-        navigation.navigate('Home', {user: values.username});
-      }})
+      console.log(response.json());
+      navigation.navigate('Home', {user: values.username});
+      })
   .catch((error) => {
     //Error
     alert(JSON.stringify(error));

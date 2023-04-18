@@ -63,15 +63,14 @@ export default function LogInScreen({navigation}){
       if(response.status!= 200){
         throw new Error('Error de estado: '+ response.status);
       }
-      else{
         console.log(response.json());
         navigation.navigate('Home',{user: values.username}); 
-      }})
-  .catch((error) => {
-    //Error
-    alert(JSON.stringify(error));
-    console.error(error);
-  });
+      })
+    .catch((error) => {
+      //Error
+      //alert(JSON.stringify(error));
+      console.error(error);
+    });
   }}>
 
   {({handleChange, handleSubmit, values}) =>{

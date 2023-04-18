@@ -45,7 +45,6 @@ export default function StyledModal({style={}, onClose, visible, onRequestClose,
     const modalStyles = [
         styles.modalView,
         style
-    
     ]
 
     return(

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, Component } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Image, StyleSheet, Pressable } from'react-native';
 import 
 {   FontAwesome, 
@@ -236,6 +236,7 @@ export default function TableroScreen({route}) {
     function Dice(){
 
         function roll(){
+            console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
                 method: 'POST',
@@ -256,7 +257,7 @@ export default function TableroScreen({route}) {
                 })
                 .catch((error) => {
                 //Error
-                alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
                 console.error(error);
                 });
         }
@@ -333,7 +334,7 @@ export default function TableroScreen({route}) {
             })
             .catch((error) => {
             //Error
-            alert(JSON.stringify(error));
+            //alert(JSON.stringify(error));
             console.error(error);
             });},[]);
 
@@ -346,7 +347,7 @@ export default function TableroScreen({route}) {
                     if( found === undefined){
                         let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                         if( found === undefined){
-                            console.log("casilla normal");
+                            //console.log("casilla normal");
                             const response = fetch(infoAsignatura,{
                                 method: 'PUT',
                                 headers: {'Content-Type': 'application/json'},
@@ -354,12 +355,12 @@ export default function TableroScreen({route}) {
                             })
                             .then((response) => {
                                 if(response.status != 200){
-                                    throw new Error('Error de estado: '+ response.statu+ ' en la funcion de obtener la info de las asignaturas');
+                                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
                                 }
                                 return response.json();
                             })
                             .then(data => {
-                                console.log(data);
+                                //console.log(data);
                                 if(data.casillaInfo.tipo == 'A'){
                                     console.log("asignatura ", data.casillaInfo.cuatrimestre);
                                     switch(data.casillaInfo.cuatrimestre){
@@ -423,7 +424,7 @@ export default function TableroScreen({route}) {
                                     }
                                 }
                                 else if(data.casillaInfo.tipo == 'F'){
-                                    console.log("evento");
+                                    //console.log("evento");
                                     setCarta(                                    <Evento
                                         title={data.casillaInfo.nombre}
                                         coste={data.casillaInfo.precioCompra}
@@ -432,7 +433,7 @@ export default function TableroScreen({route}) {
                                     />);
                                 }
                                 else if(data.casillaInfo.tipo == 'I'){
-                                    console.log("recurso");
+                                    //console.log("recurso");
                                     setCarta(                                   <Recurso
                                         title={data.casillaInfo.nombre}
                                         coste={data.casillaInfo.precioCompra}
@@ -449,19 +450,19 @@ export default function TableroScreen({route}) {
                                 console.error(error);
                             });
                         }else{
-                            console.log("pagos");
+                            //console.log("pagos");
                             //accion
                         }
                     }else{
-                        console.log("esquina");
+                        //console.log("esquina");
                         //accion
                     }
                 }else{
-                    console.log("boletin");
+                    //console.log("boletin");
                     //Obtener carta boletin
                 }
             }else{
-                console.log("suerte");
+                //console.log("suerte");
                 //Obtener carta suerte  
             }
         },[]);
@@ -475,6 +476,7 @@ export default function TableroScreen({route}) {
 
         useEffect(() => {
             if(info){
+                setInfo(false);
                 infoCasilla();
             }
         },[info]);
@@ -739,11 +741,17 @@ export default function TableroScreen({route}) {
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
-            onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible});setActualizarPlayers(true);}}
+            onClose={() => {
+                setCompra(false);
+                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
+                setActualizarPlayers(true);
+            }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
                 setActualizarPlayers(true);
             }}
         >
