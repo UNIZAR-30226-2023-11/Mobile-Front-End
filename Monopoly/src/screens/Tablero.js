@@ -203,6 +203,8 @@ export default function TableroScreen({route}) {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
+    let tokensJugadores = [(10,10), (10,10), (10,10), (10,10), (10,10), (10, 10)]
+    //pedir a la base de datos
     
     const casillas_suerte=[
         {horizontal: 3, vertical:10},
@@ -754,7 +756,6 @@ export default function TableroScreen({route}) {
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>
             </View>
-            
             {/* funciona bien, muestra tantos tokens de jugadores como hay */}
             {
                 jugadores.map((value, index) => (
@@ -765,8 +766,8 @@ export default function TableroScreen({route}) {
                 />
             ))
             }
-            
         </View>
+
         <View style={styles.info}>
             <View style={styles.jugadores}>
                 <View style={styles.jugador}>
