@@ -21,6 +21,17 @@ import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
 
+const tokens = {
+    token1: require('../../assets/token1.png'),
+    token2: require('../../assets/token2.png'),
+    token3: require('../../assets/token3.png'),
+    token4: require('../../assets/token4.png'),
+    token5: require('../../assets/token5.png'),
+    token6: require('../../assets/token6.png'),
+    token7: require('../../assets/token7.png'),
+    token8: require('../../assets/token8.png'),
+}
+
 const styles = StyleSheet.create({
     pantalla:{
         flex:1,
@@ -626,49 +637,16 @@ export default function TableroScreen({route}) {
                 </View>
             </View>
 
-
+            {/* funciona bien, muestra tantos tokens de jugadores como hay */}
             {
-            listaJugadores.map((value, index) => (
+                jugadores.map((value, index) => (
                 <Image
                 key={index}
                 style={stylestoken[`token${index+1}`]}
-                source={require('../../assets/token1.png')}   
+                source={tokens[`token${index+1}`]}  
                 />
             ))
             }
-
-            <Image
-            style={stylestoken.token1}
-            source={require('../../assets/token1.png')}   
-            />
-            <Image
-            style={stylestoken.token2}
-            source={require('../../assets/token2.png')}   
-            />
-            <Image
-            style={stylestoken.token3}
-            source={require('../../assets/token3.png')}   
-            />
-            <Image
-            style={stylestoken.token4}
-            source={require('../../assets/token4.png')}   
-            />
-            <Image
-            style={stylestoken.token5}
-            source={require('../../assets/token5.png')}   
-            />
-            <Image
-            style={stylestoken.token6}
-            source={require('../../assets/token6.png')}   
-            />
-            <Image
-            style={stylestoken.token7}
-            source={require('../../assets/token7.png')}   
-            />
-            <Image
-            style={stylestoken.token8}
-            source={require('../../assets/token8.png')}   
-            />
 
         </View>
 
