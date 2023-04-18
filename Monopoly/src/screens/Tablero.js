@@ -32,6 +32,17 @@ import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
 
+const tokens = {
+    token1: require('../../assets/token1.png'),
+    token2: require('../../assets/token2.png'),
+    token3: require('../../assets/token3.png'),
+    token4: require('../../assets/token4.png'),
+    token5: require('../../assets/token5.png'),
+    token6: require('../../assets/token6.png'),
+    token7: require('../../assets/token7.png'),
+    token8: require('../../assets/token8.png'),
+}
+
 const styles = StyleSheet.create({
     pantalla:{
         flex:1,
