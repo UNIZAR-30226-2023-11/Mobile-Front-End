@@ -756,7 +756,6 @@ export default function TableroScreen({route}) {
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>
             </View>
-
             {/* funciona bien, muestra tantos tokens de jugadores como hay */}
             {
                 jugadores.map((value, index) => (
@@ -767,7 +766,6 @@ export default function TableroScreen({route}) {
                 />
             ))
             }
-
         </View>
 
         <View style={styles.info}>
