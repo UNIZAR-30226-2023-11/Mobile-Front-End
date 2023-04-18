@@ -9,14 +9,25 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores } from '../url/partida';
+import { lanzarDados, listaJugadores, infoAsignatura } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import Die from '../components/Die';
 
-import Carta from '../components/MonopolyCard';
+import {
+    Asignatura_1, 
+    Asignatura_2, 
+    Asignatura_3,
+    Asignatura_4,
+    Asignatura_5,
+    Asignatura_6,
+    Asignatura_7,
+    Asignatura_8,
+    Recurso,
+    Evento
+} from '../components/MonopolyCard';
 import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
@@ -182,6 +193,7 @@ const styles = StyleSheet.create({
 export default function TableroScreen({route}) {
 
     //const idPartida = route.params.idPartida;
+    const username = route.params.user;
     const [idPartida, setIdPartida] = React.useState(route.params.idPartida);
 
     const [die1, setDie1] = React.useState(1);
@@ -219,9 +231,10 @@ export default function TableroScreen({route}) {
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
-    const [card, setCard] = React.useState("");
+    const [info, setInfo] = React.useState(false);
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
+    const [carta,setCarta] = React.useState();
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -285,6 +298,7 @@ export default function TableroScreen({route}) {
     function Dice(){
 
         function roll(){
+            console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
                 method: 'POST',
@@ -293,7 +307,7 @@ export default function TableroScreen({route}) {
                 })
                 .then((response) => {
                   if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status);
+                    throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
                   }
                   return response.json();
                 })
@@ -305,7 +319,7 @@ export default function TableroScreen({route}) {
                 })
                 .catch((error) => {
                 //Error
-                alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
                 console.error(error);
                 });
         }
@@ -359,7 +373,7 @@ export default function TableroScreen({route}) {
                     }
                     break;
             }
-            setCompra(true);
+            setInfo(true);
         },[]);
 
         const actualizarDinero = useCallback(() => {
@@ -370,7 +384,7 @@ export default function TableroScreen({route}) {
             })
             .then((response) => {
               if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status);
+                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
               }
               return response.json();
             })
@@ -382,7 +396,7 @@ export default function TableroScreen({route}) {
             })
             .catch((error) => {
             //Error
-            alert(JSON.stringify(error));
+            //alert(JSON.stringify(error));
             console.error(error);
             });},[]);
 
@@ -395,23 +409,122 @@ export default function TableroScreen({route}) {
                     if( found === undefined){
                         let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
                         if( found === undefined){
-                            console.log("casilla normal");
-                            setCard("Carta_"+casilla_horizontal+"_"+casilla_vertical);
-                            setModalCompraVisible(true);
+                            //console.log("casilla normal");
+                            const response = fetch(infoAsignatura,{
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({"coordenadas":{"h": casilla_vertical,"v": casilla_horizontal}})
+                            })
+                            .then((response) => {
+                                if(response.status != 200){
+                                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                //console.log(data);
+                                if(data.casillaInfo.tipo == 'A'){
+                                    console.log("asignatura ", data.casillaInfo.cuatrimestre);
+                                    switch(data.casillaInfo.cuatrimestre){
+                                        case 1:
+                                            setCarta(<Asignatura_1
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 2:
+                                            setCarta(<Asignatura_2
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 3:
+                                            setCarta(
+                                            <Asignatura_3
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 4:
+                                            setCarta(                                            <Asignatura_4
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 5:
+                                            setCarta(                                            <Asignatura_5
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break;  
+                                        case 6:
+                                            setCarta(                                            <Asignatura_6
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 7:
+                                            setCarta(                                            <Asignatura_7
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                        case 8:
+                                            setCarta(                                            <Asignatura_8
+                                                title={data.casillaInfo.nombre}
+                                                coste={data.casillaInfo.precioCompra}
+                                                description={""}
+                                            />);
+                                            break; 
+                                    }
+                                }
+                                else if(data.casillaInfo.tipo == 'F'){
+                                    //console.log("evento");
+                                    setCarta(                                    <Evento
+                                        title={data.casillaInfo.nombre}
+                                        coste={data.casillaInfo.precioCompra}
+                                        description={""}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                else if(data.casillaInfo.tipo == 'I'){
+                                    //console.log("recurso");
+                                    setCarta(                                   <Recurso
+                                        title={data.casillaInfo.nombre}
+                                        coste={data.casillaInfo.precioCompra}
+                                        description={""}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                setCompra(true);
+                                //console.log(carta);
+                            })
+                            .catch((error) => {
+                                //Error
+                                //alert(JSON.stringify(error));
+                                console.error(error);
+                            });
                         }else{
-                            console.log("pagos");
+                            //console.log("pagos");
                             //accion
                         }
                     }else{
-                        console.log("esquina");
+                        //console.log("esquina");
                         //accion
                     }
                 }else{
-                    console.log("boletin");
+                    //console.log("boletin");
                     //Obtener carta boletin
                 }
             }else{
-                console.log("suerte");
+                //console.log("suerte");
                 //Obtener carta suerte  
             }
         },[]);
@@ -424,8 +537,15 @@ export default function TableroScreen({route}) {
         },[rolling]);
 
         useEffect(() => {
-            if(compra){
+            if(info){
+                setInfo(false);
                 infoCasilla();
+            }
+        },[info]);
+
+        useEffect(() => {
+            if(compra){
+                setModalCompraVisible(true);
             }
         },[compra]);
 
@@ -684,15 +804,25 @@ export default function TableroScreen({route}) {
             </View>
         </View>
         <StyledModalCompra
-            InfoCarta = {() => Carta({casilla_horizontal, casilla_vertical})}
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
-            onClose={() => {setCompra(false);setModalCompraVisible({modalCompraVisible: !modalCompraVisible});setActualizarPlayers(true);}}
+            c_hor={casilla_horizontal}
+            c_ver={casilla_vertical}
+            username={username}
+            idPartida={idPartida}
+            InfoCarta = {carta}
+            onClose={() => {
+                setCompra(false);
+                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
+                setActualizarPlayers(true);
+            }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
                 setActualizarPlayers(true);
             }}
         >
