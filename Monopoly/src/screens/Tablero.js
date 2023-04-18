@@ -754,10 +754,18 @@ export default function TableroScreen({route}) {
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>
             </View>
-            <Image
-            style={stylestoken.token1}
-            source={require('../../assets/token.png')}   
-            />
+            
+            {/* funciona bien, muestra tantos tokens de jugadores como hay */}
+            {
+                jugadores.map((value, index) => (
+                <Image
+                key={index}
+                style={stylestoken[`token${index+1}`]}
+                source={tokens[`token${index+1}`]}  
+                />
+            ))
+            }
+            
         </View>
         <View style={styles.info}>
             <View style={styles.jugadores}>
