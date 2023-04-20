@@ -9,7 +9,7 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores, infoAsignatura } from '../url/partida';
+import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -229,12 +229,16 @@ export default function TableroScreen({route}) {
 
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
+    const [modalAsignaturaCompradaVisible, setModalAsignaturaCompradaVisible] = React.useState(false);
     const [compra, setCompra] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
+    const [comprobar, setComprobar] = React.useState(false);
     const [info, setInfo] = React.useState(false);
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
     const [carta,setCarta] = React.useState();
+    const [propietario, setPropietario] = React.useState("");
+    const [pago, setPago] = React.useState(0);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -373,7 +377,7 @@ export default function TableroScreen({route}) {
                     }
                     break;
             }
-            setInfo(true);
+            setComprobar(true);
         },[]);
 
         const actualizarDinero = useCallback(() => {
@@ -399,6 +403,37 @@ export default function TableroScreen({route}) {
             //alert(JSON.stringify(error));
             console.error(error);
             });},[]);
+
+        const comprobarAsignatura = useCallback(() => {
+            const response = fetch(casillaComprada,{
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({  "username": username,
+                                        "coordenadas":{"h": casilla_horizontal,"v": casilla_vertical},
+                                        "idPartida": idPartida})
+            })
+            .then((response) => {
+                if(response.status != 200){
+                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data.jugador);
+                console.log(data.dinero)
+                if(data.jugador!=null && data.dinero!=null){
+                    console.log("comprada");
+                    console.log(data);
+                    setPropietario(data.jugador);
+                    setPago(data.dinero);
+                    setModalAsignaturaCompradaVisible(true);
+                }
+                else{
+                    console.log("no comprada");                
+                    setInfo(true);
+                }
+            })
+        });
 
         const infoCasilla = useCallback(() => {
             let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
@@ -537,6 +572,13 @@ export default function TableroScreen({route}) {
         },[rolling]);
 
         useEffect(() => {
+            if(comprobar){
+                setComprobar(false);
+                comprobarAsignatura();
+            }
+        },[comprobar]);
+
+        useEffect(() => {
             if(info){
                 setInfo(false);
                 infoCasilla();
@@ -545,6 +587,7 @@ export default function TableroScreen({route}) {
 
         useEffect(() => {
             if(compra){
+                setCompra(false);
                 setModalCompraVisible(true);
             }
         },[compra]);
@@ -823,8 +866,19 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 setActualizarPlayers(true);
             }}
-        >
-        </StyledModalCompra>
+        />
+        <StyledModal
+            style={{height: '30%'}}
+            title="Casilla comprada"
+            text={"La casilla en la que ha caído pertenece a "+{propietario}+". Le debe pagar "+{pago}+"."}
+            onClose = { () => {setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})}}
+            visible={modalAsignaturaCompradaVisible}
+            onRequestClose={() => {
+                //Alert.alert('Modal has been closed.');
+                console.log("cerrando modal asignatura comprada");
+                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+            }} 
+        />
     </View>
     );
 }

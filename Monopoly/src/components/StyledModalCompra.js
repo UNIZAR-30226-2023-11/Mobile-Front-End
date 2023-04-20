@@ -97,7 +97,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                             method: 'PUT',
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({  "username": username,
-                                                    "coordenadas":{"h": c_ver,"v": c_hor},
+                                                    "coordenadas":{"h": c_hor,"v": c_ver},
                                                     "idPartida": idPartida})
                             })
                             .then((response) => {
