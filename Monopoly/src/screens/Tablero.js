@@ -939,7 +939,9 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                //TURNO ACTUAL
                 setTurnoActual(1);
+                //setTurnoActual((turnoActual + 1) % totalJugadores);
                 console.log(turnoActual);
             }}
             visible={modalCompraVisible}
@@ -948,6 +950,7 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                // CAMBIO TURNO
                 setTurnoActual(1);
                 //setTurnoActual((turnoActual + 1) % totalJugadores);
                 console.log(turnoActual);
@@ -963,6 +966,10 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal asignatura comprada");
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+                // CAMBIO TURNO
+                setTurnoActual(1);
+                //setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log(turnoActual);
             }} 
         />
         <StyledModal
@@ -975,6 +982,10 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal suerte");
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
+                // CAMBIO TURNO
+                setTurnoActual(1);
+                //setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log(turnoActual);
             }} 
         />
         <StyledModal
@@ -987,6 +998,10 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                // CAMBIO TURNO
+                setTurnoActual(1);
+                //setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log(turnoActual);
             }} 
         />
     </View>
