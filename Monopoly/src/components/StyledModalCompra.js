@@ -92,7 +92,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         style={styles.boton}
                         title="Comprar"
                         onPress={() => {
-                            console.log("comprando..");
+                            console.log("comprando..", c_hor, c_ver);
                             const response =  fetch(comprarAsignatura, {
                             method: 'PUT',
                             headers: {'Content-Type': 'application/json'},

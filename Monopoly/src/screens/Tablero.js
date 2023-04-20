@@ -447,8 +447,12 @@ export default function TableroScreen({route}) {
                                 else{
                                     console.log("no comprada");                
                                     setInfo(true);
-                                }
-                            })
+                            }})
+                            .catch((error) => {
+                                //Error
+                                //alert(JSON.stringify(error));
+                                console.error(error);
+                            });
                         }
                         else{
                             //console.log("pagos");
@@ -475,6 +479,11 @@ export default function TableroScreen({route}) {
                     .then(data => {
                         console.log(data);
 
+                    })
+                    .catch((error) => {
+                        //Error
+                        //alert(JSON.stringify(error));
+                        console.error(error);
                     });
                 }
             }else{
@@ -493,6 +502,11 @@ export default function TableroScreen({route}) {
                 .then(data => {
                     console.log(data);
 
+                })
+                .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
                 }); 
             }
         });
@@ -501,7 +515,7 @@ export default function TableroScreen({route}) {
             const response = fetch(infoAsignatura,{
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"coordenadas":{"h": casilla_vertical,"v": casilla_horizontal}})
+                body: JSON.stringify({"coordenadas":{"h": casilla_horizontal,"v": casilla_vertical}})
             })
             .then((response) => {
                 if(response.status != 200){

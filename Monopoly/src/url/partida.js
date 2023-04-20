@@ -23,7 +23,7 @@
  export const casillaComprada = 'http://10.0.2.2:8080/partida/casilla' //put
 
 // export const tarjetaSuerte = 'http://nerks.net:7003/partida/tarjeta'
-export const tarjetaSuerte = 'http://10.0.2.2:8080/partida/tarjeta/suerte'
+export const tarjetaSuerte = 'http://10.0.2.2:8080/partida/tarjeta/:suerte'
 
 // export const tarjetaBoletin = 'http://nerks.net:7003/partida/tarjeta/boletin'
-export const tarjetaBoletin = 'http://10.0.2.2:8080/partida/tarjeta/boletin'
+export const tarjetaBoletin = 'http://10.0.2.2:8080/partida/tarjeta/:boletin'
