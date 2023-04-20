@@ -245,6 +245,9 @@ export default function TableroScreen({route}) {
     const [pago, setPago] = React.useState(0);
     const [boletin, setBoletin] = React.useState([""]);
     const [suerte, setSuerte] = React.useState([""]);
+    //variable para registrar el turno del jugador
+    let [turnoActual, setTurnoActual] = React.useState(0);
+    const totalJugadores = jugadores.length;
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -308,6 +311,11 @@ export default function TableroScreen({route}) {
     function Dice(){
 
         function roll(){
+            //si no es el turno del jugador
+            if (turnoActual != jugador){
+                alert("¡No es tu turno de lanzar los dados!");
+                return;
+            }
             console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
@@ -334,7 +342,7 @@ export default function TableroScreen({route}) {
                 });
         }
         
-        const avanzar = useCallback(() => {
+        const avanzar = useCallback((jugador) => {
             if(die1==die2){
                 setDobles(true);
             }
@@ -639,7 +647,7 @@ export default function TableroScreen({route}) {
         useEffect(() => {
             if(rolling){
                 setRolling(false);
-                avanzar();
+                avanzar(turnoActual);
             };            
         },[rolling]);
 
@@ -673,6 +681,7 @@ export default function TableroScreen({route}) {
     
         return(
             <View>
+                {/* como pasar info del jugador ??? */}
                 <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {roll();}}>
                     <Die face = {die1}></Die>
                     <Die face = {die2}></Die>
@@ -930,6 +939,8 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                setTurnoActual(1);
+                console.log(turnoActual);
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
@@ -937,6 +948,9 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                setTurnoActual(1);
+                //setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log(turnoActual);
             }}
         />
         <StyledModal
