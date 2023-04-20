@@ -9,7 +9,7 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada, tarjetaBoletin, tarjetaSuerte } from '../url/partida';
+import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada, tarjetaAleatoria } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
     },
     header:{
         flex: 0.3,
+        marginTop:'5%',
         alignItems:'center',
     },
     tablero:{
         flex:3.5,
         flexDirection: 'column',
-        marginTop:'10%'
+        marginTop:'5%'
     },
     info:{
         flex:1,
@@ -230,6 +231,9 @@ export default function TableroScreen({route}) {
     const [modalAsignaturasVisible, setModalAsignaturasVisible] = React.useState(false);
     const [modalCompraVisible, setModalCompraVisible] = React.useState(false);
     const [modalAsignaturaCompradaVisible, setModalAsignaturaCompradaVisible] = React.useState(false);
+    const [modalSuerteVisible, setModalSuerteVisible] = React.useState(false);
+    const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
+
     const [compra, setCompra] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
     const [comprobar, setComprobar] = React.useState(false);
@@ -239,8 +243,8 @@ export default function TableroScreen({route}) {
     const [carta,setCarta] = React.useState();
     const [propietario, setPropietario] = React.useState("");
     const [pago, setPago] = React.useState(0);
-    const [descBoletin, setDescBoletin] = React.useState("");
-    const [descSuerte, setDescSuerte] = React.useState("");
+    const [boletin, setBoletin] = React.useState([""]);
+    const [suerte, setSuerte] = React.useState([""]);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -465,10 +469,13 @@ export default function TableroScreen({route}) {
                 }else{
                     //console.log("boletin");
                     console.log("obteniendo boletín");
-                    const response = fetch(tarjetaBoletin,{
+                    const response = fetch(tarjetaAleatoria,{
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({"idPartida": idPartida})
+                        body: JSON.stringify({  "idPartida": idPartida,
+                                                "username": username,
+                                                "tipo": "boletin"        
+                                            })
                     })
                     .then((response) => {
                         if(response.status != 200){
@@ -477,8 +484,11 @@ export default function TableroScreen({route}) {
                         return response.json();
                     })
                     .then(data => {
-                        console.log(data);
-
+                        console.log(data[0]);
+                        let aux = [data[0].nombre, data[0].descripcion];
+                        console.log(aux);
+                        setBoletin(aux);
+                        setModalBoletinVisible(true);
                     })
                     .catch((error) => {
                         //Error
@@ -487,11 +497,14 @@ export default function TableroScreen({route}) {
                     });
                 }
             }else{
-                console.log("obteniendo suerte");
-                const response = fetch(tarjetaSuerte,{
+                console.log("obteniendo suerte", tarjetaAleatoria);
+                const response = fetch(tarjetaAleatoria,{
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
+                    body: JSON.stringify({  "idPartida": idPartida,
+                                            "username": username,
+                                            "tipo": "suerte"        
+                                        })
                 })
                 .then((response) => {
                     if(response.status != 200){
@@ -500,8 +513,11 @@ export default function TableroScreen({route}) {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
-
+                    console.log(data[0]);
+                    let aux = [data[0].nombre, data[0].descripcion];
+                    console.log(aux);
+                    setSuerte(aux);
+                    setModalSuerteVisible(true);
                 })
                 .catch((error) => {
                     //Error
@@ -669,7 +685,7 @@ export default function TableroScreen({route}) {
     return (
         <View style={styles.pantalla}>
         <View style={styles.header}>
-            <StyledText bold big purple> MONOPOLY </StyledText>
+            <StyledText bold big> PARTIDA #{idPartida} </StyledText>
         </View>
         <View style={styles.tablero}>
             <View style={styles.curso2}>
@@ -933,6 +949,30 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal asignatura comprada");
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+            }} 
+        />
+        <StyledModal
+            style={{height: '30%'}}
+            title={suerte[0]}
+            text={suerte[1]}
+            onClose = { () => {setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})}}
+            visible={modalSuerteVisible}
+            onRequestClose={() => {
+                //Alert.alert('Modal has been closed.');
+                console.log("cerrando modal suerte");
+                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
+            }} 
+        />
+        <StyledModal
+            style={{height: '30%'}}
+            title={boletin[0]}
+            text={boletin[1]}
+            onClose = { () => {setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible})}}
+            visible={modalBoletinVisible}
+            onRequestClose={() => {
+                //Alert.alert('Modal has been closed.');
+                console.log("cerrando modal boletín");
+                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
             }} 
         />
     </View>
