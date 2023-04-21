@@ -428,7 +428,7 @@ export default function TableroScreen({route}) {
                 });
         }
         
-        const avanzar = useCallback(() => {
+        const avanzar = useCallback((jugador) => {
             if(die1==die2){
                 setDobles(true);
             }
@@ -733,7 +733,7 @@ export default function TableroScreen({route}) {
         useEffect(() => {
             if(rolling){
                 setRolling(false);
-                avanzar();
+                avanzar(turnoActual);
             };            
         },[rolling]);
 
