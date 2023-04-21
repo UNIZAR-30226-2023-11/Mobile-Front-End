@@ -32,6 +32,66 @@ import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
 
+const jugadores = {
+    jugador1: {
+      token: require('../../assets/token1.png'),
+      casilla_horizontal: 0,
+      casilla_vertical: 0,
+      curso: 1,
+      dobles: false,
+    },
+    jugador2: {
+      token: require('../../assets/token2.png'),
+      casilla_horizontal: 0,
+      casilla_vertical: 0,
+      curso: 1,
+      dobles: false,
+    },
+    jugador3: {
+        token: require('../../assets/token2.png'),
+        casilla_horizontal: 0,
+        casilla_vertical: 0,
+        curso: 1,
+        dobles: false,
+      },
+    jugador4: {
+      token: require('../../assets/token2.png'),
+      casilla_horizontal: 0,
+      casilla_vertical: 0,
+      curso: 1,
+      dobles: false,
+    },
+    jugador5: {
+        token: require('../../assets/token2.png'),
+        casilla_horizontal: 0,
+        casilla_vertical: 0,
+        curso: 1,
+        dobles: false,
+      },
+    jugador6: {
+      token: require('../../assets/token2.png'),
+      casilla_horizontal: 0,
+      casilla_vertical: 0,
+      curso: 1,
+      dobles: false,
+    }, 
+    jugador7: {
+        token: require('../../assets/token2.png'),
+        casilla_horizontal: 0,
+        casilla_vertical: 0,
+        curso: 1,
+        dobles: false,
+      }, 
+    jugador8: {
+        token: require('../../assets/token2.png'),
+        casilla_horizontal: 0,
+        casilla_vertical: 0,
+        curso: 1,
+        dobles: false,
+      },                
+  }
+
+
 const tokens = {
     token1: require('../../assets/token1.png'),
     token2: require('../../assets/token2.png'),
@@ -246,8 +306,10 @@ export default function TableroScreen({route}) {
     const [boletin, setBoletin] = React.useState([""]);
     const [suerte, setSuerte] = React.useState([""]);
     //variable para registrar el turno del jugador
-    let [turnoActual, setTurnoActual] = React.useState(0);
-    const totalJugadores = jugadores.length;
+    //let [turnoActual, setTurnoActual] = React.useState(0);
+    let [jugadorActual, setJugadorActual] = React.useState("");
+
+    //const totalJugadores = jugadores.length;
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -308,16 +370,42 @@ export default function TableroScreen({route}) {
         }
     })
 
+    function siguienteTurno(){
+
+        const response =  fetch(siguienteTurno, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+              if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+              }
+              return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setJugadorActual(data.jugador);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+
     function Dice(){
 
         function roll(){
             //si no es el turno del jugador
-            if (turnoActual != jugador){
+            if (jugadorActual != username){
                 alert("¡No es tu turno de lanzar los dados!");
                 return;
             }
+            console.log("username: " + username);
+            console.log("jugadorActual: " + jugadorActual);
             console.log("rolling dice...");
             setDobles(false);
+
             const response =  fetch(lanzarDados, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -336,13 +424,11 @@ export default function TableroScreen({route}) {
                     setRolling(true);
                 })
                 .catch((error) => {
-                //Error
-                //alert(JSON.stringify(error));
-                console.error(error);
+                    console.error(error);
                 });
         }
         
-        const avanzar = useCallback((jugador) => {
+        const avanzar = useCallback(() => {
             if(die1==die2){
                 setDobles(true);
             }
@@ -647,7 +733,7 @@ export default function TableroScreen({route}) {
         useEffect(() => {
             if(rolling){
                 setRolling(false);
-                avanzar(turnoActual);
+                avanzar();
             };            
         },[rolling]);
 
@@ -939,8 +1025,8 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
-                setTurnoActual(1);
-                console.log(turnoActual);
+                //CAMBIO TURNO
+                siguienteTurno();
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
@@ -948,9 +1034,8 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //CAMBIO TURNO
+                siguienteTurno();
             }}
         />
         <StyledModal
@@ -963,6 +1048,8 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal asignatura comprada");
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+                //CAMBIO TURNO
+                siguienteTurno();
             }} 
         />
         <StyledModal
@@ -975,6 +1062,8 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal suerte");
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
+                //CAMBIO TURNO
+                siguienteTurno();
             }} 
         />
         <StyledModal
@@ -987,6 +1076,8 @@ export default function TableroScreen({route}) {
                 //Alert.alert('Modal has been closed.');
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                //CAMBIO TURNO
+                siguienteTurno();
             }} 
         />
     </View>
