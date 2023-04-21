@@ -32,64 +32,64 @@ import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
 
-const jugadores = {
-    jugador1: {
-      token: require('../../assets/token1.png'),
-      casilla_horizontal: 0,
-      casilla_vertical: 0,
-      curso: 1,
-      dobles: false,
+let player = [
+    {
+        token: require('../../assets/token1.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
+        curso: 1,
+        dobles: false,
     },
-    jugador2: {
-      token: require('../../assets/token2.png'),
-      casilla_horizontal: 0,
-      casilla_vertical: 0,
-      curso: 1,
-      dobles: false,
-    },
-    jugador3: {
+    {
         token: require('../../assets/token2.png'),
-        casilla_horizontal: 0,
-        casilla_vertical: 0,
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
+        curso: 1,
+        dobles: false,
+    },
+    {
+        token: require('../../assets/token3.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
+        curso: 1,
+        dobles: false,
+    },
+    {
+        token: require('../../assets/token4.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
+        curso: 1,
+        dobles: false,
+    },
+    {
+        token: require('../../assets/token5.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
         curso: 1,
         dobles: false,
       },
-    jugador4: {
-      token: require('../../assets/token2.png'),
-      casilla_horizontal: 0,
-      casilla_vertical: 0,
-      curso: 1,
-      dobles: false,
-    },
-    jugador5: {
-        token: require('../../assets/token2.png'),
-        casilla_horizontal: 0,
-        casilla_vertical: 0,
+    {
+        token: require('../../assets/token6.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
         curso: 1,
         dobles: false,
-      },
-    jugador6: {
-      token: require('../../assets/token2.png'),
-      casilla_horizontal: 0,
-      casilla_vertical: 0,
-      curso: 1,
-      dobles: false,
     }, 
-    jugador7: {
-        token: require('../../assets/token2.png'),
-        casilla_horizontal: 0,
-        casilla_vertical: 0,
+    {
+        token: require('../../assets/token7.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
         curso: 1,
         dobles: false,
-      }, 
-    jugador8: {
-        token: require('../../assets/token2.png'),
-        casilla_horizontal: 0,
-        casilla_vertical: 0,
+    }, 
+    {
+        token: require('../../assets/token8.png'),
+        casilla_horizontal: 10,
+        casilla_vertical: 10,
         curso: 1,
         dobles: false,
-      },                
-  }
+    },                
+    ];
 
 
 const tokens = {
@@ -264,8 +264,6 @@ export default function TableroScreen({route}) {
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
-    let tokensJugadores = [(10,10), (10,10), (10,10), (10,10), (10,10), (10, 10)]
-    //pedir a la base de datos
     
     const casillas_suerte=[
         {horizontal: 3, vertical:10},
@@ -305,11 +303,11 @@ export default function TableroScreen({route}) {
     const [pago, setPago] = React.useState(0);
     const [boletin, setBoletin] = React.useState([""]);
     const [suerte, setSuerte] = React.useState([""]);
-    //variable para registrar el turno del jugador
-    //let [turnoActual, setTurnoActual] = React.useState(0);
     let [jugadorActual, setJugadorActual] = React.useState("");
 
-    //const totalJugadores = jugadores.length;
+    let players = {};
+
+
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -428,53 +426,78 @@ export default function TableroScreen({route}) {
                 });
         }
         
-        const avanzar = useCallback((jugador) => {
+        //actualiza las variables de cada jugador
+        const avanzar = useCallback(() => {
+            //indice jugador
+            let iJugador = jugadores.indexOf(jugadorActual);
             if(die1==die2){
                 setDobles(true);
             }
-            switch (curso) {
+            switch (player[iJugador].curso) {
                 case 1:
-                    if (casilla_horizontal-(die1+die2)<=0){
-                        setCasillaHorizontal(0)
-                        setCasillaVertical(10-Math.abs(casilla_horizontal-(die1+die2)))
-                        setCurso(2);
+                    if ((player[iJugador].casilla_horizontal-(die1+die2))<=0){
+                        player[iJugador].casilla_vertical = 10-Math.abs(casilla_horizontal-(die1+die2));
+                        //setCasillaVertical(10-Math.abs(casilla_horizontal-(die1+die2)))
+                        player[iJugador].curso = 2;
+                        //setCurso(2);
                     }
-                    else{
-                        setCasillaHorizontal(casilla_horizontal-(die1+die2));
+                    else{ //se refiere a la casilla anteior del jugador, no?? asi ok
+                        player[iJugador].casilla_horizontal -= (die1+die2);
+                        //setCasillaHorizontal(casilla_horizontal-(die1+die2));
                     }
+                    console.log("Casilla vertical: " + player[iJugador].casilla_vertical);
+                    console.log("Casilla horizontal: " + player[iJugador].casilla_horizontal);
                     break;
             
                 case 2:
-                    if (casilla_vertical-(die1+die2)<=0){
-                        setCasillaVertical(0);
-                        setCasillaHorizontal(Math.abs(casilla_vertical-(die1+die2)));
-                        setCurso(3);
+                    if ((player[iJugador].casilla_vertical-(die1+die2))<=0){
+                        player[iJugador].casilla_vertical = 0;
+                        //setCasillaVertical(0);
+                        player[iJugador].casilla_horizontal = player[iJugador].casilla_vertical-(die1+die2);
+                        //setCasillaHorizontal(Math.abs(casilla_vertical-(die1+die2)));
+                        player[iJugador].curso = 3;
+                        //setCurso(3);
                     }
                     else{
-                        setCasillaVertical(casilla_vertical-(die1+die2));
+                        player[iJugador].casilla_vertical -= (die1+die2);
+                        //setCasillaVertical(casilla_vertical-(die1+die2));
                     }
+                    console.log("Casilla vertical: " + player[iJugador].casilla_vertical);
+                    console.log("Casilla horizontal: " + player[iJugador].casilla_horizontal);
                     break;
                 
                 case 3:
-                    if(casilla_horizontal+(die1+die2)>=10){
-                        setCasillaHorizontal(10);
-                        setCasillaVertical(Math.abs(casilla_horizontal+(die1+die2)-10));
-                        setCurso(4);
+                    if((player[iJugador].casilla_horizontal+(die1+die2))>=10){
+                        player[iJugador].casilla_horizontal = 10;
+                        //setCasillaHorizontal(10);
+                        player[iJugador].casilla_vertical = player[iJugador].casilla_horizontal + (die1+die2) - 10;
+                        //setCasillaVertical(Math.abs(casilla_horizontal+(die1+die2)-10));
+                        player[iJugador].curso = 4;
+                        //setCurso(4);
                     }
                     else{
-                        setCasillaHorizontal(casilla_horizontal+(die1+die2));
+                        player[iJugador].casilla_horizontal += (die1+die2);
+                        //setCasillaHorizontal(casilla_horizontal+(die1+die2));
                     }
+                    console.log("Casilla vertical: " + player[iJugador].casilla_vertical);
+                    console.log("Casilla horizontal: " + player[iJugador].casilla_horizontal);
                     break;
 
                 case 4:
-                    if(casilla_vertical+(die1+die2)>=10){
-                        setCasillaVertical(10);
-                        setCasillaHorizontal(10-Math.abs(casilla_vertical+(die1+die2)-10));
-                        setCurso(1);
+                    if((player[iJugador].casilla_vertical+(die1+die2))>=10){
+                        player[iJugador].casilla_vertical = 10;
+                        //setCasillaVertical(10);
+                        player[iJugador].casilla_horizontal = (10-Math.abs(player[iJugador].casilla_vertical+(die1+die2)-10));
+                        //setCasillaHorizontal(10-Math.abs(casilla_vertical+(die1+die2)-10));
+                        player[iJugador].curso = 1;
+                        //setCurso(1);
                     }
                     else{
-                        setCasillaVertical(casilla_vertical+(die1+die2));
+                        player[iJugador].casilla_vertical += (die1+die2);
+                        //setCasillaVertical(casilla_vertical+(die1+die2));
                     }
+                    console.log("Casilla vertical: " + player[iJugador].casilla_vertical);
+                    console.log("Casilla horizontal: " + player[iJugador].casilla_horizontal);
                     break;
             }
             setComprobar(true);
@@ -733,7 +756,7 @@ export default function TableroScreen({route}) {
         useEffect(() => {
             if(rolling){
                 setRolling(false);
-                avanzar(turnoActual);
+                avanzar();
             };            
         },[rolling]);
 
@@ -968,13 +991,25 @@ export default function TableroScreen({route}) {
             </View>
             {/* funciona bien, muestra tantos tokens de jugadores como hay */}
             {
-                jugadores.map((value, index) => (
-                <Image
-                key={index}
-                style={stylestoken[`token${index+1}`]}
-                source={tokens[`token${index+1}`]}  
-                />
-            ))
+                jugadores.map((value, index) => {
+                    //asocia un token a cada jugador
+                    players[`jugador${index+1}`].nombre = value;
+                    players[index] = {
+                        nombre: value,
+                        token: tokens[`token${index+1}`], 
+                        casilla_horizontal: 10,
+                        casilla_vertical: 10,
+                        curso: 1,
+                        dobles: false,
+                };
+                    return (
+                    <Image
+                    key={index}
+                    style={stylestoken[`token${index+1}`]}
+                    source={tokens[`token${index+1}`]}  
+                    />
+                    )
+                })
             }
         </View>
 
