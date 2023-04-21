@@ -527,21 +527,21 @@ export default function TableroScreen({route}) {
             console.error(error);
             });},[]);
 
-        const comprobarAsignatura = useCallback(() => {
-            let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+        const comprobarAsignatura = useCallback((index) => {
+            let found = casillas_suerte.find(element => element.horizontal===player[index].casilla_horizontal && element.vertical===player[index].casilla_vertical);
             if(found === undefined){
-                let found = casillas_boletin.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                let found = casillas_boletin.find(element => element.horizontal===player[index].casilla_horizontal && element.vertical===player[index].casilla_vertical);
                 if(found === undefined){
-                    let found = casillas_esquinas.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                    let found = casillas_esquinas.find(element => element.horizontal===player[index].casilla_horizontal && element.vertical===player[index].casilla_vertical);
                     if( found === undefined){
-                        let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                        let found = casillas_pagos.find(element => element.horizontal===player[index].casilla_horizontal && element.vertical===player[index].casilla_vertical);
                         if( found === undefined){
-                            console.log("comprobando asignatura", casilla_horizontal, casilla_vertical);
+                            console.log("comprobando asignatura", player[index].casilla_horizontal, player[index].casilla_vertical);
                             const response = fetch(casillaComprada,{
                                 method: 'PUT',
                                 headers: {'Content-Type': 'application/json'},
                                 body: JSON.stringify({  "username": username,
-                                                        "coordenadas":{"h": casilla_horizontal,"v": casilla_vertical},
+                                                        "coordenadas":{"h": player[index].casilla_horizontal,"v": player[index].casilla_vertical},
                                                         "idPartida": idPartida})
                             })
                             .then((response) => {
@@ -763,7 +763,7 @@ export default function TableroScreen({route}) {
         useEffect(() => {
             if(comprobar){
                 setComprobar(false);
-                comprobarAsignatura();
+                comprobarAsignatura(jugadores.indexOf(jugadorActual));
             }
         },[comprobar]);
 
