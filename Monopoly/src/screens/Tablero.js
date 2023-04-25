@@ -345,7 +345,7 @@ export default function TableroScreen({route}) {
                     //setRolling(true);
                     let aux = tokensJugadores;
                     aux[turnoActual].horizontal = data.coordenadas.h;
-                    aux [turnoActual].vertical = data.coordenadas.v;
+                    aux[turnoActual].vertical = data.coordenadas.v;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
