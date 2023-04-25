@@ -317,7 +317,8 @@ export default function TableroScreen({route}) {
         function roll(){
             //si no es el turno del jugador
             if (jugadores[turnoActual] != username){
-                alert("¡No es tu turno de lanzar los dados!");
+                alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
+                //funcion que devuelva algo cuando sea mi turno
                 return;
             }
             console.log("rolling dice...");
@@ -437,6 +438,15 @@ export default function TableroScreen({route}) {
                     }else{
                         console.log("esquina");
                         //accion
+                        if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
+                            console.log("carcel");
+                            alert("Te toca ir a Julio");
+                            let aux = tokensJugadores;
+                            aux[turnoActual].horizontal = 0;
+                            aux[turnoActual].vertical = 10;
+                            console.log(aux);
+                            setTokensJugador(aux);
+                        }
                     }
                 }else{
                     //console.log("boletin");
@@ -622,8 +632,8 @@ export default function TableroScreen({route}) {
                 })
                 .then(data => {
                     setTurnoActual((turnoActual + 1) % totalJugadores);
-                    console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
-                    console.log(data);
+                    //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
+                    //console.log(data);
                 })
                 .catch((error) => {
                 //Error
