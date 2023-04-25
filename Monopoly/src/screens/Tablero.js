@@ -199,10 +199,6 @@ export default function TableroScreen({route}) {
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
-    //const [casilla_horizontal, setCasillaHorizontal]=React.useState(10);
-    //const [casilla_vertical, setCasillaVertical]=React.useState(10);
-    const [curso, setCurso] = React.useState(1);
-    const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
     const [tokensJugadores, setTokensJugador] = React.useState([
         {horizontal: 10, vertical: 10}, 
@@ -359,58 +355,6 @@ export default function TableroScreen({route}) {
                 console.error(error);
                 });
         }
-        /*
-        const avanzar = useCallback(() => {
-            if(die1==die2){
-                setDobles(true);
-            }
-            switch (curso) {
-                case 1:
-                    if (casilla_horizontal-(die1+die2)<=0){
-                        setCasillaHorizontal(0)
-                        setCasillaVertical(10-Math.abs(casilla_horizontal-(die1+die2)))
-                        setCurso(2);
-                    }
-                    else{
-                        setCasillaHorizontal(casilla_horizontal-(die1+die2));
-                    }
-                    break;
-            
-                case 2:
-                    if (casilla_vertical-(die1+die2)<=0){
-                        setCasillaVertical(0);
-                        setCasillaHorizontal(Math.abs(casilla_vertical-(die1+die2)));
-                        setCurso(3);
-                    }
-                    else{
-                        setCasillaVertical(casilla_vertical-(die1+die2));
-                    }
-                    break;
-                
-                case 3:
-                    if(casilla_horizontal+(die1+die2)>=10){
-                        setCasillaHorizontal(10);
-                        setCasillaVertical(Math.abs(casilla_horizontal+(die1+die2)-10));
-                        setCurso(4);
-                    }
-                    else{
-                        setCasillaHorizontal(casilla_horizontal+(die1+die2));
-                    }
-                    break;
-
-                case 4:
-                    if(casilla_vertical+(die1+die2)>=10){
-                        setCasillaVertical(10);
-                        setCasillaHorizontal(10-Math.abs(casilla_vertical+(die1+die2)-10));
-                        setCurso(1);
-                    }
-                    else{
-                        setCasillaVertical(casilla_vertical+(die1+die2));
-                    }
-                    break;
-            }
-            setComprobar(true);
-        },[]);*/
 
         const actualizarDinero = useCallback(() => {
             const response =  fetch(listaJugadores, {
@@ -663,13 +607,6 @@ export default function TableroScreen({route}) {
                 console.error(error);
             });
         },[]);
-        /*
-        useEffect(() => {
-            if(rolling){
-                setRolling(false);
-                avanzar();
-            };            
-        },[rolling]);*/
 
         useEffect(() => {
             if(comprobar){
@@ -977,14 +914,6 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
-                setCompra(false);
-                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
-                console.log("cerrado");
-                setActualizarPlayers(true);
-                //TURNO ACTUAL
-                //setTurnoActual(1);
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -992,11 +921,19 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        setCompra(false);
+                        setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                        console.log("cerrado");
+                        setActualizarPlayers(true);
+                        //TURNO ACTUAL
+                        //setTurnoActual(1);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1008,14 +945,6 @@ export default function TableroScreen({route}) {
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
-                setCompra(false);
-                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
-                console.log("cerrado");
-                setActualizarPlayers(true);
-                // CAMBIO TURNO
-                //setTurnoActual(1);
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1023,11 +952,19 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        setCompra(false);
+                        setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                        console.log("cerrado");
+                        setActualizarPlayers(true);
+                        // CAMBIO TURNO
+                        //setTurnoActual(1);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1043,9 +980,6 @@ export default function TableroScreen({route}) {
             title="Casilla comprada"
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
             onClose = { () => {
-                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1053,11 +987,15 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
+                        setActualizarPlayers(true);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1069,12 +1007,8 @@ export default function TableroScreen({route}) {
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
-                console.log("cerrando modal asignatura comprada");
-                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // CAMBIO TURNO
                 //setTurnoActual(1);
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1082,11 +1016,16 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        console.log("cerrando modal asignatura comprada");
+                        setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+                        setActualizarPlayers(true);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1102,9 +1041,6 @@ export default function TableroScreen({route}) {
             title={suerte[0]}
             text={suerte[1]}
             onClose = { () => {
-                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1112,11 +1048,15 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
+                        setActualizarPlayers(true);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1129,12 +1069,6 @@ export default function TableroScreen({route}) {
             visible={modalSuerteVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
-                console.log("cerrando modal suerte");
-                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
-                // CAMBIO TURNO
-                //setTurnoActual(1);
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1142,11 +1076,18 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        console.log("cerrando modal suerte");
+                        setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
+                        setActualizarPlayers(true);
+                        // CAMBIO TURNO
+                        //setTurnoActual(1);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1162,9 +1103,6 @@ export default function TableroScreen({route}) {
             title={boletin[0]}
             text={boletin[1]}
             onClose = { () => {
-                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible})
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1172,11 +1110,15 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                        setActualizarPlayers(true);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
@@ -1189,12 +1131,6 @@ export default function TableroScreen({route}) {
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
-                console.log("cerrando modal boletín");
-                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
-                // CAMBIO TURNO
-                //setTurnoActual(1);
-                setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                 const response =  fetch(siguienteTurno, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1202,11 +1138,18 @@ export default function TableroScreen({route}) {
                     })
                     .then((response) => {
                     if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
                     }
                     return response.json();
                     })
                     .then(data => {
+                        console.log("cerrando modal boletín");
+                        setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                        setActualizarPlayers(true);
+                        // CAMBIO TURNO
+                        //setTurnoActual(1);
+                        setTurnoActual((turnoActual + 1) % totalJugadores);
+                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
                         console.log(data);
                         //setJugadorActual(data.jugador);
                     })
