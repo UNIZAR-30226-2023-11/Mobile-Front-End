@@ -199,12 +199,20 @@ export default function TableroScreen({route}) {
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
-    const [casilla_horizontal, setCasillaHorizontal]=React.useState(10);
-    const [casilla_vertical, setCasillaVertical]=React.useState(10);
+    //const [casilla_horizontal, setCasillaHorizontal]=React.useState(10);
+    //const [casilla_vertical, setCasillaVertical]=React.useState(10);
     const [curso, setCurso] = React.useState(1);
     const [rolling, setRolling] = React.useState(false);
     const [dobles, setDobles] = React.useState(false);
-    let tokensJugadores = [(10,10), (10,10), (10,10), (10,10), (10,10), (10, 10)]
+    const [tokensJugadores, setTokensJugador] = React.useState([
+        {horizontal: 10, vertical: 10}, 
+        {horizontal: 10, vertical: 10}, 
+        {horizontal: 10, vertical: 10}, 
+        {horizontal: 10, vertical: 10},
+        {horizontal: 10, vertical: 10},
+        {horizontal: 10, vertical: 10},
+        {horizontal: 10, vertical: 10},
+        {horizontal: 10, vertical: 10}]);
     //pedir a la base de datos
     
     const casillas_suerte=[
@@ -246,65 +254,65 @@ export default function TableroScreen({route}) {
     const [boletin, setBoletin] = React.useState([""]);
     const [suerte, setSuerte] = React.useState([""]);
     //variable para registrar el turno del jugador
-    let [turnoActual, setTurnoActual] = React.useState(0);
-    const totalJugadores = jugadores.length;
+    const [turnoActual, setTurnoActual] = React.useState(0);
+    const [totalJugadores, setTotalJugadores] = React.useState(jugadores.length);
 
     const stylestoken = StyleSheet.create({
         token1:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.4,
-            marginTop: casilla_vertical*ancho + ancho*0.4
+            marginLeft: tokensJugadores[0].horizontal*ancho + ancho*0.4,
+            marginTop: tokensJugadores[0].vertical*ancho + ancho*0.4
         },
         token2:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.4,
-            marginTop: casilla_vertical*ancho + ancho*0.75
+            marginLeft: tokensJugadores[1].horizontal*ancho + ancho*0.4,
+            marginTop: tokensJugadores[1].vertical*ancho + ancho*0.75
         },
         token3:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.4,
-            marginTop: casilla_vertical*ancho + ancho*1.05
+            marginLeft: tokensJugadores[2].horizontal*ancho + ancho*0.4,
+            marginTop: tokensJugadores[2].vertical*ancho + ancho*1.05
         },
         token4:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.4,
-            marginTop: casilla_vertical*ancho + ancho*1.35
+            marginLeft: tokensJugadores[3].horizontal*ancho + ancho*0.4,
+            marginTop: tokensJugadores[3].vertical*ancho + ancho*1.35
         },
         token5:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.82,
-            marginTop: casilla_vertical*ancho + ancho*0.4
+            marginLeft: tokensJugadores[4].horizontal*ancho + ancho*0.82,
+            marginTop: tokensJugadores[4].vertical*ancho + ancho*0.4
         },
         token6:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.82,
-            marginTop: casilla_vertical*ancho + ancho*0.75
+            marginLeft: tokensJugadores[5].horizontal*ancho + ancho*0.82,
+            marginTop: tokensJugadores[5].vertical*ancho + ancho*0.75
         },
         token7:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.82,
-            marginTop: casilla_vertical*ancho + ancho*1.05
+            marginLeft: tokensJugadores[6].horizontal*ancho + ancho*0.82,
+            marginTop: tokensJugadores[6].vertical*ancho + ancho*1.05
         },
         token8:{
             position: 'absolute',
             width:ancho-10,
             height:ancho-10,
-            marginLeft: casilla_horizontal*ancho + ancho*0.82,
-            marginTop: casilla_vertical*ancho + ancho*1.35
+            marginLeft: tokensJugadores[7].horizontal*ancho + ancho*0.82,
+            marginTop: tokensJugadores[7].vertical*ancho + ancho*1.35
         }
     })
 
@@ -312,7 +320,7 @@ export default function TableroScreen({route}) {
 
         function roll(){
             //si no es el turno del jugador
-            if (turnoActual != jugador){
+            if (jugadores[turnoActual] != username){
                 alert("¡No es tu turno de lanzar los dados!");
                 return;
             }
@@ -321,7 +329,8 @@ export default function TableroScreen({route}) {
             const response =  fetch(lanzarDados, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"idPartida": idPartida})
+                body: JSON.stringify({  "username": username,
+                                        "idPartida": idPartida})
                 })
                 .then((response) => {
                   if(response.status != 200){
@@ -333,7 +342,16 @@ export default function TableroScreen({route}) {
                     console.log(data);
                     setDie1(data.dado1);
                     setDie2(data.dado2);
-                    setRolling(true);
+                    //setRolling(true);
+                    let aux = tokensJugadores;
+                    aux[turnoActual].horizontal = data.coordenadas.h;
+                    aux [turnoActual].vertical = data.coordenadas.v;
+                    console.log(aux);
+                    setTokensJugador(aux);
+                    setComprobar(true);
+                    if(data.dado1 == data.dado2){
+                        setDobles(true);
+                    }
                 })
                 .catch((error) => {
                 //Error
@@ -341,8 +359,8 @@ export default function TableroScreen({route}) {
                 console.error(error);
                 });
         }
-        
-        const avanzar = useCallback((jugador) => {
+        /*
+        const avanzar = useCallback(() => {
             if(die1==die2){
                 setDobles(true);
             }
@@ -392,7 +410,7 @@ export default function TableroScreen({route}) {
                     break;
             }
             setComprobar(true);
-        },[]);
+        },[]);*/
 
         const actualizarDinero = useCallback(() => {
             const response =  fetch(listaJugadores, {
@@ -419,20 +437,22 @@ export default function TableroScreen({route}) {
             });},[]);
 
         const comprobarAsignatura = useCallback(() => {
-            let found = casillas_suerte.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+            console.log("comprobando casilla para el turno", turnoActual);
+            console.log(tokensJugadores[0]);
+            let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
             if(found === undefined){
-                let found = casillas_boletin.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                let found = casillas_boletin.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
                 if(found === undefined){
-                    let found = casillas_esquinas.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                    let found = casillas_esquinas.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
                     if( found === undefined){
-                        let found = casillas_pagos.find(element => element.horizontal===casilla_horizontal && element.vertical===casilla_vertical);
+                        let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
                         if( found === undefined){
-                            console.log("comprobando asignatura", casilla_horizontal, casilla_vertical);
+                            console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
                             const response = fetch(casillaComprada,{
                                 method: 'PUT',
                                 headers: {'Content-Type': 'application/json'},
                                 body: JSON.stringify({  "username": username,
-                                                        "coordenadas":{"h": casilla_horizontal,"v": casilla_vertical},
+                                                        "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
                                                         "idPartida": idPartida})
                             })
                             .then((response) => {
@@ -467,11 +487,11 @@ export default function TableroScreen({route}) {
                             });
                         }
                         else{
-                            //console.log("pagos");
+                            console.log("pagos");
                             //accion
                         }
                     }else{
-                        //console.log("esquina");
+                        console.log("esquina");
                         //accion
                     }
                 }else{
@@ -539,7 +559,7 @@ export default function TableroScreen({route}) {
             const response = fetch(infoAsignatura,{
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"coordenadas":{"h": casilla_horizontal,"v": casilla_vertical}})
+                body: JSON.stringify({"coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical}})
             })
             .then((response) => {
                 if(response.status != 200){
@@ -643,13 +663,13 @@ export default function TableroScreen({route}) {
                 console.error(error);
             });
         },[]);
-
+        /*
         useEffect(() => {
             if(rolling){
                 setRolling(false);
-                avanzar(turnoActual);
+                avanzar();
             };            
-        },[rolling]);
+        },[rolling]);*/
 
         useEffect(() => {
             if(comprobar){
@@ -929,8 +949,8 @@ export default function TableroScreen({route}) {
             doubles={dobles}
             title="Comprar"
             text="¿Desea comprar la asignatura?"
-            c_hor={casilla_horizontal}
-            c_ver={casilla_vertical}
+            c_hor={tokensJugadores[turnoActual].horizontal}
+            c_ver={tokensJugadores[turnoActual.vertical]}
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
@@ -940,9 +960,9 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 setActualizarPlayers(true);
                 //TURNO ACTUAL
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //setTurnoActual(1);
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
@@ -951,9 +971,9 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 setActualizarPlayers(true);
                 // CAMBIO TURNO
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //setTurnoActual(1);
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);;
             }}
         />
         <StyledModal
@@ -967,9 +987,9 @@ export default function TableroScreen({route}) {
                 console.log("cerrando modal asignatura comprada");
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // CAMBIO TURNO
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //setTurnoActual(1);
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
             }} 
         />
         <StyledModal
@@ -983,9 +1003,9 @@ export default function TableroScreen({route}) {
                 console.log("cerrando modal suerte");
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 // CAMBIO TURNO
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //setTurnoActual(1);
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);;
             }} 
         />
         <StyledModal
@@ -999,9 +1019,9 @@ export default function TableroScreen({route}) {
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // CAMBIO TURNO
-                setTurnoActual(1);
-                //setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log(turnoActual);
+                //setTurnoActual(1);
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);;
             }} 
         />
     </View>
