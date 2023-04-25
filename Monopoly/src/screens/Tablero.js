@@ -9,7 +9,7 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada, tarjetaAleatoria } from '../url/partida';
+import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada, tarjetaAleatoria, listarAsignaturas, siguienteTurno } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -923,7 +923,7 @@ export default function TableroScreen({route}) {
             <View style={styles.asignaturas}>
                 <StyledModal
                 title="MIS ASIGNATURAS"
-                text="Aquí se mostratá la lista de asignaturas de las que eres dueño."   
+                text="Aquí se mostrará la lista de asignaturas de las que eres dueño."   
                 onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
                 visible={modalAsignaturasVisible}
                 onRequestClose={() => {
@@ -935,7 +935,29 @@ export default function TableroScreen({route}) {
                 purple
                 small
                 title="Asignaturas"
-                onPress={() => setModalAsignaturasVisible(true)}
+                onPress={() => {
+                    const response =  fetch(listarAsignaturas, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({  "username": username,
+                                            "idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de listar asignaturas');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log("Asignaturas:\n ",data);
+                        setModalAsignaturasVisible(true);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
+                    }}
                 /><StyledButton
                 style={styles.botones}
                 red
@@ -950,7 +972,7 @@ export default function TableroScreen({route}) {
             title="Comprar"
             text="¿Desea comprar la asignatura?"
             c_hor={tokensJugadores[turnoActual].horizontal}
-            c_ver={tokensJugadores[turnoActual.vertical]}
+            c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
@@ -963,6 +985,26 @@ export default function TableroScreen({route}) {
                 //setTurnoActual(1);
                 setTurnoActual((turnoActual + 1) % totalJugadores);
                 console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
@@ -973,14 +1015,57 @@ export default function TableroScreen({route}) {
                 // CAMBIO TURNO
                 //setTurnoActual(1);
                 setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);;
+                console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
             }}
         />
         <StyledModal
             style={{height: '30%'}}
             title="Casilla comprada"
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
-            onClose = { () => {setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})}}
+            onClose = { () => {
+                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });}}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
@@ -990,13 +1075,57 @@ export default function TableroScreen({route}) {
                 //setTurnoActual(1);
                 setTurnoActual((turnoActual + 1) % totalJugadores);
                 console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
             }} 
         />
         <StyledModal
             style={{height: '30%'}}
             title={suerte[0]}
             text={suerte[1]}
-            onClose = { () => {setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})}}
+            onClose = { () => {
+                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
+                }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
@@ -1005,14 +1134,58 @@ export default function TableroScreen({route}) {
                 // CAMBIO TURNO
                 //setTurnoActual(1);
                 setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);;
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
             }} 
         />
         <StyledModal
             style={{height: '30%'}}
             title={boletin[0]}
             text={boletin[1]}
-            onClose = { () => {setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible})}}
+            onClose = { () => {
+                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible})
+                setTurnoActual((turnoActual + 1) % totalJugadores);
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
+            }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 //Alert.alert('Modal has been closed.');
@@ -1021,7 +1194,27 @@ export default function TableroScreen({route}) {
                 // CAMBIO TURNO
                 //setTurnoActual(1);
                 setTurnoActual((turnoActual + 1) % totalJugadores);
-                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);;
+                console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
+                const response =  fetch(siguienteTurno, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({"idPartida": idPartida})
+                    })
+                    .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
+                    }
+                    return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        //setJugadorActual(data.jugador);
+                    })
+                    .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                    });
             }} 
         />
     </View>

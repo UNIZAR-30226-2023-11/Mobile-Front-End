@@ -24,3 +24,9 @@ export const casillaComprada = 'http://10.0.2.2:8080/partida/casilla' //put
 
 // export const tarjeta = 'http://nerks.net:7003/partida/tarjeta'
 export const tarjetaAleatoria = 'http://10.0.2.2:8080/partida/tarjeta'
+
+//export const listarAsignaturas = 'http://nerks.net:7003/partida/listaAsignaturas'
+export const listarAsignaturas = 'http://10.0.2.2:8080/partida/listaAsignaturasC'
+
+//export const siguienteTurno = 'http://nerks.net:7003/partida/siguienteTurno'
+export const siguienteTurno = 'http://10.0.2.2:8080/partida/siguienteTurno'
