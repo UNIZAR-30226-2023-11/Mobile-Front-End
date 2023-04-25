@@ -47,8 +47,12 @@ export default function CrearSalaScreen({ route, navigation }) {
             </Text>
             </ScrollView>
             </View>
-            <View style={{flex:1}}></View>
-
+            <View style={{flex:1}}>
+                <StyledButton
+                title="Ir a la sala"
+                onPress={navigation.navigate('Tablero', {user: user, idPartida: idPartida})}
+                />
+            </View>
         </View>
         </NativeBaseProvider>
     );
