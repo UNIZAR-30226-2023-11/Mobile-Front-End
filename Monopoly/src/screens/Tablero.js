@@ -251,7 +251,7 @@ export default function TableroScreen({route}) {
     const [suerte, setSuerte] = React.useState([""]);
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
-    const [totalJugadores, setTotalJugadores] = React.useState(jugadores.length);
+    let totalJugadores = jugadores.length;
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -372,7 +372,7 @@ export default function TableroScreen({route}) {
                 console.log(data);
                 setJugadores(data.listaJugadores);
                 setDinero(data.listaDineros);
-    
+                cambiarTurno();
             })
             .catch((error) => {
             //Error
@@ -607,6 +607,30 @@ export default function TableroScreen({route}) {
                 console.error(error);
             });
         },[]);
+
+        const cambiarTurno = useCallback(() => {
+            const response =  fetch(siguienteTurno, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({"idPartida": idPartida})
+                })
+                .then((response) => {
+                if(response.status != 200){
+                    throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
+                }
+                return response.json();
+                })
+                .then(data => {
+                    setTurnoActual((turnoActual + 1) % totalJugadores);
+                    console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
+                    console.log(data);
+                })
+                .catch((error) => {
+                //Error
+                //alert(JSON.stringify(error));
+                console.error(error);
+                });
+        },[])
 
         useEffect(() => {
             if(comprobar){
@@ -914,65 +938,18 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        setCompra(false);
-                        setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
-                        console.log("cerrado");
-                        setActualizarPlayers(true);
-                        //TURNO ACTUAL
-                        //setTurnoActual(1);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                setCompra(false);
+                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
+                setActualizarPlayers(true);
+                       
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        setCompra(false);
-                        setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
-                        console.log("cerrado");
-                        setActualizarPlayers(true);
-                        // CAMBIO TURNO
-                        //setTurnoActual(1);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                setCompra(false);
+                setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
+                console.log("cerrado");
+                setActualizarPlayers(true);
             }}
         />
         <StyledModal
@@ -980,60 +957,13 @@ export default function TableroScreen({route}) {
             title="Casilla comprada"
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
             onClose = { () => {
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
-                        setActualizarPlayers(true);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });}}
+                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
+                setActualizarPlayers(true);
+            }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
-                //Alert.alert('Modal has been closed.');
-                // CAMBIO TURNO
-                //setTurnoActual(1);
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        console.log("cerrando modal asignatura comprada");
-                        setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
-                        setActualizarPlayers(true);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
+                setActualizarPlayers(true);
             }} 
         />
         <StyledModal
@@ -1041,61 +971,13 @@ export default function TableroScreen({route}) {
             title={suerte[0]}
             text={suerte[1]}
             onClose = { () => {
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
-                        setActualizarPlayers(true);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
-                }}
+                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
+                setActualizarPlayers(true);
+            }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
-                //Alert.alert('Modal has been closed.');
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        console.log("cerrando modal suerte");
-                        setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
-                        setActualizarPlayers(true);
-                        // CAMBIO TURNO
-                        //setTurnoActual(1);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
+                setActualizarPlayers(true);
             }} 
         />
         <StyledModal
@@ -1103,61 +985,14 @@ export default function TableroScreen({route}) {
             title={boletin[0]}
             text={boletin[1]}
             onClose = { () => {
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
-                        setActualizarPlayers(true);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                setActualizarPlayers(true);
             }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
-                //Alert.alert('Modal has been closed.');
-                const response =  fetch(siguienteTurno, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({"idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        console.log("cerrando modal boletín");
-                        setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
-                        setActualizarPlayers(true);
-                        // CAMBIO TURNO
-                        //setTurnoActual(1);
-                        setTurnoActual((turnoActual + 1) % totalJugadores);
-                        console.log("Turno" + turnoActual +". Le toca a "+jugadores[turnoActual]);
-                        console.log(data);
-                        //setJugadorActual(data.jugador);
-                    })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                console.log("cerrando modal boletín");
+                setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
+                setActualizarPlayers(true);
             }} 
         />
     </View>

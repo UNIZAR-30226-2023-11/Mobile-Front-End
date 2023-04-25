@@ -27,8 +27,6 @@ export default function CrearSalaScreen({ route, navigation }) {
     const idPartida = route.params.idPartida;
     console.log(user, idPartida);
 
-    const [players, setPlayers] = React.useState("");
-    const [money, setMoney] = React.useState("");
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
@@ -50,7 +48,7 @@ export default function CrearSalaScreen({ route, navigation }) {
             <View style={{flex:1}}>
                 <StyledButton
                 title="Ir a la sala"
-                onPress={navigation.navigate('Tablero', {user: user, idPartida: idPartida})}
+                onPress={() => {navigation.navigate('Tablero', {user: user, idPartida: idPartida})}}
                 />
             </View>
         </View>
