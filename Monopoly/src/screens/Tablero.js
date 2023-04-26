@@ -241,6 +241,7 @@ export default function TableroScreen({route}) {
     const [compra, setCompra] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
     const [comprobar, setComprobar] = React.useState(false);
+    const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
@@ -336,7 +337,7 @@ export default function TableroScreen({route}) {
                   return response.json();
                 })
                 .then(data => {
-                    console.log(data);
+                    console.log("DADOS+"+data);
                     setDie1(data.dado1);
                     setDie2(data.dado2);
                     //setRolling(true);
@@ -370,16 +371,15 @@ export default function TableroScreen({route}) {
               return response.json();
             })
             .then(data => {
-                console.log(data);
+                console.log("ACTUALIZAR DINERO:",data);
                 setJugadores(data.listaJugadores);
                 setDinero(data.listaDineros);
-                cambiarTurno();
             })
             .catch((error) => {
             //Error
             //alert(JSON.stringify(error));
             console.error(error);
-            });},[]);
+            });});
 
         const comprobarAsignatura = useCallback(() => {
             console.log("comprobando casilla para el turno", turnoActual);
@@ -407,6 +407,7 @@ export default function TableroScreen({route}) {
                                 return response.json();
                             })
                             .then(data => {
+                                console.log("COMPROBAR ASIGNATURA");
                                 console.log(data.jugador);
                                 console.log(data.dinero)
                                 if(data.jugador!=null){
@@ -466,6 +467,7 @@ export default function TableroScreen({route}) {
                         return response.json();
                     })
                     .then(data => {
+                        console.log("BOLETIN");
                         console.log(data[0]);
                         let aux = [data[0].nombre, data[0].descripcion];
                         console.log(aux);
@@ -495,6 +497,7 @@ export default function TableroScreen({route}) {
                     return response.json();
                 })
                 .then(data => {
+                    console.log("SUERTE");
                     console.log(data[0]);
                     let aux = [data[0].nombre, data[0].descripcion];
                     console.log(aux);
@@ -616,7 +619,7 @@ export default function TableroScreen({route}) {
                 //alert(JSON.stringify(error));
                 console.error(error);
             });
-        },[]);
+        });
 
         const cambiarTurno = useCallback(() => {
             const response =  fetch(siguienteTurno, {
@@ -631,7 +634,8 @@ export default function TableroScreen({route}) {
                 return response.json();
                 })
                 .then(data => {
-                    setTurnoActual((turnoActual + 1) % totalJugadores);
+                    console.log("TURNO:",data);
+                    setTurnoActual(data.posicion);
                     //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                     //console.log(data);
                 })
@@ -640,7 +644,7 @@ export default function TableroScreen({route}) {
                 //alert(JSON.stringify(error));
                 console.error(error);
                 });
-        },[])
+        })
 
         useEffect(() => {
             if(comprobar){
@@ -669,6 +673,13 @@ export default function TableroScreen({route}) {
                 actualizarDinero();
             }
         },[actualizarPlayers]);
+
+        useEffect(() =>{
+            if(cambio){
+                setCambio(false);
+                cambiarTurno();
+            }
+        },[cambio]);
     
         return(
             <View>
@@ -952,6 +963,7 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                setCambio(true);
                        
             }}
             visible={modalCompraVisible}
@@ -960,6 +972,7 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 setActualizarPlayers(true);
+                setCambio(true);
             }}
         />
         <StyledModal
@@ -969,11 +982,13 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
                 setActualizarPlayers(true);
+                setCambio(true);
             }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 setActualizarPlayers(true);
+                setCambio(true);
             }} 
         />
         <StyledModal
@@ -983,11 +998,13 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
                 setActualizarPlayers(true);
+                setCambio(true);
             }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 setActualizarPlayers(true);
+                setCambio(true);
             }} 
         />
         <StyledModal
@@ -997,12 +1014,14 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 setActualizarPlayers(true);
+                setCambio(true);
             }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 setActualizarPlayers(true);
+                setCambio(true);
             }} 
         />
     </View>
