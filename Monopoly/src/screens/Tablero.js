@@ -337,7 +337,7 @@ export default function TableroScreen({route}) {
                   return response.json();
                 })
                 .then(data => {
-                    console.log("DADOS+"+data);
+                    console.log("DADOS:",data);
                     setDie1(data.dado1);
                     setDie2(data.dado2);
                     //setRolling(true);
@@ -636,6 +636,7 @@ export default function TableroScreen({route}) {
                 .then(data => {
                     console.log("TURNO:",data);
                     setTurnoActual(data.posicion);
+                    setActualizarPlayers(true);
                     //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                     //console.log(data);
                 })
@@ -962,7 +963,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
                        
             }}
@@ -971,7 +972,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }}
         />
@@ -981,13 +982,13 @@ export default function TableroScreen({route}) {
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
             onClose = { () => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }} 
         />
@@ -997,13 +998,13 @@ export default function TableroScreen({route}) {
             text={suerte[1]}
             onClose = { () => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }} 
         />
@@ -1013,14 +1014,14 @@ export default function TableroScreen({route}) {
             text={boletin[1]}
             onClose = { () => {
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
             }} 
         />
