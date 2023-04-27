@@ -248,7 +248,7 @@ export default function TableroScreen({route}) {
     const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
-    const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
+    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
@@ -333,7 +333,6 @@ export default function TableroScreen({route}) {
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
                 return;
             }
-            setActualizarPlayers(false);
             console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
@@ -383,6 +382,7 @@ export default function TableroScreen({route}) {
     }
 
     const actualizarDinero = useCallback(() =>{
+        console.log("ACTUALIZAR DINERO");
         const response =  fetch(listaJugadores, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
@@ -395,12 +395,14 @@ export default function TableroScreen({route}) {
           return response.json();
         })
         .then(data => {
-            console.log("ACTUALIZAR DINERO:",data);
+            // console.log("ACTUALIZAR DINERO:",data);
+            console.log(data);
             setJugadores(data.listaJugadores);
             setDinero(data.listaDineros);
             
             let aux = tokensJugadores;
             // console.log(aux);
+            
             for(var i=0; i<data.listaPosiciones.length; i++){
                 aux[i].horizontal = data.listaPosiciones[i].h;
                 aux[i].vertical = data.listaPosiciones[i].v;
@@ -705,6 +707,10 @@ export default function TableroScreen({route}) {
             });
     })
 
+    useEffect(() =>{
+        actualizarDinero();
+    },[])
+
     useEffect(() => {
         if(comprobar){
             setComprobar(false);
@@ -727,14 +733,18 @@ export default function TableroScreen({route}) {
     },[compra]);
     
     useEffect (() => {
+        var interval = null;
         if(actualizarPlayers){
-            const interval = setInterval(() => {
+            interval = setInterval(() => {
                 actualizarDinero();
+                if(jugadores[turnoActual] == username){
+                    setActualizarPlayers(false);
+                    clearInterval(interval);
+                }
             },3000);
         }
-        else{
-            clearInterval(interval);
-        }
+        return () => clearInterval(interval);
+
     },[actualizarPlayers]);
 
     useEffect(() =>{
