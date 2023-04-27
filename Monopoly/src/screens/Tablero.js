@@ -313,13 +313,14 @@ export default function TableroScreen({route}) {
         }
     })
 
+    const 
+
     function Dice(){
 
         function roll(){
             //si no es el turno del jugador
             if (jugadores[turnoActual] != username){
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
-                //funcion que devuelva algo cuando sea mi turno
                 return;
             }
             console.log("rolling dice...");
@@ -358,8 +359,8 @@ export default function TableroScreen({route}) {
                 });
         }
 
-        const actualizarDinero = useCallback(() => {
-            const response =  fetch(listaJugadores, {
+        const actualizarDinero = setInterval(() => {
+            {const response =  fetch(listaJugadores, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({"idPartida": idPartida})
@@ -371,7 +372,7 @@ export default function TableroScreen({route}) {
               return response.json();
             })
             .then(data => {
-                console.log("ACTUALIZAR DINERO:",data);
+                // console.log("ACTUALIZAR DINERO:",data);
                 setJugadores(data.listaJugadores);
                 setDinero(data.listaDineros);
             })
@@ -379,7 +380,27 @@ export default function TableroScreen({route}) {
             //Error
             //alert(JSON.stringify(error));
             console.error(error);
-            });});
+            });}
+
+            {const response = fetch(turnoActual,{
+                method: 'PUT',
+                headers : {'Content-Type': 'application/json'},
+                body : JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+                if(response.status != 200){
+                    throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setTurnoActual(data.posicion);
+            })
+            .catch((error) => {
+                console.error(error);
+            })};
+
+            },3000);
 
         const comprobarAsignatura = useCallback(() => {
             console.log("comprobando casilla para el turno", turnoActual);
