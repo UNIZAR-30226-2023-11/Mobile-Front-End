@@ -359,357 +359,6 @@ export default function TableroScreen({route}) {
                 console.error(error);
                 });
         }
-
-        const actualizarDinero = setInterval(() => {
-            {const response =  fetch(listaJugadores, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"idPartida": idPartida})
-            })
-            .then((response) => {
-              if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
-              }
-              return response.json();
-            })
-            .then(data => {
-                // console.log("ACTUALIZAR DINERO:",data);
-                setJugadores(data.listaJugadores);
-                setDinero(data.listaDineros);
-                let aux = tokensJugadores;
-                for(var i=0; i<data.listaPosiciones.length; i++){
-                    aux[i].horizontal = data.listaPosiciones[i].h;
-                    aux[i].vertical = data.listaPosiciones[i].v;
-                    console.log(aux[i]);
-                }
-                setTokensJugador(aux);
-            })
-            .catch((error) => {
-            //Error
-            //alert(JSON.stringify(error));
-            console.error(error);
-            });}
-
-            {const response = fetch(turnoActual,{
-                method: 'PUT',
-                headers : {'Content-Type': 'application/json'},
-                body : JSON.stringify({"idPartida": idPartida})
-            })
-            .then((response) => {
-                if(response.status != 200){
-                    throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setTurnoActual(data.posicion);
-            })
-            .catch((error) => {
-                console.error(error);
-            })};
-
-            },3000);
-
-        const comprobarAsignatura = useCallback(() => {
-            console.log("comprobando casilla para el turno", turnoActual);
-            console.log(tokensJugadores[0]);
-            let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
-            if(found === undefined){
-                let found = casillas_boletin.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
-                if(found === undefined){
-                    let found = casillas_esquinas.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
-                    if( found === undefined){
-                        let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
-                        if( found === undefined){
-                            console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
-                            const response = fetch(casillaComprada,{
-                                method: 'PUT',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({  "username": username,
-                                                        "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
-                                                        "idPartida": idPartida})
-                            })
-                            .then((response) => {
-                                if(response.status != 200){
-                                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                console.log("COMPROBAR ASIGNATURA");
-                                console.log(data.jugador);
-                                console.log(data.dinero)
-                                if(data.jugador!=null){
-                                    if(data.jugador==username){
-                                        console.log("es mia");
-                                    }
-                                    else{
-                                    console.log("comprada");
-                                    console.log(data);
-                                    setPropietario(data.jugador);
-                                    setPago(data.dinero);
-                                    setModalAsignaturaCompradaVisible(true);
-                                    }
-                                }
-                                else{
-                                    console.log("no comprada");                
-                                    setInfo(true);
-                            }})
-                            .catch((error) => {
-                                //Error
-                                //alert(JSON.stringify(error));
-                                console.error(error);
-                            });
-                        }
-                        else{
-                            console.log("pagos");
-                            //accion
-                        }
-                    }else{
-                        console.log("esquina");
-                        //accion
-                        if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
-                            console.log("carcel");
-                            alert("Te toca ir a Julio");
-                            let aux = tokensJugadores;
-                            aux[turnoActual].horizontal = 0;
-                            aux[turnoActual].vertical = 10;
-                            console.log(aux);
-                            setTokensJugador(aux);
-                        }
-                    }
-                }else{
-                    //console.log("boletin");
-                    console.log("obteniendo boletín");
-                    const response = fetch(tarjetaAleatoria,{
-                        method: 'PUT',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({  "idPartida": idPartida,
-                                                "username": username,
-                                                "tipo": "boletin"        
-                                            })
-                    })
-                    .then((response) => {
-                        if(response.status != 200){
-                            throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de boletín');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("BOLETIN");
-                        console.log(data[0]);
-                        let aux = [data[0].nombre, data[0].descripcion];
-                        console.log(aux);
-                        setBoletin(aux);
-                        setModalBoletinVisible(true);
-                    })
-                    .catch((error) => {
-                        //Error
-                        //alert(JSON.stringify(error));
-                        console.error(error);
-                    });
-                }
-            }else{
-                console.log("obteniendo suerte", tarjetaAleatoria);
-                const response = fetch(tarjetaAleatoria,{
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({  "idPartida": idPartida,
-                                            "username": username,
-                                            "tipo": "suerte"        
-                                        })
-                })
-                .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de suerte');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("SUERTE");
-                    console.log(data[0]);
-                    let aux = [data[0].nombre, data[0].descripcion];
-                    console.log(aux);
-                    setSuerte(aux);
-                    setModalSuerteVisible(true);
-                })
-                .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                }); 
-            }
-        });
-
-        const infoCasilla= useCallback(() => { 
-            const response = fetch(infoAsignatura,{
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical}})
-            })
-            .then((response) => {
-                if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-                }
-                return response.json();
-            })
-            .then(data => {
-                //console.log(data);
-                if(data.casillaInfo.tipo == 'A'){
-                    console.log("asignatura ", data.casillaInfo.cuatrimestre);
-                    switch(data.casillaInfo.cuatrimestre){
-                        case 1:
-                            setCarta(<Asignatura_1
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 2:
-                            setCarta(<Asignatura_2
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 3:
-                            setCarta(
-                            <Asignatura_3
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 4:
-                            setCarta(                                            
-                            <Asignatura_4
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 5:
-                            setCarta(                                            
-                            <Asignatura_5
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break;  
-                        case 6:
-                            setCarta(                                            
-                            <Asignatura_6
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 7:
-                            setCarta(                                            
-                            <Asignatura_7
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                        case 8:
-                            setCarta(                                            
-                            <Asignatura_8
-                                title={data.casillaInfo.nombre}
-                                coste={data.casillaInfo.precioCompra}
-                                description={""}
-                            />);
-                            break; 
-                    }
-                }
-                else if(data.casillaInfo.tipo == 'F'){
-                    //console.log("evento");
-                    setCarta(                                    <Evento
-                        title={data.casillaInfo.nombre}
-                        coste={data.casillaInfo.precioCompra}
-                        description={""}
-                        imageSource={require('../../assets/bob.png')}
-                    />);
-                }
-                else if(data.casillaInfo.tipo == 'I'){
-                    //console.log("recurso");
-                    setCarta(                                   <Recurso
-                        title={data.casillaInfo.nombre}
-                        coste={data.casillaInfo.precioCompra}
-                        description={""}
-                        imageSource={require('../../assets/bob.png')}
-                    />);
-                }
-                setCompra(true);
-                //console.log(carta);
-            })
-            .catch((error) => {
-                //Error
-                //alert(JSON.stringify(error));
-                console.error(error);
-            });
-        });
-
-        const cambiarTurno = useCallback(() => {
-            const response =  fetch(siguienteTurno, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"idPartida": idPartida})
-                })
-                .then((response) => {
-                if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-                }
-                return response.json();
-                })
-                .then(data => {
-                    console.log("TURNO:",data);
-                    setTurnoActual(data.posicion);
-                    setActualizarPlayers(true);
-                    //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
-                    //console.log(data);
-                })
-                .catch((error) => {
-                //Error
-                //alert(JSON.stringify(error));
-                console.error(error);
-                });
-        })
-
-        useEffect(() => {
-            if(comprobar){
-                setComprobar(false);
-                comprobarAsignatura();
-            }
-        },[comprobar]);
-
-        useEffect(() => {
-            if(info){
-                setInfo(false);
-                infoCasilla();
-            }
-        },[info]);
-
-        useEffect(() => {
-            if(compra){
-                setCompra(false);
-                setModalCompraVisible(true);
-            }
-        },[compra]);
-
-        useEffect (() => {
-            if(actualizarPlayers){
-                setActualizarPlayers(false);
-                actualizarDinero();
-            }
-        },[actualizarPlayers]);
-
-        useEffect(() =>{
-            if(cambio){
-                setCambio(false);
-                cambiarTurno();
-            }
-        },[cambio]);
     
         return(
             <View>
@@ -722,6 +371,358 @@ export default function TableroScreen({route}) {
             
         )
     }
+
+    const actualizarDinero = setInterval(() => {
+        {const response =  fetch(listaJugadores, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({"idPartida": idPartida})
+        })
+        .then((response) => {
+          if(response.status != 200){
+            throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+          }
+          return response.json();
+        })
+        .then(data => {
+            console.log("ACTUALIZAR DINERO:",data);
+            setJugadores(data.listaJugadores);
+            setDinero(data.listaDineros);
+            let aux = tokensJugadores;
+            console.log("iniciando bucle...");
+            for(var i=0; i<data.listaPosiciones.length; i++){
+                aux[i].horizontal = data.listaPosiciones[i].h;
+                aux[i].vertical = data.listaPosiciones[i].v;
+                console.log(aux[i]);
+            }
+            setTokensJugador(aux);
+        })
+        .catch((error) => {
+        //Error
+        //alert(JSON.stringify(error));
+        console.error(error);
+        });}
+
+        {const response = fetch(turnoActual,{
+            method: 'PUT',
+            headers : {'Content-Type': 'application/json'},
+            body : JSON.stringify({"idPartida": idPartida})
+        })
+        .then((response) => {
+            if(response.status != 200){
+                throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            setTurnoActual(data.posicion);
+        })
+        .catch((error) => {
+            console.error(error);
+        })};
+
+        },3000);
+
+    const comprobarAsignatura = useCallback(() => {
+        console.log("comprobando casilla para el turno", turnoActual);
+        console.log(tokensJugadores[0]);
+        let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+        if(found === undefined){
+            let found = casillas_boletin.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+            if(found === undefined){
+                let found = casillas_esquinas.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+                if( found === undefined){
+                    let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+                    if( found === undefined){
+                        console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
+                        const response = fetch(casillaComprada,{
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({  "username": username,
+                                                    "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
+                                                    "idPartida": idPartida})
+                        })
+                        .then((response) => {
+                            if(response.status != 200){
+                                throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("COMPROBAR ASIGNATURA");
+                            console.log(data.jugador);
+                            console.log(data.dinero)
+                            if(data.jugador!=null){
+                                if(data.jugador==username){
+                                    console.log("es mia");
+                                }
+                                else{
+                                console.log("comprada");
+                                console.log(data);
+                                setPropietario(data.jugador);
+                                setPago(data.dinero);
+                                setModalAsignaturaCompradaVisible(true);
+                                }
+                            }
+                            else{
+                                console.log("no comprada");                
+                                setInfo(true);
+                        }})
+                        .catch((error) => {
+                            //Error
+                            //alert(JSON.stringify(error));
+                            console.error(error);
+                        });
+                    }
+                    else{
+                        console.log("pagos");
+                        //accion
+                    }
+                }else{
+                    console.log("esquina");
+                    //accion
+                    if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
+                        console.log("carcel");
+                        alert("Te toca ir a Julio");
+                        let aux = tokensJugadores;
+                        aux[turnoActual].horizontal = 0;
+                        aux[turnoActual].vertical = 10;
+                        console.log(aux);
+                        setTokensJugador(aux);
+                    }
+                }
+            }else{
+                //console.log("boletin");
+                console.log("obteniendo boletín");
+                const response = fetch(tarjetaAleatoria,{
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({  "idPartida": idPartida,
+                                            "username": username,
+                                            "tipo": "boletin"        
+                                        })
+                })
+                .then((response) => {
+                    if(response.status != 200){
+                        throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de boletín');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("BOLETIN");
+                    console.log(data[0]);
+                    let aux = [data[0].nombre, data[0].descripcion];
+                    console.log(aux);
+                    setBoletin(aux);
+                    setModalBoletinVisible(true);
+                })
+                .catch((error) => {
+                    //Error
+                    //alert(JSON.stringify(error));
+                    console.error(error);
+                });
+            }
+        }else{
+            console.log("obteniendo suerte", tarjetaAleatoria);
+            const response = fetch(tarjetaAleatoria,{
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({  "idPartida": idPartida,
+                                        "username": username,
+                                        "tipo": "suerte"        
+                                    })
+            })
+            .then((response) => {
+                if(response.status != 200){
+                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de suerte');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("SUERTE");
+                console.log(data[0]);
+                let aux = [data[0].nombre, data[0].descripcion];
+                console.log(aux);
+                setSuerte(aux);
+                setModalSuerteVisible(true);
+            })
+            .catch((error) => {
+                //Error
+                //alert(JSON.stringify(error));
+                console.error(error);
+            }); 
+        }
+    });
+
+    const infoCasilla= useCallback(() => { 
+        const response = fetch(infoAsignatura,{
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical}})
+        })
+        .then((response) => {
+            if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
+            }
+            return response.json();
+        })
+        .then(data => {
+            //console.log(data);
+            if(data.casillaInfo.tipo == 'A'){
+                console.log("asignatura ", data.casillaInfo.cuatrimestre);
+                switch(data.casillaInfo.cuatrimestre){
+                    case 1:
+                        setCarta(<Asignatura_1
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 2:
+                        setCarta(<Asignatura_2
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 3:
+                        setCarta(
+                        <Asignatura_3
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 4:
+                        setCarta(                                            
+                        <Asignatura_4
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 5:
+                        setCarta(                                            
+                        <Asignatura_5
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break;  
+                    case 6:
+                        setCarta(                                            
+                        <Asignatura_6
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 7:
+                        setCarta(                                            
+                        <Asignatura_7
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                    case 8:
+                        setCarta(                                            
+                        <Asignatura_8
+                            title={data.casillaInfo.nombre}
+                            coste={data.casillaInfo.precioCompra}
+                            description={""}
+                        />);
+                        break; 
+                }
+            }
+            else if(data.casillaInfo.tipo == 'F'){
+                //console.log("evento");
+                setCarta(                                    <Evento
+                    title={data.casillaInfo.nombre}
+                    coste={data.casillaInfo.precioCompra}
+                    description={""}
+                    imageSource={require('../../assets/bob.png')}
+                />);
+            }
+            else if(data.casillaInfo.tipo == 'I'){
+                //console.log("recurso");
+                setCarta(                                   <Recurso
+                    title={data.casillaInfo.nombre}
+                    coste={data.casillaInfo.precioCompra}
+                    description={""}
+                    imageSource={require('../../assets/bob.png')}
+                />);
+            }
+            setCompra(true);
+            //console.log(carta);
+        })
+        .catch((error) => {
+            //Error
+            //alert(JSON.stringify(error));
+            console.error(error);
+        });
+    });
+
+    const cambiarTurno = useCallback(() => {
+        const response =  fetch(siguienteTurno, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+            if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
+            }
+            return response.json();
+            })
+            .then(data => {
+                console.log("TURNO:",data);
+                setTurnoActual(data.posicion);
+                setActualizarPlayers(true);
+                //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
+                //console.log(data);
+            })
+            .catch((error) => {
+            //Error
+            //alert(JSON.stringify(error));
+            console.error(error);
+            });
+    })
+
+    useEffect(() => {
+        if(comprobar){
+            setComprobar(false);
+            comprobarAsignatura();
+        }
+    },[comprobar]);
+
+    useEffect(() => {
+        if(info){
+            setInfo(false);
+            infoCasilla();
+        }
+    },[info]);
+
+    useEffect(() => {
+        if(compra){
+            setCompra(false);
+            setModalCompraVisible(true);
+        }
+    },[compra]);
+
+    useEffect (() => {
+        if(actualizarPlayers){
+            setActualizarPlayers(false);
+            actualizarDinero();
+        }
+    },[actualizarPlayers]);
+
+    useEffect(() =>{
+        if(cambio){
+            setCambio(false);
+            cambiarTurno();
+        }
+    },[cambio]);
 
     return (
         <View style={styles.pantalla}>
