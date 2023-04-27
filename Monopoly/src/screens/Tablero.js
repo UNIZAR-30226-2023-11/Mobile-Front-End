@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, setInterval } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { View, Image, StyleSheet, Pressable } from'react-native';
 import 
 {   FontAwesome, 
@@ -381,8 +381,8 @@ export default function TableroScreen({route}) {
         )
     }
 
-    const actualizarDinero = setInterval(() => {
-        {const response =  fetch(listaJugadores, {
+    const actualizarDinero = useCallback(() =>{
+        const response =  fetch(listaJugadores, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({"idPartida": idPartida})
@@ -397,24 +397,27 @@ export default function TableroScreen({route}) {
             console.log("ACTUALIZAR DINERO:",data);
             setJugadores(data.listaJugadores);
             setDinero(data.listaDineros);
+            
             let aux = tokensJugadores;
-            console.log("iniciando bucle...");
+            // console.log(aux);
             for(var i=0; i<data.listaPosiciones.length; i++){
                 aux[i].horizontal = data.listaPosiciones[i].h;
                 aux[i].vertical = data.listaPosiciones[i].v;
                 console.log(aux[i]);
             }
             setTokensJugador(aux);
+            
             actualizarTurno();
         })
         .catch((error) => {
         //Error
         //alert(JSON.stringify(error));
         console.error(error);
-        });}
-    },3000);
+        });
+    },[])
 
-    function actualizarTurno(){
+    const actualizarTurno = useCallback(() =>{
+        console.log("Obteniendo turno");
         const response = fetch(obtenerTurnoActual,{
             method: 'PUT',
             headers : {'Content-Type': 'application/json'},
@@ -427,12 +430,13 @@ export default function TableroScreen({route}) {
             return response.json();
         })
         .then((data) => {
+            console.log(data);
             setTurnoActual(data.posicion);
         })
         .catch((error) => {
             console.error(error);
         })
-    };
+    })
 
     const comprobarAsignatura = useCallback(() => {
         console.log("comprobando casilla para el turno", turnoActual);
@@ -720,13 +724,24 @@ export default function TableroScreen({route}) {
             setModalCompraVisible(true);
         }
     },[compra]);
-
-    useEffect (() => {
+    
+    /*
+    useEffect(() => {
         if(actualizarPlayers){
             setActualizarPlayers(false);
             actualizarDinero();
         }
-    },[actualizarPlayers]);
+    },[actualizarPlayers]);*/
+
+    useEffect (() => {
+        
+        const interval = setInterval(() => {
+            actualizarDinero();
+            console.log("cada 3 seg");
+        },5000);
+
+        return () => clearInterval(interval);
+    },[]);
 
     useEffect(() =>{
         if(cambio){
