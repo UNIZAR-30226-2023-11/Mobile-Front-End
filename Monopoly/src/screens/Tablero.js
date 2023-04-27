@@ -333,6 +333,7 @@ export default function TableroScreen({route}) {
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
                 return;
             }
+            setActualizarPlayers(false);
             console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
@@ -725,23 +726,16 @@ export default function TableroScreen({route}) {
         }
     },[compra]);
     
-    /*
-    useEffect(() => {
-        if(actualizarPlayers){
-            setActualizarPlayers(false);
-            actualizarDinero();
-        }
-    },[actualizarPlayers]);*/
-
     useEffect (() => {
-        
-        const interval = setInterval(() => {
-            actualizarDinero();
-            console.log("cada 3 seg");
-        },5000);
-
-        return () => clearInterval(interval);
-    },[]);
+        if(actualizarPlayers){
+            const interval = setInterval(() => {
+                actualizarDinero();
+            },3000);
+        }
+        else{
+            clearInterval(interval);
+        }
+    },[actualizarPlayers]);
 
     useEffect(() =>{
         if(cambio){
@@ -1019,7 +1013,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                // setActualizarPlayers(true);
+                setActualizarPlayers(true);
                 setCambio(true);
                        
             }}
@@ -1028,7 +1022,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                // setActualizarPlayers(true);
+                setActualizarPlayers(true);
                 setCambio(true);
             }}
         />
