@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, setInterval } from 'react';
 import { View, Image, StyleSheet, Pressable } from'react-native';
 import 
 {   FontAwesome, 
@@ -9,7 +9,16 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { lanzarDados, listaJugadores, infoAsignatura, casillaComprada, tarjetaAleatoria, listarAsignaturas, siguienteTurno } from '../url/partida';
+import { 
+    lanzarDados, 
+    listaJugadores, 
+    infoAsignatura, 
+    casillaComprada, 
+    tarjetaAleatoria, 
+    listarAsignaturas, 
+    siguienteTurno,
+    obtenerTurnoActual
+} from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -396,14 +405,17 @@ export default function TableroScreen({route}) {
                 console.log(aux[i]);
             }
             setTokensJugador(aux);
+            actualizarTurno();
         })
         .catch((error) => {
         //Error
         //alert(JSON.stringify(error));
         console.error(error);
         });}
+    },3000);
 
-        {const response = fetch(turnoActual,{
+    function actualizarTurno(){
+        const response = fetch(obtenerTurnoActual,{
             method: 'PUT',
             headers : {'Content-Type': 'application/json'},
             body : JSON.stringify({"idPartida": idPartida})
@@ -419,9 +431,8 @@ export default function TableroScreen({route}) {
         })
         .catch((error) => {
             console.error(error);
-        })};
-
-        },3000);
+        })
+    };
 
     const comprobarAsignatura = useCallback(() => {
         console.log("comprobando casilla para el turno", turnoActual);

@@ -30,3 +30,6 @@ export const listarAsignaturas = 'http://10.0.2.2:8080/partida/listaAsignaturasC
 
 //export const siguienteTurno = 'http://nerks.net:7003/partida/siguienteTurno'
 export const siguienteTurno = 'http://10.0.2.2:8080/partida/siguienteTurno'
+
+// export const obtenerTurnoActual = 'http://nerks.net:7003/partida/turnoActual'
+export const obtenerTurnoActual = 'http://10.0.2.2:8080/partida/turnoActual'
