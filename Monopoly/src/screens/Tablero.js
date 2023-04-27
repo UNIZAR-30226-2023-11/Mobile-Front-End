@@ -243,8 +243,11 @@ export default function TableroScreen({route}) {
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
+
+    //variables para la info de los jugadores
     const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
+
     const [carta,setCarta] = React.useState();
     const [propietario, setPropietario] = React.useState("");
     const [pago, setPago] = React.useState(0);
@@ -313,8 +316,6 @@ export default function TableroScreen({route}) {
         }
     })
 
-    const 
-
     function Dice(){
 
         function roll(){
@@ -375,6 +376,13 @@ export default function TableroScreen({route}) {
                 // console.log("ACTUALIZAR DINERO:",data);
                 setJugadores(data.listaJugadores);
                 setDinero(data.listaDineros);
+                let aux = tokensJugadores;
+                for(var i=0; i<data.listaPosiciones.length; i++){
+                    aux[i].horizontal = data.listaPosiciones[i].h;
+                    aux[i].vertical = data.listaPosiciones[i].v;
+                    console.log(aux[i]);
+                }
+                setTokensJugador(aux);
             })
             .catch((error) => {
             //Error
