@@ -5,25 +5,12 @@ import StyledModalSala from "../components/StyledModalSala";
 import { unirPartida } from '../url/partida';
 
 
-import React from 'react';
-import { StyleSheet, Button, View, Image, Text , TouchableOpacity } from 'react-native';
-import StyledText from '../components/StyledText'
-import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native';
-
 const styles = StyleSheet.create({
     error: {
       color: 'red',
       fontSize: 12,
       marginBottom: 20,
       marginTop: -5
-    },
-
-    userImage: {
-        width:130,
-        height:130,
-        borderRadius:150,
-        alignSelf: 'center',
     },
 
     text: {
@@ -33,51 +20,48 @@ const styles = StyleSheet.create({
       marginTop: '2%',
     },
 
-    page: {
-      flex: 1,
-      backgroundColor: 'lightgrey',
-    },
-
-    user: {
-      flex: 3, 
-      flexDirection: 'row',
-      marginTop: '4%',
-      alignSelf: 'center',
-    },
-
-     titulo: {
-      color: 'black',
-      fontSize: 18,
-      marginBottom: '2%',
-      marginTop: '2%',
-      fontWeight: 'bold',
-     },
-
-    stadistics: {
-      flex: 18, 
-      flexDirection: 'column',
-      marginLeft: '5%',
-      marginRight: '5%',
-      marginBottom: '5%',
-      padding: '4%',
-      borderWidth: 1,
-      borderColor: 'lightgrey',
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomLeftRadius: 10,
-      borderBottomRightRadius: 10,
-      justifyContent: 'center',
-      alignContent: 'center',
-      backgroundColor: 'pink',
-      //alignSelf: 'center',
-      
-     },
-     descripcion: {
+    descripcion: {
       color: 'black',
       fontSize: 12,
      } 
 
   })
+
+const fichas = [
+    { id: 1, image: require('./assets/token1.png'), text: 'Elemento 1', precio: 100},
+    { id: 2, image: require('./assets/token2.png'), text: 'Elemento 2', precio: 100},
+    { id: 3, image: require('./assets/token3.png'), text: 'Elemento 3', precio: 100},
+    { id: 4, image: require('./assets/token4.png'), text: 'Elemento 4', precio: 100},
+    { id: 5, image: require('./assets/token5.png'), text: 'Elemento 5', precio: 100},
+    { id: 6, image: require('./assets/token6.png'), text: 'Elemento 6', precio: 100},
+    { id: 7, image: require('./assets/token7.png'), text: 'Elemento 7', precio: 100},
+    { id: 8, image: require('./assets/token8.png'), text: 'Elemento 8', precio: 100},
+    { id: 9, image: require('./assets/token9.png'), text: 'Elemento 9', precio: 100},
+];
+
+const avatares = [
+    { id: 1, image: require('./assets/bob.png'), text: 'Elemento 1', precio: 100},
+    { id: 2, image: require('./assets/bob.png'), text: 'Elemento 2', precio: 100},
+    { id: 3, image: require('./assets/bob.png'), text: 'Elemento 3', precio: 100},
+    { id: 4, image: require('./assets/bob.png'), text: 'Elemento 4', precio: 100},
+    { id: 5, image: require('./assets/bob.png'), text: 'Elemento 5', precio: 100},
+    { id: 6, image: require('./assets/bob.png'), text: 'Elemento 6', precio: 100},
+    { id: 7, image: require('./assets/bob.png'), text: 'Elemento 7', precio: 100},
+    { id: 8, image: require('./assets/bob.png'), text: 'Elemento 8', precio: 100},
+    { id: 9, image: require('./assets/bob.png'), text: 'Elemento 9', precio: 100},
+];
+
+const tableros = [
+    { id: 1, image: require('./assets/bob.png'), text: 'Elemento 1', precio: 100},
+    { id: 2, image: require('./assets/bob.png'), text: 'Elemento 2', precio: 100},
+    { id: 3, image: require('./assets/bob.png'), text: 'Elemento 3', precio: 100},
+    { id: 4, image: require('./assets/bob.png'), text: 'Elemento 4', precio: 100},
+    { id: 5, image: require('./assets/bob.png'), text: 'Elemento 5', precio: 100},
+    { id: 6, image: require('./assets/bob.png'), text: 'Elemento 6', precio: 100},
+    { id: 7, image: require('./assets/bob.png'), text: 'Elemento 7', precio: 100},
+    { id: 8, image: require('./assets/bob.png'), text: 'Elemento 8', precio: 100},
+    { id: 9, image: require('./assets/bob.png'), text: 'Elemento 9', precio: 100},
+];
 
 export default function TiendaScreen({ route, navigation }){
     
