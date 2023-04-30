@@ -16,8 +16,42 @@ const styles = StyleSheet.create({
     descripcion: {
       color: 'black',
       fontSize: 12,
-     } 
-
+    },
+    itemContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        margin: 10,
+        borderWidth: 1,
+        borderColor: "gray",
+        borderRadius: 5,
+        padding: 10,
+      },
+      itemImage: {
+        width: 100,
+        height: 100,
+        resizeMode: "contain",
+      },
+      itemText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginVertical: 10,
+      },
+      itemPrecio: {
+        fontSize: 14,
+        color: "green",
+        marginBottom: 5,
+      },
+      itemButton: {
+        backgroundColor: "blue",
+        padding: 10,
+        borderRadius: 5,
+      },
+      itemButtonText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+      } 
   })
 
 const fichas = [
@@ -79,7 +113,7 @@ export default function TiendaScreen({ route, navigation }){
             <Text>Fichas</Text>
             <FlatList
                 data={fichas}
-                renderItem={renderFichas}
+                renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={3}
             />
@@ -88,8 +122,8 @@ export default function TiendaScreen({ route, navigation }){
             <View>
             <Text>Avatares</Text>
             <FlatList
-                data={fichas}
-                renderItem={renderAvatares}
+                data={avatares}
+                renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={3}
             />
@@ -98,8 +132,8 @@ export default function TiendaScreen({ route, navigation }){
             <View>
             <Text>Tableros</Text>
             <FlatList
-                data={fichas}
-                renderItem={renderTableros}
+                data={tableros}
+                renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
                 numColumns={3}
             />
