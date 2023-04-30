@@ -38,13 +38,42 @@ const styles = StyleSheet.create({
         height: 2,
         }
     },
-    button :{
+    modalViewVender: {
+        marginTop: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width:'60%',
+        height: '40%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        }
+    },
+    botones:{
+        flex:0.5,
+        marginTop:'5%',
+        flexDirection:'row', 
+        justifyContent:'space-between',
+    },
+    button:{
         marginLeft: '80%',
         marginTop: '5%'
+    },
+    boton :{
+        marginTop: '5%',
     },
     modalText: {
         fontSize: 18,
         alignSelf: 'flex-start',
+        color: '#000',
+    },
+    modalTextVender: {
+        fontSize: 20,
+        alignSelf: 'flex-start',
+        textAlign: 'center',
+        marginTop: '10%',
         color: '#000',
     },
     modalTitle: {
@@ -220,7 +249,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>*/}
                     <Pressable
-                        onPress={() => {setModalVender(true)}}>
+                        onPress={() => {setModalVenderVisible(true)}}>
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>
                   </View>
@@ -255,20 +284,20 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
         transparent={true}
         props>
         <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-                <Text style={styles.modalText}>¿Esta seguro de que desea vender la asignatura?</Text>
+            <View style={styles.modalViewVender}>
+                <Text style={styles.modalTextVender}>¿Esta seguro de que desea vender la asignatura?</Text>
                 <View style={styles.botones}>
                     <StyledButton
-                        style={[styles.boton, {color: 'red'}]}
+                        style={styles.boton}
                         title="Cancelar"
                         onPress={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
-                        purple
+                        red
                     />
                     <StyledButton
-                        style={[styles.boton, {color: 'green'}]}
+                        style={styles.boton}
                         title="Vender"
                         onPress={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
-                        purple
+                        green
                     />
                 </View>
             </View>
