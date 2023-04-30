@@ -47,6 +47,7 @@ export default function CrearSalaScreen({ route, navigation }) {
             </View>
             <View style={{flex:1}}>
                 <StyledButton
+                lightblue
                 title="Ir a la sala"
                 onPress={() => {navigation.navigate('Tablero', {user: user, idPartida: idPartida})}}
                 />

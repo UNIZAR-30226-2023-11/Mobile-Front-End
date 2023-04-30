@@ -15,6 +15,7 @@ import SettingsMailScreen from './src/screens/SettingsMail.js';
 import SettingsPasswordScreen from './src/screens/SettingsPassword.js';
 import SettingsUserScreen from './src/screens/SettingsUser.js';
 import TableroScreen from './src/screens/Tablero.js';
+import TiendaScreen from './src/screens/Tienda.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -91,6 +92,11 @@ export default function App() {
           name="EsperaUnirse"
           component={EsperaUnirseScreen}
           options={{title: 'EsperaUnirse'}}
+        />
+        <Stack.Screen
+          name="Tienda"
+          component={TiendaScreen}
+          options={{title: 'Tienda'}}
         />
 
       </Stack.Navigator>
