@@ -23,6 +23,7 @@ import {
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
+import StyledModalAsignaturas from '../components/StyledModalAsignaturas';
 import Die from '../components/Die';
 
 import {
@@ -37,6 +38,7 @@ import {
     Recurso,
     Evento
 } from '../components/MonopolyCard';
+
 import StyledButton from '../components/StyledButton';
 
 const ancho = 34.3;
@@ -246,8 +248,10 @@ export default function TableroScreen({route}) {
     const [modalAsignaturaCompradaVisible, setModalAsignaturaCompradaVisible] = React.useState(false);
     const [modalSuerteVisible, setModalSuerteVisible] = React.useState(false);
     const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
+    const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
+    const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
     const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
@@ -262,6 +266,10 @@ export default function TableroScreen({route}) {
     const [pago, setPago] = React.useState(0);
     const [boletin, setBoletin] = React.useState([""]);
     const [suerte, setSuerte] = React.useState([""]);
+
+    //variable para guardar las asignaturas del jugador
+    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:""}]);
+
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
     let totalJugadores = jugadores.length;
@@ -473,6 +481,7 @@ export default function TableroScreen({route}) {
                             if(data.jugador!=null){
                                 if(data.jugador==username){
                                     console.log("es mia");
+                                    infoCasilla(true);
                                 }
                                 else{
                                 console.log("comprada");
@@ -484,7 +493,7 @@ export default function TableroScreen({route}) {
                             }
                             else{
                                 console.log("no comprada");                
-                                setInfo(true);
+                                infoCasilla(false);
                         }})
                         .catch((error) => {
                             //Error
@@ -572,7 +581,7 @@ export default function TableroScreen({route}) {
         }
     });
 
-    const infoCasilla= useCallback(() => { 
+    const infoCasilla= useCallback((esMia) => { 
         const response = fetch(infoAsignatura,{
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
@@ -671,7 +680,11 @@ export default function TableroScreen({route}) {
                     imageSource={require('../../assets/bob.png')}
                 />);
             }
-            setCompra(true);
+            if(esMia){
+                setAumentoCreditos(true);
+            }else{
+                setCompra(true);
+            }
             //console.log(carta);
         })
         .catch((error) => {
@@ -731,6 +744,13 @@ export default function TableroScreen({route}) {
             setModalCompraVisible(true);
         }
     },[compra]);
+
+    useEffect(() =>{
+        if(aumentoCreditos){
+            setAumentoCreditos(false);
+            setModalCreditosVisible(true);
+        }
+    },[aumentoCreditos]);
     
     useEffect (() => {
         var interval = null;
@@ -964,9 +984,11 @@ export default function TableroScreen({route}) {
                 </View>
             </View>
             <View style={styles.asignaturas}>
-                <StyledModal
+                <StyledModalAsignaturas
                 title="MIS ASIGNATURAS"
-                text="Aquí se mostrará la lista de asignaturas de las que eres dueño."   
+                asignaturas={asignaturas}
+                username={username}
+                idPartida={idPartida}   
                 onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
                 visible={modalAsignaturasVisible}
                 onRequestClose={() => {
@@ -993,6 +1015,15 @@ export default function TableroScreen({route}) {
                     })
                     .then(data => {
                         console.log("Asignaturas:\n ",data);
+                        let vector = new Array();
+                        for(let i = 0; i<data.casillas.length; i++) {
+                            let aux = { nombre: data.casillas[i].nombre,
+                                        h: data.casillas[i].coordenadas.h, 
+                                        v: data.casillas[i].coordenadas.v }
+                            vector.push(aux);
+                        }
+                        console.log(vector);
+                        setAsignaturas(vector);
                         setModalAsignaturasVisible(true);
                     })
                     .catch((error) => {
@@ -1013,7 +1044,8 @@ export default function TableroScreen({route}) {
         <StyledModalCompra
             doubles={dobles}
             title="Comprar"
-            text="¿Desea comprar la asignatura?"
+            text="¿Desea comprar la carta?"
+            aumentarCreditos={false}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
@@ -1023,7 +1055,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 setCambio(true);
                        
             }}
@@ -1032,7 +1064,34 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
+                setCambio(true);
+            }}
+        />
+        <StyledModalCompra
+            doubles={dobles}
+            title="Aumentar créditos"
+            text="¿Desea aumentar los créditos?"
+            aumentarCreditos={true}
+            c_hor={tokensJugadores[turnoActual].horizontal}
+            c_ver={tokensJugadores[turnoActual].vertical}
+            username={username}
+            idPartida={idPartida}
+            InfoCarta = {carta}
+            onClose={() => {
+                setAumentoCreditos(false);
+                setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
+                console.log("cerrado");
+                // setActualizarPlayers(true);
+                setCambio(true);
+                       
+            }}
+            visible={modalCreditosVisible}
+            onRequestClose={() =>{
+                setAumentoCreditos(false);
+                setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
+                console.log("cerrado");
+                // setActualizarPlayers(true);
                 setCambio(true);
             }}
         />

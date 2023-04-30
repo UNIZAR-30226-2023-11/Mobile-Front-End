@@ -3,7 +3,7 @@ import { Modal, StyleSheet, View, Text } from 'react-native';
 
 
 import StyledButton from "./StyledButton"
-import { comprarAsignatura } from '../url/partida';
+import { comprarAsignatura, aumentarCreditos } from '../url/partida';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 });
 
 export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text, 
-    c_hor, c_ver, username, idPartida}
+    c_hor, c_ver, username, idPartida, aumentarCreditos}
     ){
     //console.log("modal abierto");
     console.log(InfoCarta);
@@ -88,6 +88,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         onPress={onClose}
                         purple
                     />}
+                    {!aumentarCreditos &&
                     <StyledButton
                         style={styles.boton}
                         title="Comprar"
@@ -113,7 +114,34 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                             console.error(error);
                             });}}
                         purple
-                    />
+                    />}
+                     {aumentarCreditos &&
+                    <StyledButton
+                        style={styles.boton}
+                        title="Aumentar creditos"
+                        onPress={() => {
+                            console.log("aumentando creditos..", c_hor, c_ver);
+                            const response =  fetch(aumentarCreditos, {
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({  "idPartida": idPartida,
+                                                    "username": username,
+                                                    "coordenadas":{"h": c_hor,"v": c_ver}})
+                            })
+                            .then((response) => {
+                            if(response.status != 200){
+                                throw new Error('Error de estado: '+ response.status);
+                            }
+                            console.log("aumentados");
+                            onClose();
+                            })
+                            .catch((error) => {
+                            //Error
+                            //alert(JSON.stringify(error));
+                            console.error(error);
+                            });}}
+                        purple
+                    />}
                 </View>
             </View>
         </View>
