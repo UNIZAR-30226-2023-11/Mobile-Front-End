@@ -58,7 +58,24 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center",
-      } 
+      },
+      headerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 50,
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        borderBottomWidth: 2,
+        borderBottomColor: '#ddd',
+      },
+      username: {
+        fontSize: 25,
+        fontWeight: 'bold',
+      },
+      money: {
+        fontSize: 20,
+      },
   })
 
 const fichas = [
@@ -108,15 +125,26 @@ const renderItem = ({ item }) => (
         <Text style={styles.itemButtonText}>Comprar</Text>
       </TouchableOpacity>
     </View>
-  );
+);
+
+const Header = ({ username, money }) => {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.username}>{username}</Text>
+        <Text style={styles.money}>{money}</Text>
+      </View>
+    );
+};
 
 export default function TiendaScreen({ route, navigation }){
-    
-    const user = route.params.user;
-    console.log(user);
+    //coger el precio de la BD
+    const username = route.params.user;
+    const money = '100';
+    console.log(username);
 
     return (
-        <ScrollView>
+        <ScrollView stickyHeaderIndices={[0]}>
+        <Header username={'@' + username} money={money + '€'} />
             <View>
                 <View>
                     <Text style={styles.texto}>Fichas</Text>
