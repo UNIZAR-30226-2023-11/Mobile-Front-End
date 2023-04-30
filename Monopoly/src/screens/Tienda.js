@@ -6,13 +6,6 @@ import { unirPartida } from '../url/partida';
 
 
 const styles = StyleSheet.create({
-    error: {
-      color: 'red',
-      fontSize: 12,
-      marginBottom: 20,
-      marginTop: -5
-    },
-
     text: {
       color: 'black',
       fontSize: 16,
@@ -63,6 +56,18 @@ const tableros = [
     { id: 9, image: require('./assets/bob.png'), text: 'Elemento 9', precio: 100},
 ];
 
+
+const renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Image style={styles.itemImage} source={item.image} />
+      <Text style={styles.itemText}>{item.text}</Text>
+      <Text style={styles.itemPrecio}>€{item.precio}</Text>
+      <TouchableOpacity style={styles.itemButton}>
+        <Text style={styles.itemButtonText}>Comprar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
 export default function TiendaScreen({ route, navigation }){
     
     const user = route.params.user;
@@ -70,8 +75,35 @@ export default function TiendaScreen({ route, navigation }){
 
     return (
         <View>
+        <View>
+            <Text>Fichas</Text>
+            <FlatList
+                data={fichas}
+                renderItem={renderFichas}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={3}
+            />
+            </View>
 
+            <View>
+            <Text>Avatares</Text>
+            <FlatList
+                data={fichas}
+                renderItem={renderAvatares}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={3}
+            />
+            </View>
 
+            <View>
+            <Text>Tableros</Text>
+            <FlatList
+                data={fichas}
+                renderItem={renderTableros}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={3}
+            />
+        </View>
         </View>
     );
 }
