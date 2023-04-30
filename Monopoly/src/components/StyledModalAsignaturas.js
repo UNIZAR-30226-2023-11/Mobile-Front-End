@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import StyledButton from './StyledButton';
 
 import { infoAsignatura } from '../url/partida';
 
@@ -63,6 +64,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
     ]
 
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
+    const [modalVenderVisible, setModalVenderVisible] = React.useState(false);
     const [carta,setCarta] = React.useState();
 
     return(
@@ -218,7 +220,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>*/}
                     <Pressable
-                        onPress={() => {console.log("vendiendo...")}}>
+                        onPress={() => {setModalVender(true)}}>
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>
                   </View>
@@ -243,6 +245,32 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
             <View style={styles.carta}>
                 {carta}
             </View>
+            </View>
+        </View>
+        </Modal>
+        <Modal
+        animationType="slide"
+        visible={modalVenderVisible}
+        onRequestClose={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
+        transparent={true}
+        props>
+        <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+                <Text style={styles.modalText}>¿Esta seguro de que desea vender la asignatura?</Text>
+                <View style={styles.botones}>
+                    <StyledButton
+                        style={[styles.boton, {color: 'red'}]}
+                        title="Cancelar"
+                        onPress={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
+                        purple
+                    />
+                    <StyledButton
+                        style={[styles.boton, {color: 'green'}]}
+                        title="Vender"
+                        onPress={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
+                        purple
+                    />
+                </View>
             </View>
         </View>
         </Modal>
