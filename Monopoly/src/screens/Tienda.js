@@ -81,10 +81,13 @@ const styles = StyleSheet.create({
 
 export default function TiendaScreen({ route, navigation }){
     
+    const user = route.params.user;
+    console.log(user);
+
     return (
         <View>
 
-            
+
         </View>
     );
 }

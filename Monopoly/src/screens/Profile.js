@@ -82,7 +82,7 @@ export default function ProfileScreen({ route, navigation }){
         <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-end',  marginTop:'4%', marginRight: '4%'}}>
 
           {/* Boton de compras */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Tienda', {user: user})}>
             <AntDesign name="shoppingcart" size={30} color="black"/>
             <Text style={styles.descripcion}>tienda      </Text>
           </TouchableOpacity>
