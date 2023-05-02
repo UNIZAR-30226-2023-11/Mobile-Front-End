@@ -27,6 +27,9 @@ export default function CrearSalaScreen({ route, navigation }) {
     const idPartida = route.params.idPartida;
     console.log(user, idPartida);
 
+    const [interval, setIntervalId] = React.useState(null);
+    const [detenido, setDetenido] = React.useState(false);
+    const [avanzar, setAvanzar] = React.useState(false);
     const [jugadores, setJugadores] = React.useState([""]);
     
     const actualizarJugadores = useCallback(() => {
@@ -54,11 +57,29 @@ export default function CrearSalaScreen({ route, navigation }) {
     });
 
     useEffect (() =>{
-        interval = setInterval(() => {
-            actualizarJugadores();
-        },3000);
-        return () => clearInterval(interval);
-    },[])
+        console.log("detenido: ", detenido);
+        if(detenido){
+            clearInterval(interval);
+             setIntervalId(null);
+            setAvanzar(true);
+        }else{
+            const id = setInterval(() => {
+                actualizarJugadores();
+            },3000);
+            setIntervalId(id);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+
+    },[detenido])
+
+    useEffect(() => {
+        if(avanzar){
+            navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+        }
+    }, [avanzar]);
 
     return (
         <NativeBaseProvider>
@@ -74,14 +95,14 @@ export default function CrearSalaScreen({ route, navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             {jugadores.map((jugador, i) =>(
-                <Text>{jugador}</Text>
+                <Text key={i}>{jugador}</Text>
             ))}
             </ScrollView>
             </View>
             <View style={{flex:1}}>
                 <StyledButton
                 title="Ir a la sala"
-                onPress={() => {navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores})}}
+                onPress={() => { setDetenido(true);}}
                 />
             </View>
         </View>

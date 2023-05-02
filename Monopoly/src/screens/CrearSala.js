@@ -28,6 +28,10 @@ export default function CrearSalaScreen({route, navigation }) {
     const idPartida = route.params.idPartida;
     console.log(user, idPartida);
 
+    const [interval, setIntervalId] = React.useState(null);
+    const [detenido, setDetenido] = React.useState(false);
+    const [avanzar, setAvanzar] = React.useState(false);
+
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
     const [jugadores, setJugadores] = React.useState([""]);
@@ -57,11 +61,29 @@ export default function CrearSalaScreen({route, navigation }) {
     });
 
     useEffect (() =>{
-        interval = setInterval(() => {
-            actualizarJugadores();
-        },3000);
-        return () => clearInterval(interval);
-    },[])
+        console.log("detenido: ", detenido);
+        if(detenido){
+            clearInterval(interval);
+             setIntervalId(null);
+            setAvanzar(true);
+        }else{
+            const id = setInterval(() => {
+                actualizarJugadores();
+            },3000);
+            setIntervalId(id);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+
+    },[detenido])
+
+    useEffect(() => {
+        if(avanzar){
+            navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+        }
+    }, [avanzar]);
 
     return (
         <NativeBaseProvider>
@@ -127,7 +149,7 @@ export default function CrearSalaScreen({route, navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             {jugadores.map((jugador, i) =>(
-                <Text>{jugador}</Text>
+                <Text key={i}>{jugador}</Text>
             ))}
             </ScrollView>
             </View>
@@ -149,7 +171,7 @@ export default function CrearSalaScreen({route, navigation }) {
                                     }
                                     else{
                                         console.log(response.json());
-                                        navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+                                        setDetenido(true);
                                     }})
                                 .catch((error) => {
                                     //Error
