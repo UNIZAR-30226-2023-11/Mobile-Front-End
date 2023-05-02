@@ -117,13 +117,21 @@ const tableros = [
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
 const renderItem = ({ item }) => (
+  let comprado = estaComprada(item.id);
+
     <View style={styles.itemContainer}>
       <Image style={styles.itemImage} source={item.image} />
       <Text style={styles.itemText}>{item.text}</Text>
       <Text style={styles.itemPrecio}>€{item.precio}</Text>
-      <TouchableOpacity style={styles.itemButton}>
-        <Text style={styles.itemButtonText}>Comprar</Text>
-      </TouchableOpacity>
+      {!comprado && (
+        <TouchableOpacity style={styles.itemButton}>
+          <Text style={styles.itemButtonText}>Comprar</Text>
+        </TouchableOpacity>
+      )}
+
+      {comprado && (
+          <Text style={styles.itemButtonText}>Comprar</Text>
+      )}
     </View>
 );
 
