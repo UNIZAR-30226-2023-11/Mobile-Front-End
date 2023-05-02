@@ -206,7 +206,8 @@ export default function TableroScreen({route}) {
 
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
-    const [idPartida, setIdPartida] = React.useState(route.params.idPartida);
+    const idPartida = route.params.idPartida;
+    const jugadores = route.params.jugadores;
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
@@ -259,7 +260,7 @@ export default function TableroScreen({route}) {
     const [info, setInfo] = React.useState(false);
 
     //variables para la info de los jugadores
-    const [jugadores, setJugadores] = React.useState([""]);
+    // const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
 
     const [carta,setCarta] = React.useState();
@@ -407,7 +408,7 @@ export default function TableroScreen({route}) {
         .then(data => {
             // console.log("ACTUALIZAR DINERO:",data);
             console.log(data);
-            setJugadores(data.listaJugadores);
+            // setJugadores(data.listaJugadores);
             setDinero(data.listaDineros);
             
             let aux = tokensJugadores;
@@ -820,7 +821,6 @@ export default function TableroScreen({route}) {
         if(actualizarPlayers){
                 interval = setInterval(() => {
                     actualizarDinero();
-                    actualizarTurno();
                     console.log("JUGADORES: ", jugadores);
                     console.log("JUGADOR: ",jugadores[turnoActual]);
                     if(jugadores[turnoActual] == username){

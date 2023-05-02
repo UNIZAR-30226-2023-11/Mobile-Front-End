@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import { actualizarPartida } from "../url/partida";
+import { actualizarPartida, listaJugadores } from "../url/partida";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -30,6 +30,39 @@ export default function CrearSalaScreen({route, navigation }) {
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
+    const [jugadores, setJugadores] = React.useState([""]);
+    
+    const actualizarJugadores = useCallback(() => {
+        const response =  fetch(listaJugadores, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+              if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+              }
+              return response.json();
+            })
+            .then(data => {
+                // console.log("ACTUALIZAR DINERO:",data);
+                console.log(data);
+                setJugadores(data.listaJugadores);
+            })
+            .catch((error) => {
+            //Error
+            //alert(JSON.stringify(error));
+            console.error(error);
+            });
+    });
+
+    useEffect (() =>{
+        interval = setInterval(() => {
+            actualizarJugadores();
+        },3000);
+        return () => clearInterval(interval);
+    },[])
+
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
@@ -93,9 +126,9 @@ export default function CrearSalaScreen({route, navigation }) {
             <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
-            <Text>
-                {user}
-            </Text>
+            {jugadores.map((jugador, i) =>(
+                <Text>{jugador}</Text>
+            ))}
             </ScrollView>
             </View>
             <View style={{flex:1}}></View>
