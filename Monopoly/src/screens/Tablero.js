@@ -253,7 +253,7 @@ export default function TableroScreen({route}) {
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
-    const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
+    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
@@ -787,6 +787,7 @@ export default function TableroScreen({route}) {
 
     useEffect(() =>{
         actualizarDinero();
+        setActualizarPlayers(true);
     },[])
 
     useEffect(() => {
@@ -819,15 +820,15 @@ export default function TableroScreen({route}) {
     
     useEffect (() => {
         if(actualizarPlayers){
-            interval = setInterval(() => {
-                actualizarDinero();
-                if(jugadores[turnoActual] == username){
-                    console.log("TE TOCA: ",jugadores[turnoActual]);
-                    setActualizarPlayers(false);
-                    clearInterval(interval);
-                }
-            },3000);
-
+                interval = setInterval(() => {
+                    actualizarDinero();
+                    console.log("JUGADOR: ",jugadores[turnoActual]);
+                    if(jugadores[turnoActual] == username){
+                        console.log("ME TOCA: ",jugadores[turnoActual]);
+                        setActualizarPlayers(false);
+                        clearInterval(interval);
+                    }
+                },3000);
             return () => clearInterval(interval);
         }
 
