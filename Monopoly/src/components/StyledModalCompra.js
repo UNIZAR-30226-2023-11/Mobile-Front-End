@@ -27,8 +27,51 @@ const styles = StyleSheet.create({
         height: 2,
         }
     },
+    modalViewSinInfo: {
+        flex:0.63,
+        flexDirection:'column',
+        marginTop: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width: 300,
+        height:500,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        }
+    },
+    modalViewAumentar: {
+        flex:0.55,
+        marginTop: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width:'80%',
+        height: '30%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        }
+    },
     modalText: {
         flex:0.2,
+        fontSize: 20,
+        marginTop:'5%',
+        textAlign: 'justify',
+        color: '#000',
+    },
+    modalTextSinInfo: {
+        flex:1,
+        fontSize: 20,
+        marginTop:'5%',
+        textAlign: 'justify',
+        color: '#000',
+    },
+    modalTextAumentar: {
+        fontSize: 20,
         fontSize: 20,
         marginTop:'5%',
         textAlign: 'justify',
@@ -43,6 +86,17 @@ const styles = StyleSheet.create({
         flexDirection:'row', 
         justifyContent:'flex-start'
     },
+    botonesSinInfo:{
+        flex:0.4,
+        flexDirection:'row', 
+        justifyContent:'flex-start'
+    },
+    botonesAumentar:{
+        flex:0.6,
+        marginTop:'20%',
+        flexDirection:'row', 
+        justifyContent:'flex-start'
+    },
     boton:{
         flex:2,
         justifyContent:'flex-start',
@@ -51,16 +105,17 @@ const styles = StyleSheet.create({
         marginRight:'2%',
         marginBottom:'16%'
     }
+    
 });
 
 export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text, 
-    c_hor, c_ver, username, idPartida, aumentarCreditos}
+    c_hor, c_ver, username, idPartida, aumentarCreditos, esMia}
     ){
-    //console.log("modal abierto");
-    console.log(InfoCarta);
-    //console.log("info mostrada")
+
+    const [modalAumentoVisible, setModalAumentoVisible] = React.useState(false);
         
     return(
+        <View>
         <Modal
         animationType="slide"
         visible={visible}
@@ -68,11 +123,14 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
         transparent={true}
         props>
         <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+       
+            {(!esMia || aumentarCreditos) && <View style={styles.modalView}>
                 <Text style={styles.modalText}>{text}</Text>
+                {!esMia && 
                 <View style={styles.carta}>
                     {InfoCarta}
                 </View>
+                }
                 <View style={styles.botones}>
                     {!doubles &&
                     <StyledButton
@@ -88,7 +146,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         onPress={onClose}
                         purple
                     />}
-                    {!aumentarCreditos &&
+                    {!esMia &&
                     <StyledButton
                         style={styles.boton}
                         title="Comprar"
@@ -106,7 +164,14 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                                 throw new Error('Error de estado: '+ response.status);
                             }
                             console.log("comprada");
-                            onClose();
+                            return response.json();
+                            })
+                            .then(data => {
+                                if(data.aumento){
+                                    setModalAumentoVisible(true);
+                                }else{
+                                    onClose();
+                                }
                             })
                             .catch((error) => {
                             //Error
@@ -115,7 +180,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                             });}}
                         purple
                     />}
-                     {aumentarCreditos &&
+                     {aumentarCreditos && esMia &&
                     <StyledButton
                         style={styles.boton}
                         title="Aumentar creditos"
@@ -143,8 +208,87 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         purple
                     />}
                 </View>
+            </View>}
+            {esMia && !aumentarCreditos && <View style={styles.modalViewSinInfo}>
+                <Text style={styles.modalTextSinInfo}>{text}</Text>
+                <View style={styles.botonesSinInfo}>
+                    {!doubles &&
+                    <StyledButton
+                        style={styles.boton}
+                        title="Acabar turno"
+                        onPress={onClose}
+                        purple
+                    />}
+                    {doubles &&
+                    <StyledButton
+                        style={styles.boton}
+                        title="Tirar otra vez"
+                        onPress={onClose}
+                        purple
+                    />}
+                    <StyledButton
+                    style={styles.boton}
+                    title="Realizar cambio"
+                    onPress={() =>{
+                        console.log("realizando intercambio");
+                        onClose();
+                    }}
+                    purple
+                    />
+                </View>
+            </View>}
+        </View>
+        </Modal>
+        <Modal
+        animationType="slide"
+        visible={modalAumentoVisible}
+        onRequestClose={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})}}
+        transparent={true}
+        props>
+        <View style={styles.centeredView}>
+            <View style={styles.modalViewAumentar}>
+                <Text style={styles.modalTextAumentar}>
+                {`Ha conseguido todas las asignaturas de un cuatrimestre\n
+¿Desea aumentar los créditos de esta asignatura?`}
+                </Text>
+                <View style={styles.botonesAumentar}>
+                    <StyledButton
+                        style={styles.boton}
+                        title="Cancelar"
+                        onPress={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})}}
+                        purple
+                    />
+                    <StyledButton
+                        style={styles.boton}
+                        title="Aumentar créditos"
+                        onPress={() => {
+                            const response =  fetch(aumentarCreditosAsignatura, {
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({  "idPartida": idPartida,
+                                                    "username": username,
+                                                    "coordenadas":{"h": c_hor,"v": c_ver}})
+                            })
+                            .then((response) => {
+                            if(response.status != 200){
+                                throw new Error('Error de estado: '+ response.status);
+                            }
+                            console.log("aumentados");
+                            setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})
+                            onClose();
+                            })
+                            .catch((error) => {
+                            //Error
+                            //alert(JSON.stringify(error));
+                            console.error(error);
+                            });
+                        }}
+                        purple
+                    />
+                </View>
             </View>
         </View>
         </Modal>
+        </View>
     )
 }

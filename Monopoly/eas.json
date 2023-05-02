@@ -1,0 +1,19 @@
+{
+    "build": {
+      "monopoly": {
+        "android": {
+          "buildType": "apk"
+        }
+      },
+      "monopoly2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+      },
+      "monopoly3": {
+        "developmentClient": true
+      },
+      "production": {}
+    }
+  }
+  
