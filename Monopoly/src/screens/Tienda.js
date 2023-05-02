@@ -114,6 +114,8 @@ const tableros = [
     //{ id: 9, image: require('../../assets/bob.png'), text: 'Elemento 9', precio: 100},
 ];
 
+
+
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
 const renderItem = ({ item }) => {
