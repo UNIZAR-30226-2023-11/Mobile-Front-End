@@ -823,12 +823,13 @@ export default function TableroScreen({route}) {
             interval = setInterval(() => {
                 actualizarDinero();
                 if(jugadores[turnoActual] == username){
+                    console.log("TE TOCA: ",jugadores[turnoActual]);
                     setActualizarPlayers(false);
                     clearInterval(interval);
                 }
             },3000);
         }
-        return () => clearInterval(interval);
+        // return () => clearInterval(interval);
 
     },[actualizarPlayers]);
 
@@ -1123,6 +1124,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
@@ -1134,6 +1136,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1155,6 +1158,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
@@ -1166,6 +1170,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1186,6 +1191,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
@@ -1196,6 +1202,7 @@ export default function TableroScreen({route}) {
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1208,6 +1215,7 @@ export default function TableroScreen({route}) {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1216,6 +1224,7 @@ export default function TableroScreen({route}) {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
@@ -1228,6 +1237,7 @@ export default function TableroScreen({route}) {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1236,6 +1246,7 @@ export default function TableroScreen({route}) {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
@@ -1248,6 +1259,7 @@ export default function TableroScreen({route}) {
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1257,6 +1269,7 @@ export default function TableroScreen({route}) {
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
