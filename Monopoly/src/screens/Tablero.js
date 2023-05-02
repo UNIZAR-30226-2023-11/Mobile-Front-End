@@ -420,7 +420,7 @@ export default function TableroScreen({route}) {
             }
             setTokensJugador(aux);
             
-            actualizarTurno();
+            // actualizarTurno();
         })
         .catch((error) => {
         //Error
@@ -445,7 +445,6 @@ export default function TableroScreen({route}) {
         .then((data) => {
             console.log(data);
             setTurnoActual(data.posicion);
-            setActualizarPlayers(true);
         })
         .catch((error) => {
             console.error(error);
@@ -819,18 +818,15 @@ export default function TableroScreen({route}) {
     
     useEffect (() => {
         if(actualizarPlayers){
-                setActualizarPlayers(false);
                 interval = setInterval(() => {
                     actualizarDinero();
+                    actualizarTurno();
                     console.log("JUGADORES: ", jugadores);
                     console.log("JUGADOR: ",jugadores[turnoActual]);
                     if(jugadores[turnoActual] == username){
                         console.log("ME TOCA: ",jugadores[turnoActual]);
-                        // setActualizarPlayers(false);
+                        setActualizarPlayers(false);
                         clearInterval(interval);
-                    }
-                    else{
-                        setActualizarPlayers(true);
                     }
                 },3000);
             return () => clearInterval(interval);
