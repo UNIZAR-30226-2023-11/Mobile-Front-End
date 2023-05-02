@@ -249,6 +249,7 @@ export default function TableroScreen({route}) {
     const [modalSuerteVisible, setModalSuerteVisible] = React.useState(false);
     const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
     const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
+    const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
@@ -361,10 +362,10 @@ export default function TableroScreen({route}) {
                     setDie2(data.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    // aux[turnoActual].horizontal = data.coordenadas.h;
-                    // aux[turnoActual].vertical = data.coordenadas.v;
-                    aux[turnoActual].horizontal = 4;
-                    aux[turnoActual].vertical = 10;
+                    aux[turnoActual].horizontal = data.coordenadas.h;
+                    aux[turnoActual].vertical = data.coordenadas.v;
+                    // aux[turnoActual].horizontal = 4;
+                    // aux[turnoActual].vertical = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -483,7 +484,7 @@ export default function TableroScreen({route}) {
                             if(data.jugador!=null){
                                 if(data.jugador==username){
                                     console.log("es mia");
-                                    infoCasilla(true);
+                                    infoCasilla(true, data.aumento);
                                 }
                                 else{
                                 console.log("comprada");
@@ -495,7 +496,7 @@ export default function TableroScreen({route}) {
                             }
                             else{
                                 console.log("no comprada");                
-                                infoCasilla(false);
+                                infoCasilla(false, false);
                         }})
                         .catch((error) => {
                             //Error
@@ -583,7 +584,7 @@ export default function TableroScreen({route}) {
         }
     });
 
-    const infoCasilla= useCallback((esMia) => {
+    const infoCasilla= useCallback((esMia, aumento) => {
         const response = fetch(infoAsignatura,{
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
@@ -711,10 +712,12 @@ export default function TableroScreen({route}) {
                         />);
                         break; 
                 }
-                console.log("aumento ",data.casillaInfo.aumento);
-                if(esMia && data.casillaInfo.aumento){
+                if(esMia && aumento){
                     console.log("aumentar creditos");
                     setAumentoCreditos(true);
+                }
+                else if(esMia && !aumento){
+                    setModalEsMiaVisible(true);
                 }else if(!esMia){
                     setCompra(true);
                 }
@@ -1108,6 +1111,7 @@ export default function TableroScreen({route}) {
             title="Comprar"
             text="¿Desea comprar la carta?"
             aumentarCreditos={false}
+            esMia={false}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
@@ -1118,7 +1122,9 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
                        
             }}
             visible={modalCompraVisible}
@@ -1127,7 +1133,9 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }}
         />
         <StyledModalCompra
@@ -1135,6 +1143,7 @@ export default function TableroScreen({route}) {
             title="Aumentar créditos"
             text="¿Desea aumentar los créditos?"
             aumentarCreditos={true}
+            esMia={true}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
@@ -1145,7 +1154,9 @@ export default function TableroScreen({route}) {
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
                        
             }}
             visible={modalCreditosVisible}
@@ -1154,7 +1165,39 @@ export default function TableroScreen({route}) {
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
+            }}
+        />
+        <StyledModalCompra
+            doubles={dobles}
+            title="Realizar intercambio"
+            text={`La casilla en la que ha caído es suya pero no puede aumentarle los créditos hasta que no consiga todas las del mismo cuatrimestre.\n\n¿Desea terminar su turno ya o quiere realizar algún intercambio?`}
+            aumentarCreditos={false}
+            esMia={true}
+            c_hor={tokensJugadores[turnoActual].horizontal}
+            c_ver={tokensJugadores[turnoActual].vertical}
+            username={username}
+            idPartida={idPartida}
+            InfoCarta = {carta}
+            onClose={() => {
+                setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
+                console.log("cerrado");
+                // setActualizarPlayers(true);
+                if(!dobles){
+                    setCambio(true);
+                }
+                       
+            }}
+            visible={modalEsMiaVisible}
+            onRequestClose={() =>{
+                setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
+                console.log("cerrado");
+                // setActualizarPlayers(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }}
         />
         <StyledModal
@@ -1164,13 +1207,17 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }} 
         />
         <StyledModal
@@ -1180,13 +1227,17 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }} 
         />
         <StyledModal
@@ -1196,14 +1247,18 @@ export default function TableroScreen({route}) {
             onClose = { () => {
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 console.log("cerrando modal boletín");
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
-                setCambio(true);
+                if(!dobles){
+                    setCambio(true);
+                }
             }} 
         />
     </View>
