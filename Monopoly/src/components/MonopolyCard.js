@@ -115,7 +115,7 @@ const MonopolyCard = () => {
     </View>
   );
 };
-export const Evento = ({title, coste, description, imageSource }) => {
+export const Evento = ({title, coste, matricula, precio1C, precio2C, precio3C, optatividad, imageSource }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.cardContainer}>
@@ -123,13 +123,19 @@ export const Evento = ({title, coste, description, imageSource }) => {
         <Image source={imageSource} style={styles.image} />
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+            SI TIENES 2 EVENTOS .........................`}{precio1C}{`€ \n
+            SI TIENES 2 EVENTOS .....................`}{precio2C}{`€ \n
+            SI TIENES 2 EVENTOS .....................`}{precio3C}{`€ \n
+            OPTATIVIDAD `}{optatividad}{`€ \n`}
+          </Text>
           </View>
       </Card>
     </View>
   );
 };
-export const Recurso = ({title, coste, description, imageSource }) => {
+export const Recurso = ({title, coste, optatividad, imageSource }) => {
   return (
     <View style={styles.container}>
       <Card style={styles.cardContainer}>
@@ -137,12 +143,19 @@ export const Recurso = ({title, coste, description, imageSource }) => {
           <Image source={imageSource} style={styles.image} />
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`Si posees una carta de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+Si posees dos cartas de compañías 
+de servicio público, el alquiler es 10\nveces el número salido en los dados\n
+        Valor de la optatividad `}{optatividad}{`\n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
+/*
 const Carta_8_0 = () => {
   return (
     <Recurso
@@ -169,7 +182,9 @@ de servicio público, el alquiler es 10\nveces el número salido en los dados\n
     />
   );
 };
+*/
 //-------------------------------------------------------------
+/*
 const Carta_5_10 = () => {
   return (
     <Evento
@@ -218,6 +233,7 @@ const Carta_10_5 = () => {
     />
   );
 };
+*/
 //--------------------------------------------------------------
 const Suerte = ({description, subtitle }) => {
   return (
@@ -247,7 +263,9 @@ const Boletin = ({description }) => {
     </View>
   );
 };
-export const Asignatura_1 = ({title, coste, description }) => {
+export const Asignatura_1 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito}) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -255,14 +273,24 @@ export const Asignatura_1 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+      </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_2 = ({title, coste, description }) => {
+export const Asignatura_2 = ({title, coste,
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -270,14 +298,24 @@ export const Asignatura_2 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+      </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_3 = ({title, coste, description }) => {
+export const Asignatura_3 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -285,14 +323,24 @@ export const Asignatura_3 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_4 = ({title, coste, description }) => {
+export const Asignatura_4 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card >
@@ -300,14 +348,24 @@ export const Asignatura_4 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_5 = ({title, coste, description }) => {
+export const Asignatura_5 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -315,14 +373,24 @@ export const Asignatura_5 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_6 = ({title, coste, description }) => {
+export const Asignatura_6 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -330,14 +398,24 @@ export const Asignatura_6 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_7 = ({title, coste, description }) => {
+export const Asignatura_7 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -345,14 +423,24 @@ export const Asignatura_7 = ({title, coste, description }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 
-export const Asignatura_8 = ({title, coste, description, grupo }) => {
+export const Asignatura_8 = ({title, coste, 
+  matricula, precio1C, precio2C, precio3C, precio4C,
+  optatividad, precioCredito }) => {
   return (
     <View style={styles.container}>
       <Card>
@@ -360,13 +448,22 @@ export const Asignatura_8 = ({title, coste, description, grupo }) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subtitle}>Coste: {coste}€</Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.description}>
+          {`MATRICULAS `}{matricula}{`€\n
+      1 CRÉDITO .........................`}{precio1C}{`€ \n
+      2 CRÉDITOS .....................`}{precio2C}{`€ \n
+      3 CRÉDITOS .....................`}{precio3C}{`€ \n
+      4 CRÉDITOS .....................`}{precio4C}{`€ \n
+OPTATIVIDAD `}{optatividad}{`€ \n
+      PRECIO CRÉDITO................`}{precioCredito}{`€ \n`}
+          </Text>
         </View>
       </Card>
     </View>
   );
 };
 //---------------------------------------------------------------
+/*
 const Carta_9_10 = () => {
   return (
     <Asignatura_1
@@ -719,6 +816,7 @@ HIPOTECA 93€ \n
     />
   );
 };
+*/
 //-----------------------------------------------------------
 const Boletin_1 = () => {
   return (

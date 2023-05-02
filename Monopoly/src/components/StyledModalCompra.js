@@ -3,7 +3,7 @@ import { Modal, StyleSheet, View, Text } from 'react-native';
 
 
 import StyledButton from "./StyledButton"
-import { comprarAsignatura, aumentarCreditos } from '../url/partida';
+import { comprarAsignatura, aumentarCreditosAsignatura } from '../url/partida';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -121,7 +121,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Aumentar creditos"
                         onPress={() => {
                             console.log("aumentando creditos..", c_hor, c_ver);
-                            const response =  fetch(aumentarCreditos, {
+                            const response =  fetch(aumentarCreditosAsignatura, {
                             method: 'PUT',
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({  "idPartida": idPartida,

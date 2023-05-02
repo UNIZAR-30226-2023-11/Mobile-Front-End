@@ -35,4 +35,4 @@ export const siguienteTurno = 'http://10.0.2.2:3000/partida/siguienteTurno'
 export const obtenerTurnoActual = 'http://10.0.2.2:3000/partida/turnoActual'
 
 // export const aumentarCreditos = 'http://nerks.net:7003/partida/aumentar'
-export const aumentarCreditos = 'http://10.0.2.2:3000/partida/aumentar'
+export const aumentarCreditosAsignatura = 'http://10.0.2.2:3000/partida/aumentar'

@@ -361,8 +361,10 @@ export default function TableroScreen({route}) {
                     setDie2(data.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].horizontal = data.coordenadas.h;
-                    aux[turnoActual].vertical = data.coordenadas.v;
+                    // aux[turnoActual].horizontal = data.coordenadas.h;
+                    // aux[turnoActual].vertical = data.coordenadas.v;
+                    aux[turnoActual].horizontal = 4;
+                    aux[turnoActual].vertical = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -581,7 +583,7 @@ export default function TableroScreen({route}) {
         }
     });
 
-    const infoCasilla= useCallback((esMia) => { 
+    const infoCasilla= useCallback((esMia) => {
         const response = fetch(infoAsignatura,{
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
@@ -602,14 +604,26 @@ export default function TableroScreen({route}) {
                         setCarta(<Asignatura_1
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 2:
                         setCarta(<Asignatura_2
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 3:
@@ -617,7 +631,13 @@ export default function TableroScreen({route}) {
                         <Asignatura_3
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 4:
@@ -625,7 +645,13 @@ export default function TableroScreen({route}) {
                         <Asignatura_4
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 5:
@@ -633,7 +659,13 @@ export default function TableroScreen({route}) {
                         <Asignatura_5
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break;  
                     case 6:
@@ -641,7 +673,13 @@ export default function TableroScreen({route}) {
                         <Asignatura_6
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 7:
@@ -649,7 +687,13 @@ export default function TableroScreen({route}) {
                         <Asignatura_7
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 8:
@@ -657,9 +701,22 @@ export default function TableroScreen({route}) {
                         <Asignatura_8
                             title={data.casillaInfo.nombre}
                             coste={data.casillaInfo.precioCompra}
-                            description={""}
+                            matricula={data.casillaInfo.matricula}
+                            precio1C={data.casillaInfo.precio1C}
+                            precio2C={data.casillaInfo.precio2C}
+                            precio3C={data.casillaInfo.precio3C}
+                            precio4C={data.casillaInfo.precio4C}
+                            optatividad={data.casillaInfo.devolucionMatricula}
+                            precioCredito={data.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
+                }
+                console.log("aumento ",data.casillaInfo.aumento);
+                if(esMia && data.casillaInfo.aumento){
+                    console.log("aumentar creditos");
+                    setAumentoCreditos(true);
+                }else if(!esMia){
+                    setCompra(true);
                 }
             }
             else if(data.casillaInfo.tipo == 'F'){
@@ -667,23 +724,28 @@ export default function TableroScreen({route}) {
                 setCarta(                                    <Evento
                     title={data.casillaInfo.nombre}
                     coste={data.casillaInfo.precioCompra}
-                    description={""}
+                    matricula={data.casillaInfo.matricula}
+                    precio1C={data.casillaInfo.precio1C}
+                    precio2C={data.casillaInfo.precio2C}
+                    precio3C={data.casillaInfo.precio3C}
+                    optatividad={data.casillaInfo.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
+                if(!esMia){
+                    setCompra(true);
+                }
             }
             else if(data.casillaInfo.tipo == 'I'){
                 //console.log("recurso");
                 setCarta(                                   <Recurso
                     title={data.casillaInfo.nombre}
                     coste={data.casillaInfo.precioCompra}
-                    description={""}
+                    optatividad={data.casillaInfo.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
-            }
-            if(esMia){
-                setAumentoCreditos(true);
-            }else{
-                setCompra(true);
+                if(!esMia){
+                    setCompra(true);
+                }
             }
             //console.log(carta);
         })
