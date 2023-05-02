@@ -274,6 +274,7 @@ export default function TableroScreen({route}) {
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
+    const [interval, setIntervalId] = React.useState(null);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -421,7 +422,7 @@ export default function TableroScreen({route}) {
             }
             setTokensJugador(aux);
             
-            // actualizarTurno();
+            actualizarTurno();
         })
         .catch((error) => {
         //Error
@@ -819,16 +820,20 @@ export default function TableroScreen({route}) {
     
     useEffect (() => {
         if(actualizarPlayers){
-                interval = setInterval(() => {
+            if(jugadores[turnoActual] == username){
+                console.log("ME TOCA: ",jugadores[turnoActual]);
+                setActualizarPlayers(false);
+                clearInterval(interval);
+                setIntervalId(null);
+            }
+            else{
+                const id = setInterval(() => {
                     actualizarDinero();
                     console.log("JUGADORES: ", jugadores);
                     console.log("JUGADOR: ",jugadores[turnoActual]);
-                    if(jugadores[turnoActual] == username){
-                        console.log("ME TOCA: ",jugadores[turnoActual]);
-                        setActualizarPlayers(false);
-                        clearInterval(interval);
-                    }
                 },3000);
+                setIntervalId(id);
+            }
             return () => clearInterval(interval);
         }
 
