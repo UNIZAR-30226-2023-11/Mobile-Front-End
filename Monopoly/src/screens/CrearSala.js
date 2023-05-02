@@ -149,7 +149,7 @@ export default function CrearSalaScreen({route, navigation }) {
                                     }
                                     else{
                                         console.log(response.json());
-                                        navigation.navigate('Tablero', {user: user, idPartida: idPartida});
+                                        navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
                                     }})
                                 .catch((error) => {
                                     //Error
