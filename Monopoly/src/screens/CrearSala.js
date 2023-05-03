@@ -81,7 +81,26 @@ export default function CrearSalaScreen({route, navigation }) {
 
     useEffect(() => {
         if(avanzar){
-            navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+            const response =  fetch(actualizarPartida, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({"idPartida": idPartida,
+                                      "username": user,
+                                      "dineroInicial": money,
+                                      "nJugadores": players})
+                })
+                .then((response) => {
+                if(response.status != 200) {
+                    throw new Error('Error de estado: '+ response.status);
+                }
+                else{
+                    console.log(response.json());
+                    navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
+            .catch((error) => {
+                //Error
+                // alert(JSON.stringify(error));
+                console.error(error);
+            });
         }
     }, [avanzar]);
 
@@ -115,7 +134,7 @@ export default function CrearSalaScreen({route, navigation }) {
                                     }})
                                 .catch((error) => {
                                     //Error
-                                    alert(JSON.stringify(error));
+                                    // alert(JSON.stringify(error));
                                     console.error(error);
                                 });}}>
                     <Select.Item label="2" value="2" />
@@ -157,28 +176,7 @@ export default function CrearSalaScreen({route, navigation }) {
             <StyledButton
                 lightblue 
                 title="JUGAR"
-                onPress={() => {const response =  fetch(actualizarPartida, {
-                                    method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user,
-                                                          "dineroInicial": money,
-                                                          "nJugadores": players})
-                                    })
-                                    .then((response) => {
-                                    if(response.status != 200) {
-                                        throw new Error('Error de estado: '+ response.status);
-                                    }
-                                    else{
-                                        console.log(response.json());
-                                        setDetenido(true);
-                                    }})
-                                .catch((error) => {
-                                    //Error
-                                    alert(JSON.stringify(error));
-                                    console.error(error);
-                                });
-                            }}
+                onPress={() => {setDetenido(!detenido);}}
             />
             <View style={{flex:1}}></View>
         </View>

@@ -4,6 +4,8 @@ import { Select, NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 
+import { listaJugadores } from "../url/partida";
+
 const styles = StyleSheet.create({
     titulo:{
         marginTop:'10%',

@@ -254,7 +254,7 @@ export default function TableroScreen({route}) {
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
-    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
+    // const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
@@ -402,7 +402,7 @@ export default function TableroScreen({route}) {
         })
         .then((response) => {
           if(response.status != 200){
-            throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+            throw new Error('Error de estado: '+ response.status+' en la funcion de actualizar Dinero');
           }
           return response.json();
         })
@@ -446,7 +446,12 @@ export default function TableroScreen({route}) {
         })
         .then((data) => {
             console.log(data);
-            setTurnoActual(data.posicion);
+            if(data.jugador == username){
+                console.log("ME TOCA");
+                clearInterval(interval);
+                setIntervalId(null);
+                setTurnoActual(data.posicion);
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -775,7 +780,7 @@ export default function TableroScreen({route}) {
             .then(data => {
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
-                setActualizarPlayers(true);
+                // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                 //console.log(data);
             })
@@ -819,25 +824,23 @@ export default function TableroScreen({route}) {
     },[aumentoCreditos]);
     
     useEffect (() => {
-        if(actualizarPlayers){
-            if(jugadores[turnoActual] == username){
-                console.log("ME TOCA: ",jugadores[turnoActual]);
-                setActualizarPlayers(false);
-                clearInterval(interval);
-                setIntervalId(null);
-            }
-            else{
-                const id = setInterval(() => {
-                    actualizarDinero();
-                    console.log("JUGADORES: ", jugadores);
-                    console.log("JUGADOR: ",jugadores[turnoActual]);
-                },3000);
-                setIntervalId(id);
-            }
-            return () => clearInterval(interval);
+        console.log("TURNO ACTUAL CAMBIADO");
+        if(jugadores[turnoActual] != username){
+            const id = setInterval(() => {
+                console.log("TURNO ACTUAL: ", turnoActual);
+                actualizarDinero();
+                console.log("JUGADORES: ", jugadores);
+                console.log("JUGADOR: ",jugadores[turnoActual]);
+            },3000);
+            setIntervalId(id);
         }
-
-    },[actualizarPlayers]);
+        else{
+            console.log("ME TOCA: ",jugadores[turnoActual]);
+            clearInterval(interval);
+            setIntervalId(null);
+        }
+        return () => clearInterval(interval);
+    },[turnoActual]);
 
     useEffect(() =>{
         if(cambio){
