@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useCallback} from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Select, NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function CrearSalaScreen({ route, navigation }) {
+export default function EsperaUnirseScreen({ route, navigation }) {
 
     const user = route.params.user;
     const idPartida = route.params.idPartida;
