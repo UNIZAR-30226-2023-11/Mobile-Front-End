@@ -1064,6 +1064,7 @@ export default function TableroScreen({route}) {
                 idPartida={idPartida}   
                 onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
                 visible={modalAsignaturasVisible}
+                miTurno={jugadores[turnoActual]==username}
                 onRequestClose={() => {
                     setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible});
                 }} 

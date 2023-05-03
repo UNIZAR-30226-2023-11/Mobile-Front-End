@@ -3,7 +3,7 @@ import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-nati
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import StyledButton from './StyledButton';
 
-import { infoAsignatura } from '../url/partida';
+import { infoAsignatura, venderAsignatura } from '../url/partida';
 
 import {
     Asignatura_1, 
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModalAsignaturas({style={}, onClose, visible, onRequestClose, title, asignaturas, username, idPartida}){
+export default function StyledModalAsignaturas({style={}, onClose, visible, onRequestClose, title, asignaturas, username, idPartida, miTurno}){
 
     const modalStyles = [
         styles.modalView,
@@ -95,6 +95,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
     const [modalVenderVisible, setModalVenderVisible] = React.useState(false);
     const [carta,setCarta] = React.useState();
+    const [coordenadas, setCoordenadas] = React.useState({h: 0, v: 0});
 
     return(
         <View>
@@ -224,11 +225,11 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         });}}>
                         <Text style={styles.modalText}>{value.nombre}</Text> 
                     </Pressable>
-                    {/*<Pressable
+                    {/* {miTurno && <Pressable
                         onPress={() => {
-                            console.log("vendiendo..." value.nombre);
+                            console.log("vendiendo...", value.nombre);
                             const response =  fetch(venderAsignatura, {
-                            method: 'DELETE',
+                            method: 'PUT',
                             headers: {'Content-Type': 'application/json'},
                             body: JSON.stringify({  "idPartida": idPartida,
                                                     "username": username,
@@ -247,9 +248,17 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                             console.error(error);
                             });}}>
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
-                    </Pressable>*/}
+                    </Pressable>} */}
                     <Pressable
-                        onPress={() => {setModalVenderVisible(true)}}>
+                        onPress={() => {
+                            if(miTurno){
+                                setModalVenderVisible(true);
+                                setCoordenadas({h:value.h, v:value.v})
+                            }
+                            else{
+                                alert("Espera a que sea tu turno para vender asignaturas");
+                            }
+                        }}>
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>
                   </View>
@@ -296,7 +305,28 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                     <StyledButton
                         style={styles.boton}
                         title="Vender"
-                        onPress={() => {setModalVenderVisible({modalVenderVisible: !modalVenderVisible})}}
+                        onPress={() => {
+                            console.log("vendiendo...", coordenadas.h, coordenadas.v);
+                            const response =  fetch(venderAsignatura, {
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({  "idPartida": idPartida,
+                                                    "username": username,
+                                                    "coordenadas":{"h": coordenadas.h,"v": coordenadas.v}})
+                            })
+                            .then((response) => {
+                            if(response.status != 200){
+                                throw new Error('Error de estado: '+ response.status);
+                            }
+                            console.log("vendida");
+                            setModalVenderVisible({modalVenderVisible: !modalVenderVisible})
+                            onClose();
+                            })
+                            .catch((error) => {
+                            //Error
+                            //alert(JSON.stringify(error));
+                            console.error(error);
+                            });}}
                         green
                     />
                 </View>
