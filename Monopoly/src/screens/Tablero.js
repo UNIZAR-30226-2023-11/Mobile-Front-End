@@ -275,6 +275,7 @@ export default function TableroScreen({route}) {
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
     const [interval, setIntervalId] = React.useState(null);
+    const [detenido, setDetenido] = React.useState(false);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -446,12 +447,8 @@ export default function TableroScreen({route}) {
         })
         .then((data) => {
             console.log(data);
-            if(data.jugador == username){
-                console.log("ME TOCA");
-                clearInterval(interval);
-                setIntervalId(null);
-                setTurnoActual(data.posicion);
-            }
+            setTurnoActual(data.posicion);
+            setDetenido(true);
         })
         .catch((error) => {
             console.error(error);
@@ -780,6 +777,7 @@ export default function TableroScreen({route}) {
             .then(data => {
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
+                setDetenido(false);
                 // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                 //console.log(data);
@@ -824,8 +822,11 @@ export default function TableroScreen({route}) {
     },[aumentoCreditos]);
     
     useEffect (() => {
-        console.log("TURNO ACTUAL CAMBIADO");
-        if(jugadores[turnoActual] != username){
+        console.log("TURNO ACTUAL CAMBIADO")
+        if(detenido){
+            clearInterval(interval);
+            setIntervalId(null);
+        }else{
             const id = setInterval(() => {
                 console.log("TURNO ACTUAL: ", turnoActual);
                 actualizarDinero();
@@ -834,13 +835,8 @@ export default function TableroScreen({route}) {
             },3000);
             setIntervalId(id);
         }
-        else{
-            console.log("ME TOCA: ",jugadores[turnoActual]);
-            clearInterval(interval);
-            setIntervalId(null);
-        }
         return () => clearInterval(interval);
-    },[turnoActual]);
+    },[detenido]);
 
     useEffect(() =>{
         if(cambio){
