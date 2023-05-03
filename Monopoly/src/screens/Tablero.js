@@ -448,7 +448,9 @@ export default function TableroScreen({route}) {
         .then((data) => {
             console.log(data);
             setTurnoActual(data.posicion);
-            setDetenido(true);
+            if(data.jugador == username){
+                setDetenido(true);
+            }
         })
         .catch((error) => {
             console.error(error);
