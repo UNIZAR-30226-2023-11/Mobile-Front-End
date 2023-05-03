@@ -4,11 +4,12 @@ import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
+import CryptoJS from 'crypto-js'
 
 import { login } from '../url/users'
 
 const initialValues = {
-  email: '',
+  username: '',
   password:''
 }
 
@@ -54,10 +55,13 @@ const FormikInputValue =({ name, ...props}) => {
 export default function LogInScreen({navigation}){
   return <Formik validationSchema={loginValidationSchema} initialValues={initialValues}  
   onSubmit={values => {
+    const hashedPassword = CryptoJS.SHA512(values.password).toString();
+
     const response =  fetch(login, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(values)
+    body: JSON.stringify({  "username": values.username, 
+                            "password": hashedPassword})
     })
     .then((response) => {
       if(response.status!= 200){

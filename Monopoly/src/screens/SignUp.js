@@ -4,11 +4,14 @@ import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { signinValidationSchema } from '../validationSchemas/signin'
+import CryptoJS from 'crypto-js';
 
 import { registro } from '../url/users'
 const initialValues = {
+  username:'',
   email: '',
-  password:''
+  password:'',
+  confirm_password: '',
 }
 
 const styles = StyleSheet.create({
@@ -54,10 +57,16 @@ export default function SignUpScreen({navigation}){
  
   return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
     onSubmit={values => {
+    const hashedPassword = CryptoJS.SHA512(values.password).toString();
+    const hashedConfirmPassword = CryptoJS.SHA512(values.confirm_password).toString();
     const response =  fetch(registro, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(values)
+    body: JSON.stringify({"username": values.username,
+                          "email": values.email, 
+                          "password": hashedPassword,
+                          "confirm_password": hashedConfirmPassword
+                          })
     })
     .then((response) => {
       if(response.status != 201){
@@ -68,7 +77,7 @@ export default function SignUpScreen({navigation}){
       })
   .catch((error) => {
     //Error
-    alert(JSON.stringify(error));
+    // alert(JSON.stringify(error));
     console.error(error);
   });
   }}>
