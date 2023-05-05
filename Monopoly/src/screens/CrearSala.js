@@ -87,7 +87,8 @@ export default function CrearSalaScreen({route, navigation }) {
                 body: JSON.stringify({"idPartida": idPartida,
                                       "username": user,
                                       "dineroInicial": money,
-                                      "nJugadores": players})
+                                      "nJugadores": players,
+                                      "jugar":true})
                 })
                 .then((response) => {
                 if(response.status != 200) {
@@ -122,7 +123,8 @@ export default function CrearSalaScreen({route, navigation }) {
                                     body: JSON.stringify({"idPartida": idPartida,
                                                           "username": user,
                                                           "dineroInicial": money,
-                                                          "nJugadores": players})
+                                                          "nJugadores": itemValue,
+                                                          "jugar": false})
                                     })
                                     .then((response) => {
                                     if(response.status != 200){                                        
@@ -155,7 +157,28 @@ export default function CrearSalaScreen({route, navigation }) {
                     accessibilityLabel="Money" 
                     placeholder="1500" 
                     mt={1} 
-                    onValueChange={(itemValue) => setMoney(itemValue)}>
+                    onValueChange={(itemValue) => {const response =  fetch(actualizarPartida, {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"idPartida": idPartida,
+                                                          "username": user,
+                                                          "dineroInicial": itemValues,
+                                                          "nJugadores": players,
+                                                          "jugar": false})
+                                    })
+                                    .then((response) => {
+                                    if(response.status != 200){                                        
+                                        throw new Error('Error de estado: '+ response.status);
+                                    }
+                                    else{
+                                        console.log(response.json());
+                                        setMoney(itemValue);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    // alert(JSON.stringify(error));
+                                    console.error(error);
+                                });}}>
                     <Select.Item label="1000" value="1000" />
                     <Select.Item label="1500" value="1500" />
                     <Select.Item label="2000" value="2000" />

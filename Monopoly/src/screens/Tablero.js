@@ -212,6 +212,7 @@ export default function TableroScreen({route}) {
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
     const [dobles, setDobles] = React.useState(false);
+    const [contadorDobles, setContadorDobles] = React.useState(0);
     const [tokensJugadores, setTokensJugador] = React.useState([
         {horizontal: 10, vertical: 10}, 
         {horizontal: 10, vertical: 10}, 
@@ -373,6 +374,18 @@ export default function TableroScreen({route}) {
                     setComprobar(true);
                     if(data.dado1 == data.dado2){
                         setDobles(true);
+                        if(contadorDobles == 2){
+                            alert("Te toca ir a Julio");
+                            //cambiar lo siguiente por llamada al back cnd esté
+                            let aux = tokensJugadores;
+                            aux[turnoActual].horizontal = 0;
+                            aux[turnoActual].vertical = 10;
+                            console.log(aux);
+                            setTokensJugador(aux);
+                            cambiarTurno();
+                        }else{
+                            setContadorDobles(contadorDobles+1);
+                        }
                     }
                 })
                 .catch((error) => {
@@ -519,6 +532,7 @@ export default function TableroScreen({route}) {
                     if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
                         console.log("carcel");
                         alert("Te toca ir a Julio");
+                        //cambiar lo siguiente por llamada al back cuando este 
                         let aux = tokensJugadores;
                         aux[turnoActual].horizontal = 0;
                         aux[turnoActual].vertical = 10;
@@ -780,6 +794,7 @@ export default function TableroScreen({route}) {
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
                 setDetenido(false);
+                setContadorDobles(0);
                 // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                 //console.log(data);
