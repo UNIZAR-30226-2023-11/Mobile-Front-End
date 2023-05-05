@@ -841,7 +841,7 @@ export default function TableroScreen({route}) {
     
     useEffect (() => {
         console.log("TURNO ACTUAL CAMBIADO")
-        if(detenido){
+        if(detenidoActualizarInfo){
             clearInterval(intervalActualizarInfo);
             setIntervalActualizarInfo(null);
         }else{

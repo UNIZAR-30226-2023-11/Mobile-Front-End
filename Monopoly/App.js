@@ -47,6 +47,7 @@ export default function App() {
                     title: 'Home',
                     headerLeft: () => (
                       <HeaderBackButton
+                        style={{marginLeft: 0}}
                         onPress={() => {
                           navigation.navigate('Index');
                         }}
@@ -96,7 +97,17 @@ export default function App() {
         <Stack.Screen
           name="Tablero"
           component={TableroScreen}
-          options={{title: 'Tablero'}}
+          options={({navigation}) => ({
+                    title: 'Tablero',
+                    headerLeft: () => (
+                      <HeaderBackButton
+                        style={{marginLeft: 0}}
+                        onPress={() => {
+                          navigation.navigate('Home', {username: username});
+                        }}
+                      />
+                    ),
+                  })}
         />
         <Stack.Screen
           name="EsperaUnirse"

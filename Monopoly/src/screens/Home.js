@@ -84,6 +84,7 @@ export default function HomeScreen({ route, navigation }){
                 homeScreen
                 title="Crear sala"
                 onPress={() => {{ if(user==null){user = nickname}
+                                    console.log(user);
                                     const response =  fetch(crearPartida, {
                                     method: 'POST',
                                     headers: {'Content-Type': 'application/json'},

@@ -82,6 +82,7 @@ export default function CrearSalaScreen({route, navigation }) {
 
     useEffect(() => {
         if(avanzar){
+            setAvanzar(false);
             const response =  fetch(actualizarPartida, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},

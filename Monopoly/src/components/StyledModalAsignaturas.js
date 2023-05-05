@@ -306,7 +306,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         style={styles.boton}
                         title="Vender"
                         onPress={() => {
-                            console.log("vendiendo...", coordenadas.h, coordenadas.v);
+                            console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
                             const response =  fetch(venderAsignatura, {
                             method: 'PUT',
                             headers: {'Content-Type': 'application/json'},
@@ -324,7 +324,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                             })
                             .catch((error) => {
                             //Error
-                            //alert(JSON.stringify(error));
+                            alert(JSON.stringify(error));
                             console.error(error);
                             });}}
                         green
