@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "green",
         marginBottom: 5,
+        textAlign: "center",
       },
       itemButton: {
         backgroundColor: "blue",
@@ -106,20 +107,16 @@ const tableros = [
     { id: 1, image: require('../../assets/bob.png'), text: 'Elemento 1', precio: 100},
     { id: 2, image: require('../../assets/bob.png'), text: 'Elemento 2', precio: 100},
     { id: 3, image: require('../../assets/bob.png'), text: 'Elemento 3', precio: 100},
-    //{ id: 4, image: require('../../assets/bob.png'), text: 'Elemento 4', precio: 100},
-    //{ id: 5, image: require('../../assets/bob.png'), text: 'Elemento 5', precio: 100},
-    //{ id: 6, image: require('../../assets/bob.png'), text: 'Elemento 6', precio: 100},
-    //{ id: 7, image: require('../../assets/bob.png'), text: 'Elemento 7', precio: 100},
-    //{ id: 8, image: require('../../assets/bob.png'), text: 'Elemento 8', precio: 100},
-    //{ id: 9, image: require('../../assets/bob.png'), text: 'Elemento 9', precio: 100},
 ];
 
 
 function estaComprada(id){
-  return true;
+  //llamar a la funcion de back que muestre elementos comprados
+  return false;
 }
 
 function estaEnUso(id){
+  //lamar a la funcion de back que muestre elementos en uso
   return true;
 }
 
@@ -149,7 +146,7 @@ const renderItem = ({ item }) => {
           <Text style={styles.itemButtonText}>Usar</Text>
         </TouchableOpacity>
       )}
-
+      {/*si ya esta comprado y ademas esta en uso*/}
       {comprado && usado && (
           <Text>Actual</Text>
       )}
@@ -169,12 +166,13 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
+    //personalizar precio con monedas
     const money = '100';
     console.log(username);
 
     return (
         <ScrollView stickyHeaderIndices={[0]}>
-        <Header username={'@' + username} money={money + '€'} />
+        <Header username={'@' + username} money={money + 'M'} />
             <View>
                 <View>
                     <Text style={styles.texto}>Fichas</Text>
