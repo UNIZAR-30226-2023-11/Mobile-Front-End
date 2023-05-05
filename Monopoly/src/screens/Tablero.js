@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, StyleSheet, Pressable } from'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 

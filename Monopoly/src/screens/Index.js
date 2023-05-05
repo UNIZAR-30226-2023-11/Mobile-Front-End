@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import StyledText from '../components/StyledText';
 import StyledButton from '../components/StyledButton';
 import StyledModal from "../components/StyledModal";
-
 
 const styles = StyleSheet.create({
     logoEmpresa: {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
 })
 
 export default function IndexScreen({navigation}) {
-  
+
   const [modalSobreNosotrosVisible, setModalSobreNosotrosVisible] = React.useState(false);
   const [modalContactoVisible, setModalContactoVisible] = React.useState(false);
 

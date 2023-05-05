@@ -5,8 +5,8 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { signinValidationSchema } from '../validationSchemas/signin'
 import CryptoJS from 'crypto-js';
+import { SocketContext } from '../../App'
 
-import { registro } from '../url/users'
 const initialValues = {
   username:'',
   email: '',
@@ -54,33 +54,22 @@ const FormikInputValue =({ name, ...props}) => {
 }
 
 export default function SignUpScreen({navigation}){
+
+  const socket = React.useContext(SocketContext);
  
   return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
     onSubmit={values => {
     const hashedPassword = CryptoJS.SHA512(values.password).toString();
     const hashedConfirmPassword = CryptoJS.SHA512(values.confirm_password).toString();
-    const response =  fetch(registro, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({"username": values.username,
-                          "email": values.email, 
-                          "password": hashedPassword,
-                          "confirm_password": hashedConfirmPassword
-                          })
-    })
-    .then((response) => {
-      if(response.status != 201){
-        throw new Error('Error de estado: '+ response.status);
-      }
-      console.log(response.json());
-      navigation.navigate('Home', {user: values.username});
-      })
-  .catch((error) => {
-    //Error
-    // alert(JSON.stringify(error));
-    console.error(error);
-  });
-  }}>
+    console.log("emitiendo socket ...");
+     socket.emit('register', {
+                  username: values.username,
+                  email: values.email, 
+                  password: hashedPassword,
+                  confirm_password: hashedConfirmPassword,
+                  socketId: socket.id
+                })
+   }}>
   
   {({handleChange, handleSubmit, values}) =>{
     return (

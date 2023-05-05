@@ -1,14 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Formik, useField } from 'formik'
-import { StyleSheet, Button, View, TouchableOpacity, useEffect } from 'react-native'
+import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
 import CryptoJS from 'crypto-js'
-
-import io from 'socket.io-client';
-
-import { login } from '../url/users'
+import { SocketContext } from '../../App'
 
 const initialValues = {
   username: '',
@@ -56,23 +53,7 @@ const FormikInputValue =({ name, ...props}) => {
 
 export default function LogInScreen({navigation}){
 
-  const [socket, setSocket] = React.useState(null);
-
-  React.useEffect(() => {
-    let newSocket = io('http://10.0.2.2:3000');
-    setSocket(newSocket);
-
-
-  }, []);
-
-  const handleLogin = ({ username, password }) => {
-    console.log("emitiendo socket ...");
-    socket.emit('login', {
-      username: 'clarita',
-      password: 'clarita12',
-      socketId: socket.id
-    })
-  }
+  const socket = React.useContext(SocketContext);
 
   // useEffect(() => {
   //   if (!socket) return;
@@ -88,11 +69,15 @@ export default function LogInScreen({navigation}){
 
 
   return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
-  onSubmit={handleLogin}>
-   onSubmit={values => {
+  onSubmit={values => {
      const hashedPassword = CryptoJS.SHA512(values.password).toString();
-     handleLogin();
-   }}
+     console.log("emitiendo socket ...");
+     socket.emit('login', {
+                  username: values.username,
+                  password: hashedPassword,
+                  socketId: socket.id
+                })
+   }}>
 
   {({handleChange, handleSubmit, values}) =>{
     return (
