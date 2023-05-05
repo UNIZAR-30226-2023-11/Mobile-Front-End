@@ -115,11 +115,19 @@ const tableros = [
 ];
 
 
+function estaComprada(id){
+  return false;
+}
+
+function estaEnUso(id){
+  return true;
+}
 
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
 const renderItem = ({ item }) => {
   const comprado = estaComprada(item.id);
+  const usado = estaEnUso(item.id);
 
   return (
     <View style={styles.itemContainer}>
@@ -136,9 +144,18 @@ const renderItem = ({ item }) => {
         </View>  
       )}
       {/*si ya esta comprado*/}
-      {comprado && (
-          <Text>Comprado</Text>
+      {comprado && !usado (
+          <TouchableOpacity style={styles.itemButton}>
+          <Text style={styles.itemButtonText}>Usar</Text>
+        </TouchableOpacity>
       )}
+
+      {comprado && usado (
+          <TouchableOpacity style={styles.itemButton}>
+          <Text style={styles.itemButtonText}>Actual</Text>
+        </TouchableOpacity>
+      )}
+
     </View>
 ); };
 
