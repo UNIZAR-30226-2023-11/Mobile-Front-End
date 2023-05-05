@@ -64,15 +64,23 @@ export default function LogInScreen({navigation}){
                             "password": hashedPassword})
     })
     .then((response) => {
-      if(response.status!= 200){
+      if(response.status!= 200 && response.status != 500){
         throw new Error('Error de estado: '+ response.status);
       }
-        console.log(response.json());
+      if(response.status == 500){
+        return (response.json());
+      }
+      else{
         navigation.navigate('Home',{user: values.username}); 
+      }})
+      .then((data) => {
+        if(response.status != 200){
+        console.log(data); //mirar si puedo acceder a response
+        alert(data.error);
+        }
       })
     .catch((error) => {
       //Error
-      //alert(JSON.stringify(error));
       console.error(error);
     });
   }}>

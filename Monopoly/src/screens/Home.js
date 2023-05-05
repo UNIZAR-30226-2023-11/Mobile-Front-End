@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StyleSheet, TouchableOpacity    } from "react-native";
+import { View, Image, StyleSheet, TouchableOpacity, BackHandler, useEffect } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
 import StyledTextInput from "../components/StyledTextInput";
@@ -44,8 +44,23 @@ export default function HomeScreen({ route, navigation }){
 
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
+
+    // handleBackButton = () => {
+    //     navigation.navigate('Index');
+    //     return true;
+    // }
+
+    // useEffect(() => {
+    //     const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+      
+    //     return () => {
+    //       backHandler.remove();
+    //     };
+    // }, []);
+
     return(
         <View style={styles.pantalla}>
+        {/* <HeaderBackButton onPress={handleBackButton} /> */}
         {user!= null &&
         <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil', {user: user})}>
             <FontAwesome5 name="user-alt" size={28} color="black" />

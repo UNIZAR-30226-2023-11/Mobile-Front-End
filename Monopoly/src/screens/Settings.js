@@ -59,7 +59,7 @@ export default function SettingsScreen({ route, navigation }){
                       })
                       .catch((error) => {
                         //Error
-                        alert(JSON.parse(JSON.stringify(error)));
+                        alert(error);
                         //alert(JSON.stringify(error));
                         console.error(error);
                         console.log("Algo ha ido mal.")

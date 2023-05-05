@@ -276,8 +276,8 @@ export default function TableroScreen({route}) {
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
-    const [interval, setIntervalId] = React.useState(null);
-    const [detenido, setDetenido] = React.useState(false);
+    const [intervalActualizarInfo, setIntervalActualizarInfo] = React.useState(null);
+    const [detenidoActualizarInfo, setDetenidoActualizaInfo] = React.useState(false);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -463,7 +463,7 @@ export default function TableroScreen({route}) {
             console.log(data);
             setTurnoActual(data.posicion);
             if(data.jugador == username){
-                setDetenido(true);
+                setDetenidoActualizaInfo(true);
             }
         })
         .catch((error) => {
@@ -794,7 +794,7 @@ export default function TableroScreen({route}) {
             .then(data => {
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
-                setDetenido(false);
+                setDetenidoActualizaInfo(false);
                 setContadorDobles(0);
                 // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
@@ -842,8 +842,8 @@ export default function TableroScreen({route}) {
     useEffect (() => {
         console.log("TURNO ACTUAL CAMBIADO")
         if(detenido){
-            clearInterval(interval);
-            setIntervalId(null);
+            clearInterval(intervalActualizarInfo);
+            setIntervalActualizarInfo(null);
         }else{
             const id = setInterval(() => {
                 console.log("TURNO ACTUAL: ", turnoActual);
@@ -851,10 +851,10 @@ export default function TableroScreen({route}) {
                 console.log("JUGADORES: ", jugadores);
                 console.log("JUGADOR: ",jugadores[turnoActual]);
             },3000);
-            setIntervalId(id);
+            setIntervalActualizarInfo(id);
         }
-        return () => {clearInterval(interval);setIntervalId(null);}
-    },[detenido]);
+        return () => {clearInterval(intervalActualizarInfo);setIntervalActualizarInfo(null);}
+    },[detenidoActualizarInfo]);
 
     useEffect(() =>{
         if(cambio){

@@ -1,6 +1,8 @@
 import React from 'react'
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements';
+
 
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
@@ -26,7 +28,7 @@ export default function App() {
         <Stack.Screen
           name="Index"
           component={IndexScreen}
-          optiones={{title: 'MONOPOLY'}}          
+          options={{title: 'MONOPOLY'}}          
         />
         <Stack.Screen
           name="LogIn"
@@ -41,7 +43,16 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Home'}}
+          options={({navigation}) => ({
+                    title: 'Home',
+                    headerLeft: () => (
+                      <HeaderBackButton
+                        onPress={() => {
+                          navigation.navigate('Index');
+                        }}
+                      />
+                    ),
+                  })}
         />
         <Stack.Screen
           name="CrearSala"
