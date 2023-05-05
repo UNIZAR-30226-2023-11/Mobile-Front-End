@@ -73,12 +73,17 @@ export default function EsperaUnirseScreen({ route, navigation }) {
 
         return () => {
             clearInterval(interval);
+            setIntervalId(null);
         };
 
     },[detenido])
 
     useEffect(() => {
         if(avanzar){
+            if(interval!= null){
+                clearInterval(interval);
+                setInterval(null);
+            }
             navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
         }
     }, [avanzar]);

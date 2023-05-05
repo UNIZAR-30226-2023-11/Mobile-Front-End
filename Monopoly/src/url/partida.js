@@ -39,3 +39,6 @@ export const aumentarCreditos = 'http://nerks.net:7003/partida/aumentar'
 
 export const venderAsignatura = 'http://nerks.net:7003/partida/aumentar'
 //export const venderAsignatura = 'http://10.0.2.2:3000/partida/vender'
+
+export const bancarrota = 'http://nerks.net:7003/partida/bancarrota' //put
+// export const bancarrota = 'http://nerks.net:7003/partida/bancarrota'

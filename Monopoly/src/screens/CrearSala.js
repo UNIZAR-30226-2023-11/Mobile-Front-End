@@ -75,6 +75,7 @@ export default function CrearSalaScreen({route, navigation }) {
 
         return () => {
             clearInterval(interval);
+            setIntervalId(null);
         };
 
     },[detenido])
@@ -96,6 +97,10 @@ export default function CrearSalaScreen({route, navigation }) {
                 }
                 else{
                     console.log(response.json());
+                    if(interval!= null){
+                        clearInterval(interval);
+                        setInterval(null);
+                    }
                     navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
             .catch((error) => {
                 //Error

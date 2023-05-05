@@ -17,7 +17,8 @@ import {
     tarjetaAleatoria, 
     listarAsignaturas, 
     siguienteTurno,
-    obtenerTurnoActual
+    obtenerTurnoActual,
+    bancarrota
 } from '../url/partida';
 
 import StyledText from '../components/StyledText';
@@ -852,7 +853,7 @@ export default function TableroScreen({route}) {
             },3000);
             setIntervalId(id);
         }
-        return () => clearInterval(interval);
+        return () => {clearInterval(interval);setIntervalId(null);}
     },[detenido]);
 
     useEffect(() =>{
@@ -1126,7 +1127,23 @@ export default function TableroScreen({route}) {
                 red
                 small
                 title="Bancarrota"
-                onPress={() => console.log("Bancarrota")}
+                onPress={() => {
+                    console.log("Bancarrota");
+                    const response = fetch(bancarrota,{
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({  "idPartida": idPartida, 
+                                                "username": username})
+                        .then((response) => {
+                            if(response.status!= 200){
+                                throw new Error('Error de estado: '+ response.status + ' en la función de bancarrota');
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                    })}}
                 />
             </View>
         </View>
