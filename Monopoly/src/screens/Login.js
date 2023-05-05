@@ -1,10 +1,12 @@
 import React from 'react'
 import { Formik, useField } from 'formik'
-import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Button, View, TouchableOpacity, useEffect } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
 import CryptoJS from 'crypto-js'
+
+import io from 'socket.io-client';
 
 import { login } from '../url/users'
 
@@ -53,37 +55,73 @@ const FormikInputValue =({ name, ...props}) => {
 }
 
 export default function LogInScreen({navigation}){
-  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues}  
-  onSubmit={values => {
-    const hashedPassword = CryptoJS.SHA512(values.password).toString();
 
-    const response =  fetch(login, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({  "username": values.username, 
-                            "password": hashedPassword})
+  const [socket, setSocket] = React.useState(null);
+
+  React.useEffect(() => {
+    let newSocket = io('http://10.0.2.2:3000');
+    setSocket(newSocket);
+
+
+  }, []);
+
+  const handleLogin = ({ username, password }) => {
+    console.log("emitiendo socket ...");
+    socket.emit('login', {
+      username: 'clarita',
+      password: 'clarita12',
+      socketId: socket.id
     })
-    .then((response) => {
-      if(response.status!= 200 && response.status != 500){
-        throw new Error('Error de estado: '+ response.status);
-      }
-      if(response.status == 500){
-        return (response.json());
-      }
-      else{
-        navigation.navigate('Home',{user: values.username}); 
-      }})
-      .then((data) => {
-        if(response.status != 200){
-        console.log(data); //mirar si puedo acceder a response
-        alert(data.error);
-        }
-      })
-    .catch((error) => {
-      //Error
-      console.error(error);
-    });
-  }}>
+  }
+
+  // useEffect(() => {
+  //   if (!socket) return;
+
+  //   socket.on('login', (data) => {
+  //     if (data.success) {
+  //       navigation.navigate('Home');
+  //     } else {
+  //       setError(data.message);
+  //     }
+  //   });
+  // }, [socket, navigation]);
+
+
+  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
+  onSubmit={handleLogin}>
+   onSubmit={values => {
+     const hashedPassword = CryptoJS.SHA512(values.password).toString();
+    
+     handleLogin();
+   }
+
+    {/* const response =  fetch(login, {
+     method: 'POST',
+     headers: {'Content-Type': 'application/json'},
+     body: JSON.stringify({  "username": values.username, 
+                             "password": hashedPassword})
+     })
+     .then((response) => {
+       if(response.status!= 200 && response.status != 500){
+         throw new Error('Error de estado: '+ response.status);
+       }
+       if(response.status == 500){
+         return (response.json());
+       }
+       else{
+         navigation.navigate('Home',{user: values.username}); 
+       }})
+       .then((data) => {
+         if(response.status != 200){
+         console.log(data); //mirar si puedo acceder a response
+         alert(data.error);
+         }
+       })
+     .catch((error) => {
+       //Error
+       console.error(error);
+     });
+ }}>*/}
 
   {({handleChange, handleSubmit, values}) =>{
     return (
