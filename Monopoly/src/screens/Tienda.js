@@ -116,7 +116,7 @@ const tableros = [
 
 
 function estaComprada(id){
-  return false;
+  return true;
 }
 
 function estaEnUso(id){
@@ -144,16 +144,14 @@ const renderItem = ({ item }) => {
         </View>  
       )}
       {/*si ya esta comprado*/}
-      {comprado && !usado (
+      {comprado && !usado && (
           <TouchableOpacity style={styles.itemButton}>
           <Text style={styles.itemButtonText}>Usar</Text>
         </TouchableOpacity>
       )}
 
-      {comprado && usado (
-          <TouchableOpacity style={styles.itemButton}>
-          <Text style={styles.itemButtonText}>Actual</Text>
-        </TouchableOpacity>
+      {comprado && usado && (
+          <Text>Actual</Text>
       )}
 
     </View>
