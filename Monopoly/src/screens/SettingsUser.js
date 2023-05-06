@@ -85,7 +85,7 @@ export default function SettingsUserScreen({ route, navigation }){
       console.log(values);
 
       socket.emit('updateUsername', {
-                  newusername: 'patricioEstrella',
+                  newusername: values.newusername,
                   socketId: socket.id
                 }, (ack) => {
                   console.log('Server acknowledged:', ack);

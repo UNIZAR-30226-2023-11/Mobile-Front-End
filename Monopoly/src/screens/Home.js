@@ -63,21 +63,7 @@ export default function HomeScreen({ route, navigation }){
         <View style={styles.pantalla}>
         {/* <HeaderBackButton onPress={handleBackButton} /> */}
         {loggedIn &&
-        <TouchableOpacity style={styles.icon} onPress={() => {
-                console.log("emitiendo socket correo ...", socket.id);
-                socket.emit('correo',{
-                            socketId: socket.id
-                    }, 
-                    (ack) => {
-                        console.log('Server acknowledged:', ack);
-                        if(ack.cod == 0){
-                            navigation.navigate('Perfil',{email: ack.msg})
-                        }
-                        else if(ack.cod != 2){
-                            alert(ack.msg);
-                        }
-                    }
-        )}}>
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil')}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
         }
@@ -100,30 +86,31 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => {{ if(user==null){user = nickname}
-                                    console.log(user);
-                                    const response =  fetch(crearPartida, {
-                                    method: 'POST',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"username": user,
-                                                          "dineroInicial": 0,
-                                                          "nJugadores": 0})
-                                    })
-                                    .then((response) => {
-                                    if(response.status != 201){
-                                        throw new Error('Error de estado: '+ response.status);
-                                    }
-                                    return response.json();
-                                    })
-                                    .then(data => {
-                                        const idPartida = data.idPartida;
-                                        navigation.navigate('CrearSala', {user: user, idPartida: idPartida})
-                                    })
-                                    .catch((error) => {
-                                        //Error
-                                        //alert(JSON.stringify(error));
-                                        console.error(error);
-                                    });
+                onPress={() => {{ 
+                                // if(user==null){user = nickname}
+                                // console.log(user);
+                                // const response =  fetch(crearPartida, {
+                                // method: 'POST',
+                                // headers: {'Content-Type': 'application/json'},
+                                // body: JSON.stringify({"username": user,
+                                //                       "dineroInicial": 0,
+                                //                       "nJugadores": 0})
+                                // })
+                                // .then((response) => {
+                                // if(response.status != 201){
+                                //     throw new Error('Error de estado: '+ response.status);
+                                // }
+                                // return response.json();
+                                // })
+                                // .then(data => {
+                                //     const idPartida = data.idPartida;
+                                    navigation.navigate('CrearSala', {idPartida: 90})
+                                // })
+                                // .catch((error) => {
+                                //     //Error
+                                //     //alert(JSON.stringify(error));
+                                //     console.error(error);
+                                // });
                             }}}
             />
             <StyledButton

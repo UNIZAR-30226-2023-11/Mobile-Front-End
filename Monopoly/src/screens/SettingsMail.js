@@ -92,7 +92,7 @@ export default function SettingsMailScreen({ route, navigation }){
                   console.log('Server acknowledged:', ack);
                   if(ack.cod == 0){
                     Alert.alert('Correo actualizado correctamente');
-                    navigation.navigate('Perfil',{email: values.email});
+                    navigation.navigate('Perfil');
                   }
                   else if(ack.cod != 2){
                     alert(ack.msg);

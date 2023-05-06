@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
 
 export default function CrearSalaScreen({route, navigation }) {
 
-    const user = route.params.user;
+    // const user = route.params.user;
     const idPartida = route.params.idPartida;
-    console.log(user, idPartida);
+    // console.log(user, idPartida);
 
     const [interval, setIntervalId] = React.useState(null);
     const [detenido, setDetenido] = React.useState(false);
@@ -60,56 +60,56 @@ export default function CrearSalaScreen({route, navigation }) {
             });
     });
 
-    useEffect (() =>{
-        console.log("detenido: ", detenido);
-        if(detenido){
-            clearInterval(interval);
-             setIntervalId(null);
-            setAvanzar(true);
-        }else{
-            const id = setInterval(() => {
-                actualizarJugadores();
-            },3000);
-            setIntervalId(id);
-        }
+    // useEffect (() =>{
+    //     console.log("detenido: ", detenido);
+    //     if(detenido){
+    //         clearInterval(interval);
+    //          setIntervalId(null);
+    //         setAvanzar(true);
+    //     }else{
+    //         const id = setInterval(() => {
+    //             actualizarJugadores();
+    //         },3000);
+    //         setIntervalId(id);
+    //     }
 
-        return () => {
-            clearInterval(interval);
-            setIntervalId(null);
-        };
+    //     return () => {
+    //         clearInterval(interval);
+    //         setIntervalId(null);
+    //     };
 
-    },[detenido])
+    // },[detenido])
 
-    useEffect(() => {
-        if(avanzar){
-            setAvanzar(false);
-            const response =  fetch(actualizarPartida, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({"idPartida": idPartida,
-                                      "username": user,
-                                      "dineroInicial": money,
-                                      "nJugadores": players,
-                                      "jugar":true})
-                })
-                .then((response) => {
-                if(response.status != 200) {
-                    throw new Error('Error de estado: '+ response.status);
-                }
-                else{
-                    console.log(response.json());
-                    if(interval!= null){
-                        clearInterval(interval);
-                        setInterval(null);
-                    }
-                    navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
-            .catch((error) => {
-                //Error
-                // alert(JSON.stringify(error));
-                console.error(error);
-            });
-        }
-    }, [avanzar]);
+    // useEffect(() => {
+    //     if(avanzar){
+    //         setAvanzar(false);
+    //         const response =  fetch(actualizarPartida, {
+    //             method: 'PUT',
+    //             headers: {'Content-Type': 'application/json'},
+    //             body: JSON.stringify({"idPartida": idPartida,
+    //                                   "username": user,
+    //                                   "dineroInicial": money,
+    //                                   "nJugadores": players,
+    //                                   "jugar":true})
+    //             })
+    //             .then((response) => {
+    //             if(response.status != 200) {
+    //                 throw new Error('Error de estado: '+ response.status);
+    //             }
+    //             else{
+    //                 console.log(response.json());
+    //                 if(interval!= null){
+    //                     clearInterval(interval);
+    //                     setInterval(null);
+    //                 }
+    //                 navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
+    //         .catch((error) => {
+    //             //Error
+    //             // alert(JSON.stringify(error));
+    //             console.error(error);
+    //         });
+    //     }
+    // }, [avanzar]);
 
     return (
         <NativeBaseProvider>
@@ -123,11 +123,12 @@ export default function CrearSalaScreen({route, navigation }) {
                     accessibilityLabel="Jugadores" 
                     placeholder="2" 
                     mt={1} 
-                    onValueChange={(itemValue) => {const response =  fetch(actualizarPartida, {
+                    onValueChange={(itemValue) => {
+                                    const response =  fetch(actualizarPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user,
+                                                        //   "username": user,
                                                           "dineroInicial": money,
                                                           "nJugadores": itemValue,
                                                           "jugar": false})
@@ -144,7 +145,8 @@ export default function CrearSalaScreen({route, navigation }) {
                                     //Error
                                     // alert(JSON.stringify(error));
                                     console.error(error);
-                                });}}>
+                                });
+                                }}>
                     <Select.Item label="2" value="2" />
                     <Select.Item label="3" value="3" />
                     <Select.Item label="4" value="4" />
@@ -163,12 +165,13 @@ export default function CrearSalaScreen({route, navigation }) {
                     accessibilityLabel="Money" 
                     placeholder="1500" 
                     mt={1} 
-                    onValueChange={(itemValue) => {const response =  fetch(actualizarPartida, {
+                    onValueChange={(itemValue) => {
+                                    const response =  fetch(actualizarPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user,
-                                                          "dineroInicial": itemValues,
+                                                        //   "username": user,
+                                                          "dineroInicial": itemValue,
                                                           "nJugadores": players,
                                                           "jugar": false})
                                     })
@@ -184,7 +187,8 @@ export default function CrearSalaScreen({route, navigation }) {
                                     //Error
                                     // alert(JSON.stringify(error));
                                     console.error(error);
-                                });}}>
+                                });
+                                }}>
                     <Select.Item label="1000" value="1000" />
                     <Select.Item label="1500" value="1500" />
                     <Select.Item label="2000" value="2000" />
