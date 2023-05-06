@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import io from 'socket.io-client';
 import { socketUrl } from './src/url/socket.js';
+import { SocketProvider } from './src/components/socketContext.js';
 
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
@@ -20,7 +21,6 @@ import SettingsUserScreen from './src/screens/SettingsUser.js';
 import TableroScreen from './src/screens/Tablero.js';
 
 const Stack = createNativeStackNavigator();
-export const SocketContext = React.createContext();
 
 export default function App() {
   
@@ -31,7 +31,7 @@ export default function App() {
   }, [socket]);
   return (
     
-    <SocketContext.Provider value={socket}>
+    <SocketProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -126,7 +126,7 @@ export default function App() {
 
       </Stack.Navigator>
     </NavigationContainer>
-    </SocketContext.Provider>
+    </SocketProvider>
   );
 }
 
