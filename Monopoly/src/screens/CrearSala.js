@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState} from "react";
-import { View, StyleSheet, Text, Modal } from "react-native";
+import { View, StyleSheet, Text, Modal, Switch } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 import { actualizarPartida, listaJugadores } from "../url/partida";
-import StyledModal from "../components/StyledModal";
+import StyledModal from "../components/StyledModalNormasP";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         flex:1,
     },
     boxjugadores: {
-        flex:3,
+        flex:4,
         justifyContent:'flex-start',
         marginLeft:'10%',
         width: '80%',
@@ -39,6 +39,7 @@ export default function CrearSalaScreen({route, navigation }) {
     const [jugadores, setJugadores] = React.useState([""]);
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [cobrarCarcel, setCobrarCarcel] = useState(false);
     
     const actualizarJugadores = useCallback(() => {
         const response =  fetch(listaJugadores, {
@@ -119,7 +120,7 @@ export default function CrearSalaScreen({route, navigation }) {
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
             <StyledText style={styles.titulo} big bold>Partida #{idPartida}</StyledText>
-            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Nº jugadores</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={players} 
@@ -161,7 +162,7 @@ export default function CrearSalaScreen({route, navigation }) {
                 </Select>
                 </View>
             </View>
-            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Dinero inicial</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={money} 
@@ -209,16 +210,15 @@ export default function CrearSalaScreen({route, navigation }) {
                 onPress={() => setModalVisible(true)}
             />
         
-            <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <StyledModal
                 title="PERSONALIZAR NORMAS"
                 text="Texto de prueba"
                 visible={isModalVisible}
                 onClose = { () => {setModalVisible({isModalVisible: !isModalVisible})}}
                 onRequestClose={ () => {setModalVisible({isModalVisible: !isModalVisible})}}
-            >
-                <Text>Poner aqui las normas</Text>
-            </StyledModal>
+                
+            />   
             </View>
 
 
