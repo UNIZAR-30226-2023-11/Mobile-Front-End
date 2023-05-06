@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState} from "react";
-import { View, StyleSheet, Text, Modal, Switch } from "react-native";
+import { View, StyleSheet, Text, Modal, Switch, Pressable } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 import { actualizarPartida, listaJugadores } from "../url/partida";
-import StyledModal from "../components/StyledModalNormasP";
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     titulo:{
@@ -21,7 +21,46 @@ const styles = StyleSheet.create({
         height: '30%',
         borderColor:'#000000',
         borderWidth: 1
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        marginTop: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width:'85%',
+        height: '80%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        }
+    },
+    button :{
+        marginLeft: '80%',
+        marginTop: '5%'
+    },
+    modalText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: '#000',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#000',
+        marginBottom: 20,
+    },
+    buttonTitle: {
+        marginTop: '10%',
+        color: 'lightBlue100'
+    },
 })
 
 export default function CrearSalaScreen({route, navigation }) {
@@ -40,6 +79,7 @@ export default function CrearSalaScreen({route, navigation }) {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [cobrarCarcel, setCobrarCarcel] = useState(false);
+
     
     const actualizarJugadores = useCallback(() => {
         const response =  fetch(listaJugadores, {
@@ -211,14 +251,24 @@ export default function CrearSalaScreen({route, navigation }) {
             />
         
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <StyledModal
-                title="PERSONALIZAR NORMAS"
-                text="Texto de prueba"
-                visible={isModalVisible}
-                onClose = { () => {setModalVisible({isModalVisible: !isModalVisible})}}
-                onRequestClose={ () => {setModalVisible({isModalVisible: !isModalVisible})}}
-                
-            />   
+            <Modal>
+                <View style={styles.centeredView}>
+                    <Pressable
+                        onPress={() => onClose()}>
+                        <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
+                    </Pressable>
+                    <ScrollView style={{marginHorizontal: 20}}>
+                    <View>
+                        <View style={styles.option}>
+                        <Text style={styles.optionText}>Ir a los ajustes</Text>
+                        <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
+                        {console.log("Valor cobrar carcel: " + cobrarCarcel)}
+                        </View>
+                    </View>
+                    </ScrollView>
+                    
+                </View>
+                </Modal> 
             </View>
 
 
