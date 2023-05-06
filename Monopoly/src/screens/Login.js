@@ -5,7 +5,7 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
 import CryptoJS from 'crypto-js'
-import { SocketContext } from '../components/SocketContext'
+import { SocketContext } from '../components/socketContext'
 
 const initialValues = {
   username: '',

@@ -4,7 +4,7 @@ import { Formik, useField } from 'formik'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsMailValidationSchema } from '../validationSchemas/settingsEmail'
-import { SocketContext } from '../components/SocketContext'
+import { SocketContext } from '../components/socketContext'
 
 import { updateCorreoUsuario } from '../url/users'
 

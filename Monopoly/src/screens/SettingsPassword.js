@@ -5,7 +5,7 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsPasswordValidationSchema } from '../validationSchemas/settingsPassword'
 import CryptoJS from 'crypto-js'
-import { SocketContext } from '../components/SocketContext'
+import { SocketContext } from '../components/socketContext'
 
 import { updatePassword } from '../url/users'
 

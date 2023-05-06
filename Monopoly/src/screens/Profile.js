@@ -3,7 +3,7 @@ import { StyleSheet, Button, View, Image, Text , TouchableOpacity } from 'react-
 import StyledText from '../components/StyledText'
 import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { SocketContext } from '../components/SocketContext';
+import { SocketContext } from '../components/socketContext';
 
 const styles = StyleSheet.create({
     error: {

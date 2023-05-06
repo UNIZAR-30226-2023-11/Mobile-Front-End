@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import StyledButton from '../components/StyledButton';
-import { SocketContext } from '../components/SocketContext'
+import { SocketContext } from '../components/socketContext'
 import { deleteUsuario, devolverCorreoUsuario } from '../url/users'
 
 const styles = StyleSheet.create({

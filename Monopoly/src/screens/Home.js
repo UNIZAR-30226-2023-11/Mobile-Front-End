@@ -6,7 +6,7 @@ import StyledTextInput from "../components/StyledTextInput";
 import StyledModal from "../components/StyledModal";
 
 import { crearPartida } from "../url/partida";
-import { SocketContext } from "../components/SocketContext";
+import { SocketContext } from "../components/socketContext";
 
 
 const styles = StyleSheet.create({
