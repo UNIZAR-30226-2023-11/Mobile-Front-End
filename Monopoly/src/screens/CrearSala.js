@@ -66,15 +66,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    switch: {
-        alignSelf: 'right',
-    },
     optionText: {
         marginRight: 10,
     }
 })
-
-
 
 export default function CrearSalaScreen({route, navigation }) {
 
@@ -173,7 +168,9 @@ export default function CrearSalaScreen({route, navigation }) {
     // }, [avanzar]);
 
     return (
+       <View>
         <NativeBaseProvider>
+             {console.log("return")}
         <View style={{flex:1, flexDirection:'column'}}>
             <StyledText style={styles.titulo} big bold>Partida #{idPartida}</StyledText>
             <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
@@ -276,25 +273,24 @@ export default function CrearSalaScreen({route, navigation }) {
                     <ScrollView style={{marginHorizontal: 20}}>
                     <View>
                         <View style={styles.option}>
-                        <Text style={styles.optionText}>Cobrar en la carcel</Text>
-                        <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
+                            <Text style={styles.optionText}>Cobrar en la carcel</Text>
+                            <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
                         </View>
                         <View style={styles.option}>
-                        <Text style={styles.optionText}>Cobrar la beca</Text>
-                        <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
+                            <Text style={styles.optionText}>Cobrar la beca</Text>
+                            <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
                         </View>
                         <View style={styles.option}>
-                        <Text style={styles.optionText}>Activar las subastas</Text>
-                        <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
+                            <Text style={styles.optionText}>Activar las subastas</Text>
+                            <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
                         </View>
                         <View style={styles.option}>
-                        <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
-                        <Switch style={styles.switch} value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                            <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
+                            <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
                         </View>
                         <StyledButton
                             lightblue 
                             title="GUARDAR"
-                            onPress={() => {setDetenido(!detenido);}}
                         />
                     </View>
                     </ScrollView>
@@ -322,5 +318,6 @@ export default function CrearSalaScreen({route, navigation }) {
             
         </View>
         </NativeBaseProvider>
+        </View>
     );
 }
