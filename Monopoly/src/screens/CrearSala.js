@@ -13,10 +13,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
     titulo:{
-        marginTop:'10%',
-        marginBottom:'1%',
+        marginTop:'8%',
         marginLeft:'35%',
-        flex:1,
+        fontSize: '16',
     },
     boxjugadores: {
         flex:4,
@@ -299,7 +298,7 @@ export default function CrearSalaScreen({route, navigation }) {
                             title="GUARDAR"
                             onPress={() => {setModalVisible(false);}}
                         />
-                        {console.log(isModalVisible)}
+                        {console.log("modal visible" + isModalVisible)}
                     </View>
                     
                 </View>
