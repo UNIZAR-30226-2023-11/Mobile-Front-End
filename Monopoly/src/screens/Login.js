@@ -68,7 +68,7 @@ export default function LogInScreen({navigation, route}){
                 },
                 (ack) => { 
                   console.log('Server acknowledged:', ack);
-                  if(ack.cod /*== 0*/){
+                  if(ack.cod == 0){
                     if(perfil){
                       navigation.navigate('Profile');
                     }else{

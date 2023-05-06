@@ -23,7 +23,7 @@ export default function SettingsScreen({ route, navigation }){
     const socket = React.useContext(SocketContext);
 
     // const user = route.params.user;
-    console.log(user);
+    // console.log(user);
 
 
     return (
@@ -43,31 +43,43 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Cambiar correo electrónico' 
                 onPress={() => {
+                    socket.emit('correo',{
+                                socketId: socket.id
+                            }, 
+                            (ack) => {
+                            console.log('Server acknowledged:', ack);
+                            if(ack.cod == 0){
+                                navigation.navigate('SettingsMail',{email: ack.msg});
+                            }
+                            else if(ack.cod != 2){
+                            alert(ack.msg);
+                            }
+                            });
 
-                    const response =  fetch(devolverCorreoUsuario, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify()
-                      })
-                      .then((response) => {
-                        if(response.status != 200){
-                          throw new Error('Error de estado: '+ response.status);
-                        } else {
-                          return response.json(); // devuelve el contenido de la respuesta como un objeto JSON
-                        }
-                      }) 
-                      .then((data) => {
-                        // actualiza el estado con el correo electrónico obtenido de la respuesta
-                        console.log(data.email);
-                        navigation.navigate('SettingsMail',);
-                      })
-                      .catch((error) => {
-                        //Error
-                        alert(error);
-                        //alert(JSON.stringify(error));
-                        console.error(error);
-                        console.log("Algo ha ido mal.")
-                      });}}
+                    // const response =  fetch(devolverCorreoUsuario, {
+                    //     method: 'POST',
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     body: JSON.stringify()
+                    //   })
+                    //   .then((response) => {
+                    //     if(response.status != 200){
+                    //       throw new Error('Error de estado: '+ response.status);
+                    //     } else {
+                    //       return response.json(); // devuelve el contenido de la respuesta como un objeto JSON
+                    //     }
+                    //   }) 
+                    //   .then((data) => {
+                    //     // actualiza el estado con el correo electrónico obtenido de la respuesta
+                    //     console.log(data.email);
+                    //   })
+                    //   .catch((error) => {
+                    //     //Error
+                    //     alert(error);
+                    //     //alert(JSON.stringify(error));
+                    //     console.error(error);
+                    //     console.log("Algo ha ido mal.")
+                    //   });
+                    }}
             />
             </View>
 
@@ -94,7 +106,6 @@ export default function SettingsScreen({ route, navigation }){
                 onPress={() => {
                     // console.log(user);
                     socket.emit('deleteUser', {
-                                username: user,
                                 socketId: socket.id
                                 },
                                 (ack) => { 

@@ -9,6 +9,7 @@ export function SocketProvider({ children }) {
   const socket = React.useMemo(() => io(socketUrl), []);
 
   React.useEffect(() => {
+    // console.log("Socket id: " + socket.id);
     return () => socket.disconnect();
   }, [socket]);
 

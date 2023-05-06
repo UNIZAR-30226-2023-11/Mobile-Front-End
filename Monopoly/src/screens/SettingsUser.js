@@ -75,7 +75,7 @@ export default function SettingsUserScreen({ route, navigation }){
 
   const socket = React.useContext(SocketContext);
 
-  console.log(user);
+  // console.log(user);
   
   return <Formik validationSchema={settingsUserValidationSchema} 
     initialValues={initialValues}
@@ -90,7 +90,7 @@ export default function SettingsUserScreen({ route, navigation }){
                 }, (ack) => {
                   console.log('Server acknowledged:', ack);
                   if(ack.cod == 0){
-                    alert('Nombre de suario actualizado correctamente');
+                    alert('Nombre de usuario actualizado correctamente');
                     navigation.navigate('Perfil');
                   }
                   else if(ack.cod != 2){
@@ -124,7 +124,7 @@ export default function SettingsUserScreen({ route, navigation }){
         <View style={styles.form}>
 
             <Text style={styles.text}>Nombre de usuario actual </Text>
-            <Text style={styles.correo}>{user}</Text>
+            <Text style={styles.correo}>PONER</Text>
 
             <Text style={styles.text}>Cambiar nombre</Text>
             <FormikInputValue 

@@ -73,40 +73,12 @@ const styles = StyleSheet.create({
 
   })
 
-export default function ProfileScreen({ navigation }){
+export default function ProfileScreen({ route, navigation }){
 
   const socket = React.useContext(SocketContext);
   const [imgPerfil, setImgPerfil] = React.useState(null);
-  const [correo, setCorreo] = React.useState("");
+  const correo = route.params.email
 
-  useEffect(() =>{
-    console.log("emitiendo socket correo ...", socket.id);
-    socket.emit('correo',{
-                  socketId: socket.id
-        }, 
-        (ack) => {
-            console.log('Server acknowledged:', ack);
-            if(ack.cod == 0){
-              setCorreo(ack.msg);
-              console.log("emitiendo socket imagen perfil");
-                socket.emit('imagenPerfil',{
-                              socketId: socket.id
-                    }, 
-                    (ack) => {
-                        console.log('Server acknowledged:', ack);
-                        if(ack.cod == 0){
-                          setImgPerfil(ack.msg);
-                        }
-                        else if(ack.cod != 2){
-                          alert(ack.msg);
-                        }
-                    });
-            }
-            else if(ack.cod != 2){
-              alert(ack.msg);
-            }
-        });
-      },[])
 
     return (
 

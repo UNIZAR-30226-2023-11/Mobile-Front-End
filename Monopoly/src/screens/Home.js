@@ -6,6 +6,7 @@ import StyledTextInput from "../components/StyledTextInput";
 import StyledModal from "../components/StyledModal";
 
 import { crearPartida } from "../url/partida";
+import { SocketContext } from "../components/SocketContext";
 
 
 const styles = StyleSheet.create({
@@ -41,6 +42,7 @@ export default function HomeScreen({ route, navigation }){
 
     let loggedIn = route.params.loggedIn;
 
+    const socket = React.useContext(SocketContext);
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
 
@@ -61,7 +63,21 @@ export default function HomeScreen({ route, navigation }){
         <View style={styles.pantalla}>
         {/* <HeaderBackButton onPress={handleBackButton} /> */}
         {loggedIn &&
-        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.icon} onPress={() => {
+                console.log("emitiendo socket correo ...", socket.id);
+                socket.emit('correo',{
+                            socketId: socket.id
+                    }, 
+                    (ack) => {
+                        console.log('Server acknowledged:', ack);
+                        if(ack.cod == 0){
+                            navigation.navigate('Perfil',{email: ack.msg})
+                        }
+                        else if(ack.cod != 2){
+                            alert(ack.msg);
+                        }
+                    }
+        )}}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
         }

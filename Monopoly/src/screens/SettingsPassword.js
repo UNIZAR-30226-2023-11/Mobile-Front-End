@@ -4,6 +4,8 @@ import { Formik, useField } from 'formik'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsPasswordValidationSchema } from '../validationSchemas/settingsPassword'
+import CryptoJS from 'crypto-js'
+import { SocketContext } from '../components/SocketContext'
 
 import { updatePassword } from '../url/users'
 
@@ -66,34 +68,53 @@ const styles = StyleSheet.create({
 
 export default function SettingsPasswordScreen({ route, navigation }){
 
-  const user = route.params.user;
-  console.log(user);
+  // const user = route.params.user;
+  // console.log(user);
+
+  const socket = React.useContext(SocketContext);
 
     return <Formik validationSchema={settingsPasswordValidationSchema} initialValues={initialValues} 
     onSubmit={(values) => {
       // Manejo del envío del formulario
       // Muestra una alerta después de enviar el formulario ok
-      console.log(user, values);
+      // console.log(user, values);
+      const hashedPassword = CryptoJS.SHA512(values.newpassword).toString();
+      const hashedConfirmPassword = CryptoJS.SHA512(values.confirm_password).toString();
+      socket.emit('updatePassword', {
+                  password: hashedPassword,
+                  confirm_password: hashedConfirmPassword,
+                  socketId: socket.id
+                },
+                (ack) => { 
+                  console.log('Server acknowledged:', ack);
+                  if(ack.cod == 0){
+                    Alert.alert('Correo actualizado correctamente');
+                    navigation.navigate('Perfil');
+                  }
+                  else if(ack.cod != 2){
+                    alert(ack.msg);
+                  }
+                  })
   
-        const response =  fetch(updatePassword, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: user , password: values.newpassword, confirm_password: values.confirm_password})
-        })
-        .then((response) => {
-          if(response.status != 200){
-            throw new Error('Error de estado: '+ response.status);
-          }
-          else{
-            Alert.alert('Contraseña actualizada');
-            navigation.navigate('Perfil', {user: user});
-          }})
-      .catch((error) => {
-        //Error
-        alert(JSON.stringify(error));
-        console.error(error);
-        console.log("Algo ha ido mal.")
-      });
+      //   const response =  fetch(updatePassword, {
+      //   method: 'PUT',
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: JSON.stringify({username: user , password: values.newpassword, confirm_password: values.confirm_password})
+      //   })
+      //   .then((response) => {
+      //     if(response.status != 200){
+      //       throw new Error('Error de estado: '+ response.status);
+      //     }
+      //     else{
+      //       Alert.alert('Contraseña actualizada');
+      //       navigation.navigate('Perfil', {user: user});
+      //     }})
+      // .catch((error) => {
+      //   //Error
+      //   alert(JSON.stringify(error));
+      //   console.error(error);
+      //   console.log("Algo ha ido mal.")
+      // });
     }}>
     {({handleChange, handleSubmit, values}) =>{
       return (
