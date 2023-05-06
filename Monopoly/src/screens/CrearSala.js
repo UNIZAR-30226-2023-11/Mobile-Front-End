@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Modal } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
@@ -35,6 +35,8 @@ export default function CrearSalaScreen({route, navigation }) {
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
     const [jugadores, setJugadores] = React.useState([""]);
+
+    const [isModalVisible, setModalVisible] = useState(false);
     
     const actualizarJugadores = useCallback(() => {
         const response =  fetch(listaJugadores, {
@@ -197,6 +199,27 @@ export default function CrearSalaScreen({route, navigation }) {
                 </Select>
                 </View>
             </View>
+
+            <View style={{flex:1}}>
+            <StyledButton
+                lightblue 
+                title="PERSONALIZAR NORMAS"
+                onPress={() => setModalVisible(true)}
+            />
+        
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Modal
+                visible={isModalVisible}
+                animationType="slide"
+                onRequestClose={() => setModalVisible(false)}
+            >
+
+                <Text>Poner aqui las normas</Text>
+            </Modal>
+            </View>
+
+            </View>
+
             <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
