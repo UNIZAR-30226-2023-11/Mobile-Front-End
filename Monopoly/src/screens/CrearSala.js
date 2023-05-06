@@ -61,7 +61,20 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         color: 'lightBlue100'
     },
+    option: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    switch: {
+        alignSelf: 'right',
+    },
+    optionText: {
+        marginRight: 10,
+    }
 })
+
+
 
 export default function CrearSalaScreen({route, navigation }) {
 
@@ -79,6 +92,9 @@ export default function CrearSalaScreen({route, navigation }) {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [cobrarCarcel, setCobrarCarcel] = useState(false);
+    const [cobrarBeca, setCobrarBeca] = useState(false);
+    const [activarSubasta, setActivarSubasta] = useState(false);
+    const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
     
     const actualizarJugadores = useCallback(() => {
@@ -251,19 +267,35 @@ export default function CrearSalaScreen({route, navigation }) {
             />
         
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Modal>
+            <Modal style={styles.modalView}>
                 <View style={styles.centeredView}>
                     <Pressable
-                        onPress={() => onClose()}>
+                       onRequestClose={() => setModalVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
                     <ScrollView style={{marginHorizontal: 20}}>
                     <View>
                         <View style={styles.option}>
-                        <Text style={styles.optionText}>Ir a los ajustes</Text>
+                        <Text style={styles.optionText}>Cobrar en la carcel</Text>
                         <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
-                        {console.log("Valor cobrar carcel: " + cobrarCarcel)}
                         </View>
+                        <View style={styles.option}>
+                        <Text style={styles.optionText}>Cobrar la beca</Text>
+                        <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
+                        </View>
+                        <View style={styles.option}>
+                        <Text style={styles.optionText}>Activar las subastas</Text>
+                        <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
+                        </View>
+                        <View style={styles.option}>
+                        <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
+                        <Switch style={styles.switch} value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                        </View>
+                        <StyledButton
+                            lightblue 
+                            title="GUARDAR"
+                            onPress={() => {setDetenido(!detenido);}}
+                        />
                     </View>
                     </ScrollView>
                     
