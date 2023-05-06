@@ -4,6 +4,7 @@ import StyledText from '../components/StyledText'
 import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SocketContext } from '../components/SocketContext';
+import { encode } from 'base-64';
 
 const styles = StyleSheet.create({
     error: {
@@ -89,6 +90,20 @@ export default function ProfileScreen({ navigation }){
         console.log('Server acknowledged:', ack);
         if(ack.cod == 0){
            setCorreo(ack.msg);
+           socket.emit('imagenPerfil',{
+            socketId: socket.id
+            }, 
+            (ack) => {
+              // console.log('Server acknowledged:', ack);
+              if(ack.cod == 0){
+                const dataUrl = `data:image/jpeg;base64,${ack.msg.imagen}`;
+                // console.log(dataUrl);
+                setImgPerfil(dataUrl);
+              }
+              else if(ack.cod != 2){
+                  alert(ack.msg);
+              }
+            });
         }
         else if(ack.cod != 2){
             alert(ack.msg);
