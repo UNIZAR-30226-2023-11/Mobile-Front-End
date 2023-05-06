@@ -4,19 +4,21 @@ import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 import { actualizarPartida, listaJugadores } from "../url/partida";
+import StyledModal from "../components/StyledModal";
 
 const styles = StyleSheet.create({
     titulo:{
         marginTop:'10%',
+        marginBottom:'1%',
         marginLeft:'35%',
         flex:1,
     },
     boxjugadores: {
-        flex:6,
+        flex:3,
         justifyContent:'flex-start',
         marginLeft:'10%',
         width: '80%',
-        height: '50%',
+        height: '30%',
         borderColor:'#000000',
         borderWidth: 1
     }
@@ -203,23 +205,24 @@ export default function CrearSalaScreen({route, navigation }) {
             <View style={{flex:1}}>
             <StyledButton
                 lightblue 
-                title="PERSONALIZAR NORMAS"
+                title="PERSONALIZAR"
                 onPress={() => setModalVisible(true)}
             />
         
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Modal
+            <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center' }}>
+            <StyledModal
+                title="PERSONALIZAR NORMAS"
+                text="Texto de prueba"
                 visible={isModalVisible}
-                animationType="slide"
-                onRequestClose={() => setModalVisible(false)}
+                onClose = { () => {setModalVisible({isModalVisible: !isModalVisible})}}
+                onRequestClose={ () => {setModalVisible({isModalVisible: !isModalVisible})}}
             >
-
                 <Text>Poner aqui las normas</Text>
-            </Modal>
+            </StyledModal>
             </View>
 
-            </View>
 
+            </View>
             <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
@@ -228,13 +231,13 @@ export default function CrearSalaScreen({route, navigation }) {
             ))}
             </ScrollView>
             </View>
-            <View style={{flex:1}}></View>
+            
             <StyledButton
                 lightblue 
                 title="JUGAR"
                 onPress={() => {setDetenido(!detenido);}}
             />
-            <View style={{flex:1}}></View>
+            
         </View>
         </NativeBaseProvider>
     );
