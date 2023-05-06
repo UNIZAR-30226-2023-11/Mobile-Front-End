@@ -7,6 +7,11 @@ import { actualizarPartida, listaJugadores } from "../url/partida";
 import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
     titulo:{
         marginTop:'10%',
         marginBottom:'1%',
@@ -32,8 +37,8 @@ const styles = StyleSheet.create({
         marginTop: 40,
         backgroundColor: 'white',
         borderRadius: 20,
-        width:'85%',
-        height: '80%',
+        width:'45%',
+        height: '40%',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -168,9 +173,7 @@ export default function CrearSalaScreen({route, navigation }) {
     // }, [avanzar]);
 
     return (
-       <View>
         <NativeBaseProvider>
-             {console.log("return")}
         <View style={{flex:1, flexDirection:'column'}}>
             <StyledText style={styles.titulo} big bold>Partida #{idPartida}</StyledText>
             <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
@@ -263,37 +266,41 @@ export default function CrearSalaScreen({route, navigation }) {
                 onPress={() => setModalVisible(true)}
             />
         
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Modal style={styles.modalView}>
+            <View style={styles.container}>
+            <Modal style={styles.modalView} visible={isModalVisible}>
                 <View style={styles.centeredView}>
                     <Pressable
-                       onRequestClose={() => setModalVisible(false)}>
+                       onPress={() => setModalVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
-                    <ScrollView style={{marginHorizontal: 20}}>
                     <View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar en la carcel</Text>
                             <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
+                            {console.log("cobrarBeca " + cobrarCarcel)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar la beca</Text>
                             <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
+                            {console.log("cobrarBeca " + cobrarBeca)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Activar las subastas</Text>
                             <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
+                            {console.log("activarSubasta " + activarSubasta)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
                             <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
                         </View>
                         <StyledButton
                             lightblue 
                             title="GUARDAR"
+                            onPress={() => {setModalVisible(false);}}
                         />
+                        {console.log(isModalVisible)}
                     </View>
-                    </ScrollView>
                     
                 </View>
                 </Modal> 
@@ -318,6 +325,5 @@ export default function CrearSalaScreen({route, navigation }) {
             
         </View>
         </NativeBaseProvider>
-        </View>
     );
 }
