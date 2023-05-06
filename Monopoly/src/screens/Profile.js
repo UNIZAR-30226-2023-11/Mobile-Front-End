@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Button, View, Image, Text , TouchableOpacity } from 'react-native';
 import StyledText from '../components/StyledText'
 import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
 import { useNavigation } from '@react-navigation/native';
+import { SocketContext } from '../components/SocketContext';
 
 const styles = StyleSheet.create({
     error: {
@@ -72,9 +73,41 @@ const styles = StyleSheet.create({
 
   })
 
-export default function ProfileScreen({ route, navigation }){
-    let user = route.params.user;
-    
+export default function ProfileScreen({ navigation }){
+
+  const socket = React.useContext(SocketContext);
+  const [imgPerfil, setImgPerfil] = React.useState(null);
+  const [correo, setCorreo] = React.useState("");
+
+  useEffect(() =>{
+    console.log("emitiendo socket correo ...", socket.id);
+    socket.emit('correo',{
+                  socketId: socket.id
+        }, 
+        (ack) => {
+            console.log('Server acknowledged:', ack);
+            if(ack.cod == 0){
+              setCorreo(ack.msg);
+              console.log("emitiendo socket imagen perfil");
+                socket.emit('imagenPerfil',{
+                              socketId: socket.id
+                    }, 
+                    (ack) => {
+                        console.log('Server acknowledged:', ack);
+                        if(ack.cod == 0){
+                          setImgPerfil(ack.msg);
+                        }
+                        else if(ack.cod != 2){
+                          alert(ack.msg);
+                        }
+                    });
+            }
+            else if(ack.cod != 2){
+              alert(ack.msg);
+            }
+        });
+      },[])
+
     return (
 
       <View style={styles.page}>
@@ -88,21 +121,22 @@ export default function ProfileScreen({ route, navigation }){
           </TouchableOpacity>
 
           {/* Boton de ajustes*/}
-          <TouchableOpacity onPress={() => navigation.navigate('Settings', {user: user})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
             <Feather name="settings" size={30} color="black" />
             <Text style={styles.descripcion}>ajustes  </Text>
           </TouchableOpacity>
         </View>
-
+        {!imgPerfil &&
         <Image
             style={styles.userImage}
-            source={require('../../assets/bob.png')}
+            source={{uri: imgPerfil}}
             />
+          }
 
         <View style={styles.user}>
             
-          <Text>{user}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser', {user: user})}>
+          <Text>Nombre usuario</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser')}>
             <AntDesign name="edit" size={24} color="black" />
           </TouchableOpacity>
           
@@ -111,7 +145,7 @@ export default function ProfileScreen({ route, navigation }){
         <View style={styles.stadistics}>
         <FontAwesome5 name="book" size={22} color="black" />
         <Text style={styles.titulo}> INFORMACION </Text>
-        <Text style={styles.text}> Email: info@example.com</Text>
+        <Text style={styles.text}> Email: {correo}</Text>
        
           <AntDesign name="Trophy" size={24} color="black" />
           <Text style={styles.titulo} > ESTADÍSTICAS </Text>

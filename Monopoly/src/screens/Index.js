@@ -79,17 +79,17 @@ export default function IndexScreen({navigation}) {
           <StyledButton
             lightblue
             title="Iniciar Sesión"
-            onPress={() => navigation.navigate('LogIn')}
+            onPress={() => navigation.navigate('LogIn', {perfil: false})}
           />
           <StyledButton
             lightblue
             title="Registrarse"
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('SignUp',{perfil: false})}
           />
           <StyledButton
             lightblue
             title="Jugar como invitado"
-            onPress={() => navigation.navigate('Home', {user: null})}
+            onPress={() => navigation.navigate('Home',  {loggedIn: false})}
           />
         </View>
       </View>

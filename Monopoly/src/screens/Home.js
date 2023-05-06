@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
 
 export default function HomeScreen({ route, navigation }){
 
-    let user = route.params.user;
-    console.log(user);
+    let loggedIn = route.params.loggedIn;
 
     const [nickname, setNickname] = React.useState("");
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
@@ -61,13 +60,13 @@ export default function HomeScreen({ route, navigation }){
     return(
         <View style={styles.pantalla}>
         {/* <HeaderBackButton onPress={handleBackButton} /> */}
-        {user!= null &&
-        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil', {user: user})}>
+        {loggedIn &&
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('Perfil')}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
         }
-        {user === null &&
-        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('LogIn')}>
+        {!loggedIn &&
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('LogIn', {perfil: true})}>
             <FontAwesome5 name="user-alt" size={28} color="black" />
         </TouchableOpacity>
         }
@@ -75,11 +74,13 @@ export default function HomeScreen({ route, navigation }){
             style={styles.logoJuego}
             source={require('../../assets/logo_juego_monopoly.png')}
         />
+        {!loggedIn && 
         <StyledTextInput style={styles.nickname}
                 placeholder="Ingresa tu nickname"
                 onChangeText={value => setNickname(value)}
                 value={nickname}
-         />
+                required={true}
+         />}
             <StyledButton
                 homeScreen
                 title="Crear sala"

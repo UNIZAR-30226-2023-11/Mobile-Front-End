@@ -53,9 +53,10 @@ const FormikInputValue =({ name, ...props}) => {
   )
 }
 
-export default function SignUpScreen({navigation}){
+export default function SignUpScreen({navigation, route}){
 
   const socket = React.useContext(SocketContext);
+  const perfil = route.params.perfil
  
   return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
     onSubmit={values => {
@@ -72,7 +73,11 @@ export default function SignUpScreen({navigation}){
                 (ack) => { 
                   console.log('Server acknowledged:', ack);
                   if(ack.cod == 0){
-                    navigation.navigate('Home', {user: values.username});
+                    if(perfil){
+                      navigation.navigate('Profile');
+                    }else{
+                      navigation.navigate('Home', {loggedIn: true});
+                    }
                   }
                   else if(ack.cod != 2){
                     alert(ack.msg);
@@ -109,7 +114,7 @@ export default function SignUpScreen({navigation}){
         />
         <View style={styles.login}>
           <StyledText medium>¿Ya tienes cuenta? </StyledText>
-          <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+          <TouchableOpacity onPress={() => navigation.navigate('LogIn',{perfil: perfil})}>
             <StyledText medium blue>Iniciar Sesión</StyledText>
           </TouchableOpacity>
       </View>

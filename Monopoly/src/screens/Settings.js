@@ -22,7 +22,7 @@ export default function SettingsScreen({ route, navigation }){
 
     const socket = React.useContext(SocketContext);
 
-    const user = route.params.user;
+    // const user = route.params.user;
     console.log(user);
 
 
@@ -34,7 +34,7 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cambiar nombre de usuario' 
-                onPress={() => navigation.navigate('SettingsUser', {user: user})}
+                onPress={() => navigation.navigate('SettingsUser')}
             />
             </View>
 
@@ -43,10 +43,11 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Cambiar correo electrónico' 
                 onPress={() => {
+
                     const response =  fetch(devolverCorreoUsuario, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({username: user})
+                        body: JSON.stringify()
                       })
                       .then((response) => {
                         if(response.status != 200){
@@ -58,7 +59,7 @@ export default function SettingsScreen({ route, navigation }){
                       .then((data) => {
                         // actualiza el estado con el correo electrónico obtenido de la respuesta
                         console.log(data.email);
-                        navigation.navigate('SettingsMail', {user: user, email: data.email});
+                        navigation.navigate('SettingsMail',);
                       })
                       .catch((error) => {
                         //Error
@@ -74,7 +75,7 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cambiar contraseña' 
-                onPress={() => navigation.navigate('SettingsPassword', {user: user})}
+                onPress={() => navigation.navigate('SettingsPassword',)}
             />
             </View>
 
@@ -91,7 +92,7 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Eliminar cuenta' 
                 onPress={() => {
-                    console.log(user);
+                    // console.log(user);
                     socket.emit('deleteUser', {
                                 username: user,
                                 socketId: socket.id

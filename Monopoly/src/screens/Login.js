@@ -51,27 +51,16 @@ const FormikInputValue =({ name, ...props}) => {
   )
 }
 
-export default function LogInScreen({navigation}){
+export default function LogInScreen({navigation, route}){
 
   const socket = React.useContext(SocketContext);
 
-  // useEffect(() => {
-  //   if (!socket) return;
-
-  //   socket.on('login', (data) => {
-  //     if (data.success) {
-  //       navigation.navigate('Home');
-  //     } else {
-  //       setError(data.message);
-  //     }
-  //   });
-  // }, [socket, navigation]);
-
+  const perfil = route.params.perfil;
 
   return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
   onSubmit={values => {
      const hashedPassword = CryptoJS.SHA512(values.password).toString();
-     console.log("emitiendo socket ...");
+     console.log("emitiendo socket ...", socket.id);
      socket.emit('login', {
                   username: values.username,
                   password: hashedPassword,
@@ -79,8 +68,12 @@ export default function LogInScreen({navigation}){
                 },
                 (ack) => { 
                   console.log('Server acknowledged:', ack);
-                  if(ack.cod == 0){
-                    navigation.navigate('Home', {user: values.username});
+                  if(ack.cod /*== 0*/){
+                    if(perfil){
+                      navigation.navigate('Profile');
+                    }else{
+                      navigation.navigate('Home', {loggedIn: true});
+                    }
                   }
                   else if(ack.cod != 2){
                     alert(ack.msg);
@@ -108,7 +101,7 @@ export default function LogInScreen({navigation}){
         />
         <View style={styles.registro}>
           <StyledText medium>No tienes cuenta? </StyledText>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp', {perfil: perfil})}>
             <StyledText medium blue>Registrarse</StyledText>
           </TouchableOpacity>
         </View>
