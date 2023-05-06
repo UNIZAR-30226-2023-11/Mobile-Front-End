@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Button, View, Image, Text , TouchableOpacity } from 'react-native';
 import StyledText from '../components/StyledText'
 import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SocketContext } from '../components/SocketContext';
 
 const styles = StyleSheet.create({
@@ -73,15 +73,15 @@ const styles = StyleSheet.create({
 
   })
 
-export default function ProfileScreen({ route, navigation }){
+export default function ProfileScreen({ navigation }){
 
-  let actualizar = true;
+  const isFocused = useIsFocused();
   const socket = React.useContext(SocketContext);
   const [imgPerfil, setImgPerfil] = React.useState(null);
   const [correo, setCorreo] = React.useState("");
 
   useEffect(() => {
-    if(actualizar){
+    if(isFocused){
       socket.emit('correo',{
       socketId: socket.id
       }, 
@@ -93,11 +93,10 @@ export default function ProfileScreen({ route, navigation }){
         else if(ack.cod != 2){
             alert(ack.msg);
         }
-        actualizar = false;
       });
     }
 
-  }, [actualizar]);
+  }, [isFocused]);
 
     return (
 
