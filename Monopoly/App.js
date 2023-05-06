@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
-import io from 'socket.io-client';
+import {io} from 'socket.io-client';
 import { socketUrl } from './src/url/socket.js';
-import { SocketProvider } from './src/components/SocketContext.js';
+import { SocketProvider } from './src/components/socketContext.js';
 
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
