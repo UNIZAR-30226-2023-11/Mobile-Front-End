@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import StyledButton from '../components/StyledButton';
-import { SocketContext } from '../components/socketContext'
+import { SocketContext } from '../components/SocketContext'
 import { deleteUsuario, devolverCorreoUsuario } from '../url/users'
 
 const styles = StyleSheet.create({
@@ -91,37 +91,20 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Eliminar cuenta' 
                 onPress={() => {
-                    // Manejo del envío del formulario
-                    // Muestra una alerta después de enviar el formulario ok
                     console.log(user);
-
                     socket.emit('deleteUser', {
                                 username: user,
                                 socketId: socket.id
-                                });
-
-                    navigation.navigate('Index');
-                
-                    // const response =  fetch(deleteUsuario, {
-                    // method: 'DELETE',
-                    // headers: {'Content-Type': 'application/json'},
-                    // body: JSON.stringify({username: user})
-                    // })
-                    // .then((response) => {
-                    // if(response.status != 200){
-                    //     throw new Error('Error de estado: '+ response.status);
-                    // }
-                    // else{
-                    //     Alert.alert('Usuario eliminado');
-                    //     console.log(response.json);
-                    //     navigation.navigate('Index');
-                    // }})
-                    // .catch((error) => {
-                    //     //Error
-                    //     alert(JSON.stringify(error));
-                    //     console.error(error);
-                    //     console.log("Algo ha ido mal.")
-                    // });
+                                },
+                                (ack) => { 
+                            console.log('Server acknowledged:', ack);
+                            if(ack.cod == 0){
+                                navigation.navigate('Index');
+                            }
+                            else if(ack.cod != 2){
+                                alert(ack.msg);
+                            }
+                            });
                     }}
             />
             </View>

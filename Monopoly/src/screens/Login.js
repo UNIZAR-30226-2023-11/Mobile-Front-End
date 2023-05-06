@@ -5,7 +5,7 @@ import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
 import CryptoJS from 'crypto-js'
-import { SocketContext } from '../components/socketContext'
+import { SocketContext } from '../components/SocketContext'
 
 const initialValues = {
   username: '',
@@ -76,8 +76,16 @@ export default function LogInScreen({navigation}){
                   username: values.username,
                   password: hashedPassword,
                   socketId: socket.id
-                })
-      navigation.navigate('Home', {user: values.username});          
+                },
+                (ack) => { 
+                  console.log('Server acknowledged:', ack);
+                  if(ack.cod == 0){
+                    navigation.navigate('Home', {user: values.username});
+                  }
+                  else if(ack.cod != 2){
+                    alert(ack.msg);
+                  }
+                  })
    }}>
 
   {({handleChange, handleSubmit, values}) =>{
