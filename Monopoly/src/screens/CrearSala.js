@@ -203,9 +203,10 @@ export default function CrearSalaScreen({route, navigation }) {
                     placeholder="2" 
                     mt={1} 
                     onValueChange={(itemValue) => {
+                        console.log(itemValue);
                         socket.emit('actualizarPartida', {
                                     dineroInicial: money,
-                                    nJugadores: itemValue.length,
+                                    nJugadores: itemValue,
                                     normas: {
 
                                     },
@@ -213,6 +214,12 @@ export default function CrearSalaScreen({route, navigation }) {
                                     socketId: socket.id
                                 }, (ack) => {
                                     console.log('Server acknowledged:', ack);
+                                    if(ack.cod == 0){
+                                        setPlayers(itemValue);
+                                    }
+                                    else{
+                                        alert("Se ha producido un error. Intentelo de nuevo.")
+                                    }
                                 });
                                 }}>
                     <Select.Item label="2" value="2" />
@@ -234,6 +241,7 @@ export default function CrearSalaScreen({route, navigation }) {
                     placeholder="1500" 
                     mt={1} 
                     onValueChange={(itemValue) => {
+                        console.log(itemValue);
                                     socket.emit('actualizarPartida', {
                                     dineroInicial: itemValue,
                                     nJugadores: players,
@@ -244,6 +252,12 @@ export default function CrearSalaScreen({route, navigation }) {
                                     socketId: socket.id
                                 }, (ack) => {
                                     console.log('Server acknowledged:', ack);
+                                    if(ack.cod == 0){
+                                        setMoney(itemValue);
+                                    }
+                                    else{
+                                        alert("Se ha producido un error. Intentelo de nuevo.")
+                                    }
                                 });
                                 }}>
                     <Select.Item label="1000" value="1000" />
