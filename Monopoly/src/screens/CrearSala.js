@@ -108,14 +108,11 @@ export default function CrearSalaScreen({route, navigation }) {
     const [aumentarCreditos, setAumentarCreditos] = useState(false);
     const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
-    useEffect(() => {
-        socket.on('esperaJugadores', (mensaje) => {
-            // setJugadores(mensaje);
-            console.log('Mensaje recibido: ' + mensaje);
-            const subcadenas = mensaje.split(',');
-            setJugadores(subcadenas);
-          });          
-    },[])
+    socket.on('esperaJugadores', (mensaje) => {
+        console.log('Mensaje recibido: ' + mensaje);
+        const subcadenas = mensaje.split(',');
+        setJugadores(subcadenas);
+    });
     
     // const actualizarJugadores = useCallback(() => {
     //     const response =  fetch(listaJugadores, {

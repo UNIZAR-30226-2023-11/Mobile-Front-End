@@ -33,17 +33,12 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const socket = React.useContext(SocketContext);
     const [detenido, setDetenido] = React.useState(true);
     const [jugadores, setJugadores] = React.useState([""]);
-    
-    useEffect(() => {
-        socket.on('esperaJugadores', (mensaje) => {
-            // setJugadores(mensaje);
-            console.log('Mensaje recibido: ' + mensaje);
-            const subcadenas = mensaje.split(',');
-            setJugadores(subcadenas);
-            // setDetenido(false);
-        });        
-    },[])
 
+    socket.on('esperaJugadores', (mensaje) => {
+        console.log('Mensaje recibido: ' + mensaje);
+        const subcadenas = mensaje.split(',');
+        setJugadores(subcadenas);
+    });
     // useEffect(() => {
     //     while(!detenido){
     //         console.log("escuchando");
