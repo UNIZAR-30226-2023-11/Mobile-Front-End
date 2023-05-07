@@ -1,6 +1,8 @@
-import React from 'react'
-import { StyleSheet, Button, View, Modal, ScrollView, StyledButton } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Button, View, Modal, ScrollView, Text, StyledButton, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Entypo } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 
 const styles = StyleSheet.create({
@@ -10,15 +12,20 @@ const styles = StyleSheet.create({
     },
 });
 
-const jugadores = ["jug1", "jug2", "jug3", "jug4"];
-const [modalVisible, setModalVisible] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
 
 export default function TestTrade(){
     //const navigation = useNavigation();
     //const jugadores = route.params.jugadores; // jugadores de la partida
     console.log(jugadores);
-    const username = jug2;
+    const username = "jug2";
+
+    const jugadores = ["jug1", "jug2", "jug3", "jug4"];
+    const [modalVisible, setModalVisible] = useState(false);
+    const [jugadorElegido, setJugadorElegido] = useState(null);
+
+    const handleJugadorElegido = (jugador) => {
+        setJugadorElegido(jugador);
+    };
 
     return (
         <View>
@@ -30,6 +37,16 @@ export default function TestTrade(){
                     onPress={() => setModalVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
+
+                    <Text>Crear intercambio con:</Text>
+                    <Picker
+                        selectedValue={jugadorElegido}
+                        onValueChange={handleJugadorElegido}
+                    >
+                        {opciones.map((opcion, i) => (
+                        <Picker.Item key={i} label={opcion} value={opcion} />
+                        ))}
+                    </Picker>
         
                     <ScrollView>
                         {jugadores.map((jugador, i) =>(
