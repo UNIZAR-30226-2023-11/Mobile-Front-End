@@ -93,10 +93,6 @@ export default function CrearSalaScreen({route, navigation }) {
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
 
-    const [interval, setIntervalId] = React.useState(null);
-    const [detenido, setDetenido] = React.useState(false);
-    const [avanzar, setAvanzar] = React.useState(false);
-
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
     const [jugadores, setJugadores] = React.useState([""]);
@@ -108,11 +104,14 @@ export default function CrearSalaScreen({route, navigation }) {
     const [aumentarCreditos, setAumentarCreditos] = useState(false);
     const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
-    socket.on('esperaJugadores', (mensaje) => {
-        console.log('Mensaje recibido: ' + mensaje);
-        const subcadenas = mensaje.split(',');
-        setJugadores(subcadenas);
-    });
+    useEffect(()=>{
+        socket.on('esperaJugadores', (mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            // String msg = mensaje;
+            // const subcadenas = msg.split(',');
+            // setJugadores(subcadenas);
+        });
+    },[])
     
     // const actualizarJugadores = useCallback(() => {
     //     const response =  fetch(listaJugadores, {

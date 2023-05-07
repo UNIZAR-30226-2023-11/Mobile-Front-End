@@ -10,8 +10,6 @@ export function SocketProvider({ children }) {
   const [desconectado, setDesconectado] = React.useState(true);
   const [socket, setSocket] = React.useState(io(socketUrl));
   
-  
-
   useEffect(() => {
     // console.log("Socket id: " + socket.id);
     if(socket){
