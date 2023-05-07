@@ -43,7 +43,7 @@ export default function HomeScreen({ route, navigation }){
     let loggedIn = route.params.loggedIn;
 
     const socket = React.useContext(SocketContext);
-    const [nickname, setNickname] = React.useState("");
+    const [nickname, setNickname] = React.useState(null);
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
 
     // handleBackButton = () => {
@@ -104,7 +104,26 @@ export default function HomeScreen({ route, navigation }){
                                 // })
                                 // .then(data => {
                                 //     const idPartida = data.idPartida;
-                                    navigation.navigate('CrearSala', {idPartida: 90})
+                                if(!loggedIn && nickname === null){
+                                    alert("Por favor introduzca un nickname");
+                                }
+                                else{
+                                    console.log("emitiendo socket ...", socket.id);
+                                    socket.emit('nombreInvitado', {
+                                                username: nickname,
+                                                socketId: socket.id
+                                                },
+                                                (ack) => { 
+                                                console.log('Server acknowledged:', ack);
+                                                if(ack.cod != 2 && ack.cod != 0){
+                                                    alert(ack.msg);
+                                                }
+                                                else if(ack.cod == 2){
+                                                    alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
+                                                }
+                                                })
+                                    navigation.navigate('CrearSala', {idPartida: 90});
+                                }
                                 // })
                                 // .catch((error) => {
                                 //     //Error

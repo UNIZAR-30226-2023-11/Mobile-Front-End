@@ -17,8 +17,12 @@ const styles = StyleSheet.create({
         marginLeft:'35%',
         fontSize: '16',
     },
+    tituloJugadores:{
+        marginLeft:'35%',
+        fontSize: '16',
+    },
     boxjugadores: {
-        flex:4,
+        flex:3,
         justifyContent:'flex-start',
         marginLeft:'10%',
         width: '80%',
@@ -44,6 +48,10 @@ const styles = StyleSheet.create({
         width: 0,
         height: 2,
         }
+    },
+    personalizar :{
+        flex:1.5,
+        marginTop: '5%',
     },
     button :{
         marginLeft: '80%',
@@ -258,7 +266,7 @@ export default function CrearSalaScreen({route, navigation }) {
                 </View>
             </View>
 
-            <View style={{flex:1}}>
+            <View style={styles.personalizar}>
             <StyledButton
                 lightblue 
                 title="PERSONALIZAR"
@@ -289,6 +297,11 @@ export default function CrearSalaScreen({route, navigation }) {
                             {console.log("activarSubasta " + activarSubasta)}
                         </View>
                         <View style={styles.option}>
+                            <Text style={styles.optionText}>{`Aumentar créditos sin necesidad de\n igualar las asignaturas`}</Text>
+                            <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
+                        </View>
+                        <View style={styles.option}>
                             <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
                             <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
                             {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
@@ -307,7 +320,7 @@ export default function CrearSalaScreen({route, navigation }) {
 
 
             </View>
-            <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
+            <StyledText style={styles.tituloJugadores} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
             {jugadores.map((jugador, i) =>(
@@ -319,7 +332,10 @@ export default function CrearSalaScreen({route, navigation }) {
             <StyledButton
                 lightblue 
                 title="JUGAR"
-                onPress={() => {setDetenido(!detenido);}}
+                onPress={() => {
+                    // setDetenido(!detenido);
+                    navigation.navigate('Tablero', {user: "lunaa", idPartida: 84, jugadores: ["lunaa"]});
+                }}
             />
             
         </View>
