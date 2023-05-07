@@ -30,6 +30,15 @@ const styles = StyleSheet.create({
         height: 2,
         }
     },
+    button :{
+        marginLeft: '80%',
+        marginTop: '5%'
+    },
+    titulo: {
+        marginTop:'8%',
+        marginLeft:'35%',
+        
+    }
 });
 
 
@@ -61,18 +70,21 @@ export default function TestTrade(){
                         onPress={() => setModalVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
+                    <Text style={styles.titulo}>Intercambio de propiedades</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
 
-                    <Text>Crear intercambio con:</Text>
+                        <Text>Intercambiar con:  </Text>
 
-                    <Select selectedValue={jugadorElegido} 
-                    minWidth="200" 
-                    accessibilityLabel="Jugadores" 
-                    placeholder="Seleccionar jugador" 
-                    mt={1} 
-                    onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
-                                
-                    {jugadoresItems}
-                </Select>
+                        <Select selectedValue={jugadorElegido} 
+                        minWidth="200" 
+                        accessibilityLabel="Jugadores" 
+                        placeholder="Seleccionar jugador" 
+                        mt={1} 
+                        onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
+                                    
+                        {jugadoresItems}
+                        </Select> 
+                    </View>
                 </View>
  
             </Modal> 
