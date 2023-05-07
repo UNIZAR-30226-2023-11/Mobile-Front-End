@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Select, NativeBaseProvider } from "native-base";
 import StyledButton from "../components/StyledButton";
 import { Entypo } from '@expo/vector-icons';
+import InputSpinner from 'react-native-input-spinner';
 
 
 const styles = StyleSheet.create({
@@ -40,7 +41,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20, 
         textAlign: 'center'
-    }
+    },
+    elementoLista:{
+        flexDirection: 'row', 
+        alignItems: 'center',
+        marginBottom: '5%',
+        marginLeft: '8%',
+        marginRight: '8%',
+    },
 });
 
 
@@ -75,7 +83,7 @@ export default function TestTrade(){
                     </Pressable>
 
                     <Text style={styles.titulo}>Intercambio de propiedades</Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.elementoLista}>
                         <Text>Intercambiar con:  </Text>
                         <Select selectedValue={jugadorElegido} 
                         minWidth="200" 
@@ -86,15 +94,33 @@ export default function TestTrade(){
                         {jugadoresItems}
                         </Select> 
                     </View>
-                    
-                    <Text>Indica el precio  </Text>
-                    <TextInput 
-                        style={styles.textInput}
-                        keyboardType = 'number-pad'
-                        onChangeText = {(text)=> this.onChanged(text)}
-                        value = {precioTrade}
-                    />
+                        <View style={styles.elementoLista}>
+                        <Text>Elige asignatura:   </Text>
+                        <Select selectedValue={jugadorElegido} 
+                        minWidth="200" 
+                        accessibilityLabel="Jugadores" 
+                        placeholder="Seleccionar asignatura" 
+                        mt={1} 
+                        onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
+                        {jugadoresItems}
+                        </Select> 
+                    </View>
 
+                    <View style={styles.elementoLista}>
+                        <Text style={{flex:1}}>Indica el precio: </Text>
+                        <InputSpinner
+                            //max={10}
+                            min={0}
+                            step={10}
+                            color={"#f04048"}
+                            value={precioTrade}
+                            rounded={true}
+                            editable={true} 
+                            style={{width: '10%', height: '10%'}}
+                            onChange={(num)=>{console.log(num)}}></InputSpinner>
+                    </View>
+
+                        <StyledButton title="ENVIAR" lightblue onPress={() => setModalVisible(true)} />
                 </View>
  
             </Modal> 
