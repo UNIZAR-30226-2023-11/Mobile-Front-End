@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     elementoBoton:{
         flexDirection: 'row', 
         alignItems: 'center',
-        marginBottom: '5%',
         marginLeft: '8%',
         marginRight: '8%'
     },
@@ -189,13 +188,13 @@ export default function TestTrade(){
                 <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
                 title="RECHAZAR" lightblue 
                         onPress={() => setModalRVisible(false)}/>
-                </View></View>
+                </View>
 
-                <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
-                title="RECHAZAR" lightblue 
+                <StyledButton style={{marginLeft: '15%', marginRight: '15%'}} 
+                title="ENVIAR OFERTA" lightblue 
                         onPress={() => {setModalRVisible(false),
                                         console.log("Precio oferta: " + precioTrade) }}/>
-                
+                </View>
  
             </Modal> 
 
