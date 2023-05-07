@@ -47,7 +47,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: '5%',
         marginLeft: '8%',
-        marginRight: '8%',
+        marginRight: '8%'
+    },
+    elementoPrecio:{
+        flexDirection: 'row', 
+        alignItems: 'center',
+        marginBottom: '5%',
+        marginLeft: '26%',
+        marginRight: '28%',
+    },
+    elementoBoton:{
+        flexDirection: 'row', 
+        alignItems: 'center',
+        marginBottom: '5%',
+        marginLeft: '8%',
+        marginRight: '8%'
     },
 });
 
@@ -60,6 +74,7 @@ export default function TestTrade(){
 
     const jugadores = ["jug1", "jug2", "jug3", "jug4"];
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalRVisible, setModalRVisible] = useState(false);
     const [jugadorElegido, setJugadorElegido] = useState(null);
     const [precioTrade, setPrecioTrade] = useState(null);
 
@@ -74,6 +89,7 @@ export default function TestTrade(){
     return (
         <View>
             <StyledButton title="TRADE" onPress={() => setModalVisible(true)} />
+            <StyledButton title="RECIBIR" onPress={() => setModalRVisible(true)} />
         <NativeBaseProvider>
             <Modal style={styles.modalView} visible={modalVisible}>
                 <View style={styles.centeredView}>
@@ -90,7 +106,7 @@ export default function TestTrade(){
                         accessibilityLabel="Jugadores" 
                         placeholder="Seleccionar jugador" 
                         mt={1} 
-                        onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
+                        onValueChange={(itemValue) => {console.log("Jugador: " + itemValue)}}>
                         {jugadoresItems}
                         </Select> 
                     </View>
@@ -101,29 +117,88 @@ export default function TestTrade(){
                         accessibilityLabel="Jugadores" 
                         placeholder="Seleccionar asignatura" 
                         mt={1} 
-                        onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
+                        onValueChange={(itemValue) => {console.log("Asignatura: " + itemValue)}}>
+                            {/* obtener asignaturas en lugar de jugadores */}
                         {jugadoresItems}
                         </Select> 
                     </View>
 
-                    <View style={styles.elementoLista}>
-                        <Text style={{flex:1}}>Indica el precio: </Text>
+                    <View style={styles.elementoPrecio}>
+                        <Text style={{marginLeft: '0%', marginRight: '11%'}}>Indica el precio:  </Text>
                         <InputSpinner
                             //max={10}
                             min={0}
-                            step={10}
+                            step={15}
                             color={"#f04048"}
                             value={precioTrade}
-                            rounded={true}
-                            editable={true} 
-                            style={{width: '10%', height: '10%'}}
-                            onChange={(num)=>{console.log(num)}}></InputSpinner>
+                            rounded={false}
+                            editable={true}
+                            onChange={(num)=>{console.log("Precio: " + num); 
+                            setPrecioTrade(num)}}></InputSpinner>
                     </View>
 
-                        <StyledButton title="ENVIAR" lightblue onPress={() => setModalVisible(true)} />
+                        <StyledButton title="ENVIAR" lightblue 
+                        onPress={() => {setModalVisible(false),
+                                        console.log("Precio final: " + precioTrade) }}/>
                 </View>
  
             </Modal> 
+
+
+            <Modal style={styles.modalView} visible={modalRVisible}>
+                <View style={styles.centeredView}>
+                    <Pressable
+                        onPress={() => setModalVisible(false)}>
+                        <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
+                    </Pressable>
+
+                    <Text style={styles.titulo}>Has recibido una oferta</Text>
+                    <View style={styles.elementoLista}>
+                        <Text>El jugador:  nombreJugador</Text>
+                        
+                    </View>
+                    <View style={styles.elementoLista}>
+                        <Text>Asignatura:  asignatura   </Text>
+                        
+                    </View>
+                    <View style={styles.elementoLista}>
+                        <Text>Precio:  $$   </Text>
+                        
+                    </View>
+                    
+
+                    <View style={styles.elementoPrecio}>
+                        <Text style={{marginLeft: '0%', marginRight: '11%'}}>Contraoferta:  </Text>
+                        <InputSpinner
+                            //max={10}
+                            min={0}
+                            step={15}
+                            color={"#f04048"}
+                            value={precioTrade}
+                            rounded={false}
+                            editable={true}
+                            onChange={(num)=>{console.log("Precio: " + num); 
+                            setPrecioTrade(num)}}></InputSpinner>
+                    </View>
+                    <View style={styles.elementoBoton}>
+                        <StyledButton style={{marginLeft: '18%', marginRight: '11%'}} 
+                        title="ACEPTAR" lightblue 
+                        onPress={() => {setModalRVisible(false),
+                                        console.log("Precio oferta: " + precioTrade) }}/>
+
+                <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
+                title="RECHAZAR" lightblue 
+                        onPress={() => setModalRVisible(false)}/>
+                </View></View>
+
+                <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
+                title="RECHAZAR" lightblue 
+                        onPress={() => {setModalRVisible(false),
+                                        console.log("Precio oferta: " + precioTrade) }}/>
+                
+ 
+            </Modal> 
+
             </NativeBaseProvider>
         </View>
     )
