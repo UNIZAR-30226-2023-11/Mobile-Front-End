@@ -38,19 +38,21 @@ export default function EsperaUnirseScreen({ route, navigation }) {
         socket.on('esperaJugadores', (mensaje) => {
             // setJugadores(mensaje);
             console.log('Mensaje recibido: ' + mensaje);
-            setDetenido(false);
+            const subcadenas = mensaje.split(',');
+            setJugadores(subcadenas);
+            // setDetenido(false);
         });        
     },[])
 
-    useEffect(() => {
-        while(!detenido){
-            console.log("escuchando");
-            socket.on('esperaJugadores', (mensaje) => {
-                // setJugadores(mensaje);
-                console.log('Mensaje recibido: ' + mensaje);
-            }); 
-        }         
-    },[detenido])
+    // useEffect(() => {
+    //     while(!detenido){
+    //         console.log("escuchando");
+    //         socket.on('esperaJugadores', (mensaje) => {
+    //             // setJugadores(mensaje);
+    //             console.log('Mensaje recibido: ' + mensaje);
+    //         }); 
+    //     }         
+    // },[detenido])
 
     return (
         <NativeBaseProvider>

@@ -112,6 +112,8 @@ export default function CrearSalaScreen({route, navigation }) {
         socket.on('esperaJugadores', (mensaje) => {
             // setJugadores(mensaje);
             console.log('Mensaje recibido: ' + mensaje);
+            const subcadenas = mensaje.split(',');
+            setJugadores(subcadenas);
           });          
     },[])
     
