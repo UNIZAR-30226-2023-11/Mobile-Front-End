@@ -146,7 +146,9 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Reglas"
-                onPress={() => setModalReglasVisible(true)}
+                //onPress={() => setModalReglasVisible(true)}
+                //cambio solo para probar la pantalla de Trades
+                onPress={() => navigation.navigate('TestTrade')}
             />
         </View>
     );
