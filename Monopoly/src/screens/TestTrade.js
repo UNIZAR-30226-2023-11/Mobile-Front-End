@@ -87,6 +87,7 @@ export default function TestTrade(){
 
     return (
         <View>
+            {/* dos botones para ver el modal de TRADE y el de RECIBIR OFERTA */}
             <StyledButton title="TRADE" onPress={() => setModalVisible(true)} />
             <StyledButton title="RECIBIR" onPress={() => setModalRVisible(true)} />
         <NativeBaseProvider>
@@ -128,7 +129,7 @@ export default function TestTrade(){
                             //max={10}
                             min={0}
                             step={15}
-                            color={"#f04048"}
+                            color={"#6e7373"}
                             value={precioTrade}
                             rounded={false}
                             editable={true}
@@ -170,9 +171,10 @@ export default function TestTrade(){
                         <Text style={{marginLeft: '0%', marginRight: '11%'}}>Contraoferta:  </Text>
                         <InputSpinner
                             //max={10}
+                            //poner que el minimo sea la oferta + 10
                             min={0}
                             step={15}
-                            color={"#f04048"}
+                            color={"#6e7373"}
                             value={precioTrade}
                             rounded={false}
                             editable={true}
@@ -183,17 +185,18 @@ export default function TestTrade(){
                         <StyledButton style={{marginLeft: '18%', marginRight: '11%'}} 
                         title="ACEPTAR" lightblue 
                         onPress={() => {setModalRVisible(false),
-                                        console.log("Precio oferta: " + precioTrade) }}/>
+                                        console.log("ACEPTAR OFERTA ") }}/>
 
                 <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
                 title="RECHAZAR" lightblue 
-                        onPress={() => setModalRVisible(false)}/>
+                        onPress={() => {setModalRVisible(false),
+                            console.log("RECHAZAR OFERTA ") }}/>
                 </View>
 
                 <StyledButton style={{marginLeft: '15%', marginRight: '15%'}} 
                 title="ENVIAR OFERTA" lightblue 
                         onPress={() => {setModalRVisible(false),
-                                        console.log("Precio oferta: " + precioTrade) }}/>
+                                        console.log("CONTRA oferta: " + precioTrade) }}/>
                 </View>
  
             </Modal> 
