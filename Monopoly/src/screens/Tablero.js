@@ -279,6 +279,9 @@ export default function TableroScreen({route}) {
     const [intervalActualizarInfo, setIntervalActualizarInfo] = React.useState(null);
     const [detenidoActualizarInfo, setDetenidoActualizaInfo] = React.useState(false);
 
+    //variable para saber si el jugador está en la carcel
+    const [carcel, setCarcel] = React.useState(true);
+
     const stylestoken = StyleSheet.create({
         token1:{
             position: 'absolute',
@@ -539,6 +542,7 @@ export default function TableroScreen({route}) {
                         aux[turnoActual].vertical = 10;
                         console.log(aux);
                         setTokensJugador(aux);
+                        setCarcel(true);
                     }
                 }
             }else{
@@ -808,7 +812,7 @@ export default function TableroScreen({route}) {
     })
 
     useEffect(() =>{
-        actualizarDinero();
+        // actualizarDinero();
     },[])
 
     useEffect(() => {

@@ -16,7 +16,6 @@ export default function StyledButton({
     homeScreen && styles.homeScreen,
     buttonSmall && styles.buttonSmall,
     green && styles.green
-
   ]
 
   const textStyles = [
