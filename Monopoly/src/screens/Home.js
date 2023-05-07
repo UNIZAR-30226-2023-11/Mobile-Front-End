@@ -88,8 +88,9 @@ export default function HomeScreen({ route, navigation }){
                 title="Crear sala"
                 onPress={() => {{
                                 if(!loggedIn){
-                                    if(nickname === null){
+                                    if(nickname === null || nickname == ""){
                                         alert("Por favor introduzca un nickname");
+                                        return;
                                     }
                                     else{
                                         console.log("emitiendo socket ...", socket.id);
@@ -138,6 +139,7 @@ export default function HomeScreen({ route, navigation }){
                     if(!loggedIn){
                         if(nickname === null){
                             alert("Por favor introduzca un nickname");
+                            return;
                         }
                         else{
                             console.log("emitiendo socket ...", socket.id);
