@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet , Text , Button, Pressable} from'react-native';
 import {Searchbar} from 'react-native-paper';
 import StyledModalSala from "../components/StyledModalSala";
+import { SocketContext } from '../components/SocketContext';
 import { unirPartida } from '../url/partida';
 
 const styles = StyleSheet.create({
@@ -26,8 +27,10 @@ const styles = StyleSheet.create({
 
 export default function UnirseSalaScreen({ route, navigation }) {
 
-    const user = route.params.user;
-    console.log(user);
+    // const user = route.params.user;
+    // console.log(user);
+
+    const socket = React.useContext(SocketContext);
 
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
     const [idPartida, setIdPartida] = React.useState(0);
@@ -47,26 +50,24 @@ export default function UnirseSalaScreen({ route, navigation }) {
                 text={"Partida #"+idPartida}
                 style={styles.modal}
                 buttonText="Unirme"
-                goTo= {() => {{console.log("pulsado");const response =  fetch(unirPartida, {
-                                    method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user})
-                                    })
-                                    .then((response) => {
-                                        if(response.status != 200){
-                                            throw new Error('Error de estado: '+ response.status);
-                                        }
-                                    else{
-                                        console.log(response.json());
-                                        navigation.navigate('EsperaUnirse', {user: user, idPartida: idPartida})
-                                    }})
-                                .catch((error) => {
-                                    //Error
-                                    alert(JSON.stringify(error));
-                                    console.error(error);
-                                });
-                            }}}
+                goTo= {() => {{console.log("pulsado");
+                    socket.emit('unirJugador', {
+                        idPartida: idPartida,
+                        socketId: socket.id
+                        }, (ack) => {
+                            if(ack.cod == 0){
+                                navigation.navigate('EsperaUnirse', {idPartida: idPartida})
+                            }
+                            else if(ack.cod != 2){
+                                alert(ack.msg);
+                            }
+                            else{
+                                alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
+                            }
+
+                        console.log('Server acknowledged:', ack);
+                    });
+                }}}
                 onClose = { () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
                 visible={modalPartidaVisible}
                 onRequestClose={() => {

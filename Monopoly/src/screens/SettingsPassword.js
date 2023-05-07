@@ -88,7 +88,7 @@ export default function SettingsPasswordScreen({ route, navigation }){
                 (ack) => { 
                   console.log('Server acknowledged:', ack);
                   if(ack.cod == 0){
-                    Alert.alert('Correo actualizado correctamente');
+                    Alert.alert('Contraseña actualizada correctamente');
                     navigation.navigate('Perfil');
                   }
                   else if(ack.cod != 2){

@@ -6,6 +6,9 @@ import StyledButton from "../components/StyledButton";
 import { actualizarPartida, listaJugadores } from "../url/partida";
 import { Entypo } from '@expo/vector-icons';
 
+import { SocketContext } from "../components/SocketContext";
+import { Socket } from "socket.io-client";
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -85,6 +88,7 @@ const styles = StyleSheet.create({
 
 export default function CrearSalaScreen({route, navigation }) {
 
+    const socket = React.useContext(SocketContext);
     // const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
@@ -101,32 +105,39 @@ export default function CrearSalaScreen({route, navigation }) {
     const [cobrarCarcel, setCobrarCarcel] = useState(false);
     const [cobrarBeca, setCobrarBeca] = useState(false);
     const [activarSubasta, setActivarSubasta] = useState(false);
+    const [aumentarCreditos, setAumentarCreditos] = useState(false);
     const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
+    useEffect(() => {
+        socket.on('esperaJugadores', (mensaje) => {
+            // setJugadores(mensaje);
+            console.log('Mensaje recibido: ' + mensaje);
+          });          
+    },[])
     
-    const actualizarJugadores = useCallback(() => {
-        const response =  fetch(listaJugadores, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"idPartida": idPartida})
-            })
-            .then((response) => {
-              if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
-              }
-              return response.json();
-            })
-            .then(data => {
-                // console.log("ACTUALIZAR DINERO:",data);
-                console.log(data);
-                setJugadores(data.listaJugadores);
-            })
-            .catch((error) => {
-            //Error
-            //alert(JSON.stringify(error));
-            console.error(error);
-            });
-    });
+    // const actualizarJugadores = useCallback(() => {
+    //     const response =  fetch(listaJugadores, {
+    //         method: 'PUT',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify({"idPartida": idPartida})
+    //         })
+    //         .then((response) => {
+    //           if(response.status != 200){
+    //             throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+    //           }
+    //           return response.json();
+    //         })
+    //         .then(data => {
+    //             // console.log("ACTUALIZAR DINERO:",data);
+    //             console.log(data);
+    //             setJugadores(data.listaJugadores);
+    //         })
+    //         .catch((error) => {
+    //         //Error
+    //         //alert(JSON.stringify(error));
+    //         console.error(error);
+    //         });
+    // });
 
     // useEffect (() =>{
     //     console.log("detenido: ", detenido);
@@ -192,27 +203,16 @@ export default function CrearSalaScreen({route, navigation }) {
                     placeholder="2" 
                     mt={1} 
                     onValueChange={(itemValue) => {
-                                    const response =  fetch(actualizarPartida, {
-                                    method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"idPartida": idPartida,
-                                                        //   "username": user,
-                                                          "dineroInicial": money,
-                                                          "nJugadores": itemValue,
-                                                          "jugar": false})
-                                    })
-                                    .then((response) => {
-                                    if(response.status != 200){                                        
-                                        throw new Error('Error de estado: '+ response.status);
-                                    }
-                                    else{
-                                        console.log(response.json());
-                                        setPlayers(itemValue);
-                                    }})
-                                .catch((error) => {
-                                    //Error
-                                    // alert(JSON.stringify(error));
-                                    console.error(error);
+                        socket.emit('actualizarPartida', {
+                                    dineroInicial: money,
+                                    nJugadores: itemValue.length,
+                                    normas: {
+
+                                    },
+                                    jugar: false,
+                                    socketId: socket.id
+                                }, (ack) => {
+                                    console.log('Server acknowledged:', ack);
                                 });
                                 }}>
                     <Select.Item label="2" value="2" />
@@ -234,27 +234,16 @@ export default function CrearSalaScreen({route, navigation }) {
                     placeholder="1500" 
                     mt={1} 
                     onValueChange={(itemValue) => {
-                                    const response =  fetch(actualizarPartida, {
-                                    method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"idPartida": idPartida,
-                                                        //   "username": user,
-                                                          "dineroInicial": itemValue,
-                                                          "nJugadores": players,
-                                                          "jugar": false})
-                                    })
-                                    .then((response) => {
-                                    if(response.status != 200){                                        
-                                        throw new Error('Error de estado: '+ response.status);
-                                    }
-                                    else{
-                                        console.log(response.json());
-                                        setMoney(itemValue);
-                                    }})
-                                .catch((error) => {
-                                    //Error
-                                    // alert(JSON.stringify(error));
-                                    console.error(error);
+                                    socket.emit('actualizarPartida', {
+                                    dineroInicial: itemValue,
+                                    nJugadores: players,
+                                    normas: {
+
+                                    },
+                                    jugar: false,
+                                    socketId: socket.id
+                                }, (ack) => {
+                                    console.log('Server acknowledged:', ack);
                                 });
                                 }}>
                     <Select.Item label="1000" value="1000" />
@@ -284,7 +273,7 @@ export default function CrearSalaScreen({route, navigation }) {
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar en la carcel</Text>
                             <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
-                            {console.log("cobrarBeca " + cobrarCarcel)}
+                            {console.log("cobrarCarcel " + cobrarCarcel)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar la beca</Text>
@@ -298,8 +287,8 @@ export default function CrearSalaScreen({route, navigation }) {
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>{`Aumentar créditos sin necesidad de\n igualar las asignaturas`}</Text>
-                            <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
-                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
+                            <Switch value={aumentarCreditos} onValueChange={setAumentarCreditos} />
+                            {console.log("aumentarCreditos " + aumentarCreditos)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
@@ -333,6 +322,21 @@ export default function CrearSalaScreen({route, navigation }) {
                 lightblue 
                 title="JUGAR"
                 onPress={() => {
+                    socket.emit('actualizarPartida', {
+                        dineroInicial: money,
+                        nJugadores: players,
+                        normas: {
+                            cobrarCarcel: cobrarCarcel,
+                            cobrarBeca: cobrarBeca,
+                            activarSubasta: activarSubasta,
+                            aumentarCreditos: aumentarCreditos,
+                            reiniciarJuegoBancarrota: reiniciarJuegoBancarrota
+                        },
+                        jugar: true,
+                        socketId: socket.id
+                    }, (ack) => {
+                        console.log('Server acknowledged:', ack);
+                    });
                     // setDetenido(!detenido);
                     navigation.navigate('Tablero', {user: "lunaa", idPartida: 84, jugadores: ["lunaa"]});
                 }}

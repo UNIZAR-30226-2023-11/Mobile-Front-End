@@ -846,7 +846,6 @@ export default function TableroScreen({route}) {
             setIntervalContador(null);
             // setContadorEnEjecucion(false);
         }else{
-            
             const id = setInterval(() => {
             setContador(contador => contador - 1000);
             }, 1000);

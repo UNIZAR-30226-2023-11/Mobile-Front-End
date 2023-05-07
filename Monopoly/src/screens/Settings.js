@@ -43,13 +43,13 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Cambiar correo electrónico' 
                 onPress={() => {
-                    socket.emit('correo',{
+                    socket.emit('infoUsuario',{
                                 socketId: socket.id
                             }, 
                             (ack) => {
                             console.log('Server acknowledged:', ack);
                             if(ack.cod == 0){
-                                navigation.navigate('SettingsMail',{email: ack.msg});
+                                navigation.navigate('SettingsMail',{email: ack.msg.correo});
                             }
                             else if(ack.cod != 2){
                             alert(ack.msg);

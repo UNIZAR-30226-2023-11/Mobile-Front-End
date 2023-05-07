@@ -86,44 +86,43 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Crear sala"
-                onPress={() => {{ 
-                                // if(user==null){user = nickname}
-                                // console.log(user);
-                                // const response =  fetch(crearPartida, {
-                                // method: 'POST',
-                                // headers: {'Content-Type': 'application/json'},
-                                // body: JSON.stringify({"username": user,
-                                //                       "dineroInicial": 0,
-                                //                       "nJugadores": 0})
-                                // })
-                                // .then((response) => {
-                                // if(response.status != 201){
-                                //     throw new Error('Error de estado: '+ response.status);
-                                // }
-                                // return response.json();
-                                // })
-                                // .then(data => {
-                                //     const idPartida = data.idPartida;
-                                if(!loggedIn && nickname === null){
-                                    alert("Por favor introduzca un nickname");
+                onPress={() => {{
+                                if(!loggedIn){
+                                    if(nickname === null){
+                                        alert("Por favor introduzca un nickname");
+                                    }
+                                    else{
+                                        console.log("emitiendo socket ...", socket.id);
+                                        socket.emit('nombreInvitado', {
+                                                    username: nickname,
+                                                    socketId: socket.id
+                                                    },
+                                                    (ack) => { 
+                                                    console.log('Server acknowledged:', ack);
+                                                    if(ack.cod != 2 && ack.cod != 0){
+                                                        alert(ack.msg);
+                                                    }
+                                                    else if(ack.cod == 2){
+                                                        alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
+                                                    }
+                                                    })
+                                    }
                                 }
-                                else{
-                                    console.log("emitiendo socket ...", socket.id);
-                                    socket.emit('nombreInvitado', {
-                                                username: nickname,
-                                                socketId: socket.id
-                                                },
-                                                (ack) => { 
-                                                console.log('Server acknowledged:', ack);
-                                                if(ack.cod != 2 && ack.cod != 0){
-                                                    alert(ack.msg);
-                                                }
-                                                else if(ack.cod == 2){
-                                                    alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
-                                                }
-                                                })
-                                    navigation.navigate('CrearSala', {idPartida: 90});
-                                }
+                                socket.emit('crearPartida', {
+                                    socketId: socket.id
+                                }, (ack) => {
+                                    console.log('Server acknowledged:', ack);
+                                    if(ack.cod == 0){
+                                        navigation.navigate('CrearSala', {idPartida: ack.msg});
+                                    }
+                                    else if(ack.cod != 2){
+                                        alert(ack.msg);
+                                    }
+                                    else{
+                                        alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
+                                    }
+                                });
+
                                 // })
                                 // .catch((error) => {
                                 //     //Error
@@ -135,7 +134,29 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Unirse a una sala"
-                onPress={() => {if(user==null){user = nickname} navigation.navigate('UnirseSala', {user: user})}}
+                onPress={() => {
+                    if(!loggedIn){
+                        if(nickname === null){
+                            alert("Por favor introduzca un nickname");
+                        }
+                        else{
+                            console.log("emitiendo socket ...", socket.id);
+                            socket.emit('nombreInvitado', {
+                                        username: nickname,
+                                        socketId: socket.id
+                                        },
+                                        (ack) => { 
+                                        console.log('Server acknowledged:', ack);
+                                        if(ack.cod != 2 && ack.cod != 0){
+                                            alert(ack.msg);
+                                        }
+                                        else if(ack.cod == 2){
+                                            alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
+                                        }
+                                        })
+                           }
+                    }
+                    navigation.navigate('UnirseSala')}}
             />
             <StyledModal
                 title="REGLAS"

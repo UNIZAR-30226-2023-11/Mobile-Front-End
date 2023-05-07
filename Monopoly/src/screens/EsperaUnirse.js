@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
 
 export default function EsperaUnirseScreen({ route, navigation }) {
 
-    const user = route.params.user;
+    // const user = route.params.user;
     const idPartida = route.params.idPartida;
-    console.log(user, idPartida);
+    // console.log(user, idPartida);
 
     const [interval, setIntervalId] = React.useState(null);
     const [detenido, setDetenido] = React.useState(false);
@@ -62,7 +62,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
         console.log("detenido: ", detenido);
         if(detenido){
             clearInterval(interval);
-             setIntervalId(null);
+            setIntervalId(null);
             setAvanzar(true);
         }else{
             const id = setInterval(() => {
@@ -84,7 +84,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
                 clearInterval(interval);
                 setInterval(null);
             }
-            navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+            navigation.navigate('Tablero', {idPartida: idPartida, jugadores: jugadores});
         }
     }, [avanzar]);
 

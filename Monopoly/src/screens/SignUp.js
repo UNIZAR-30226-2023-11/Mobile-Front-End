@@ -74,7 +74,7 @@ export default function SignUpScreen({navigation, route}){
                   console.log('Server acknowledged:', ack);
                   if(ack.cod == 0){
                     if(perfil){
-                      navigation.navigate('Profile');
+                      navigation.navigate('Perfil');
                     }else{
                       navigation.navigate('Home', {loggedIn: true});
                     }
