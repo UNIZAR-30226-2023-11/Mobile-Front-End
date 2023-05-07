@@ -108,6 +108,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             </View>
             <View style={{flex:1}}>
                 <StyledButton
+                lightblue
                 title="Ir a la sala"
                 onPress={() => { setDetenido(true);}}
                 />
