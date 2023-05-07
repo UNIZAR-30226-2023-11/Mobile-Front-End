@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Button, View, SafeAreaView, Text, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import StyledButton from '../components/StyledButton';
+import { SocketContext } from '../components/SocketContext'
 import { deleteUsuario, devolverCorreoUsuario } from '../url/users'
 
 const styles = StyleSheet.create({
@@ -19,8 +20,10 @@ const styles = StyleSheet.create({
 
 export default function SettingsScreen({ route, navigation }){
 
-    const user = route.params.user;
-    console.log(user);
+    const socket = React.useContext(SocketContext);
+
+    // const user = route.params.user;
+    // console.log(user);
 
 
     return (
@@ -31,7 +34,7 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cambiar nombre de usuario' 
-                onPress={() => navigation.navigate('SettingsUser', {user: user})}
+                onPress={() => navigation.navigate('SettingsUser')}
             />
             </View>
 
@@ -40,30 +43,43 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Cambiar correo electrónico' 
                 onPress={() => {
-                    const response =  fetch(devolverCorreoUsuario, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({username: user})
-                      })
-                      .then((response) => {
-                        if(response.status != 200){
-                          throw new Error('Error de estado: '+ response.status);
-                        } else {
-                          return response.json(); // devuelve el contenido de la respuesta como un objeto JSON
-                        }
-                      }) 
-                      .then((data) => {
-                        // actualiza el estado con el correo electrónico obtenido de la respuesta
-                        console.log(data.email);
-                        navigation.navigate('SettingsMail', {user: user, email: data.email});
-                      })
-                      .catch((error) => {
-                        //Error
-                        alert(JSON.parse(JSON.stringify(error)));
-                        //alert(JSON.stringify(error));
-                        console.error(error);
-                        console.log("Algo ha ido mal.")
-                      });}}
+                    socket.emit('correo',{
+                                socketId: socket.id
+                            }, 
+                            (ack) => {
+                            console.log('Server acknowledged:', ack);
+                            if(ack.cod == 0){
+                                navigation.navigate('SettingsMail',{email: ack.msg});
+                            }
+                            else if(ack.cod != 2){
+                            alert(ack.msg);
+                            }
+                            });
+
+                    // const response =  fetch(devolverCorreoUsuario, {
+                    //     method: 'POST',
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     body: JSON.stringify()
+                    //   })
+                    //   .then((response) => {
+                    //     if(response.status != 200){
+                    //       throw new Error('Error de estado: '+ response.status);
+                    //     } else {
+                    //       return response.json(); // devuelve el contenido de la respuesta como un objeto JSON
+                    //     }
+                    //   }) 
+                    //   .then((data) => {
+                    //     // actualiza el estado con el correo electrónico obtenido de la respuesta
+                    //     console.log(data.email);
+                    //   })
+                    //   .catch((error) => {
+                    //     //Error
+                    //     alert(error);
+                    //     //alert(JSON.stringify(error));
+                    //     console.error(error);
+                    //     console.log("Algo ha ido mal.")
+                    //   });
+                    }}
             />
             </View>
 
@@ -71,7 +87,7 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cambiar contraseña' 
-                onPress={() => navigation.navigate('SettingsPassword', {user: user})}
+                onPress={() => navigation.navigate('SettingsPassword',)}
             />
             </View>
 
@@ -88,30 +104,19 @@ export default function SettingsScreen({ route, navigation }){
                 lightblue
                 title='Eliminar cuenta' 
                 onPress={() => {
-                    // Manejo del envío del formulario
-                    // Muestra una alerta después de enviar el formulario ok
-                    console.log(user);
-                
-                    const response =  fetch(deleteUsuario, {
-                    method: 'DELETE',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username: user})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status);
-                    }
-                    else{
-                        Alert.alert('Usuario eliminado');
-                        console.log(response.json);
-                        navigation.navigate('Index');
-                    }})
-                    .catch((error) => {
-                        //Error
-                        alert(JSON.stringify(error));
-                        console.error(error);
-                        console.log("Algo ha ido mal.")
-                    });
+                    // console.log(user);
+                    socket.emit('deleteUser', {
+                                socketId: socket.id
+                                },
+                                (ack) => { 
+                            console.log('Server acknowledged:', ack);
+                            if(ack.cod == 0){
+                                navigation.navigate('Index');
+                            }
+                            else if(ack.cod != 2){
+                                alert(ack.msg);
+                            }
+                            });
                     }}
             />
             </View>

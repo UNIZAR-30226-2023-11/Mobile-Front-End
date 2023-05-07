@@ -1,40 +1,189 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useEffect, useCallback, useState} from "react";
+import { View, StyleSheet, Text, Modal, Switch, Pressable } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import { actualizarPartida } from "../url/partida";
+import { actualizarPartida, listaJugadores } from "../url/partida";
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
     titulo:{
-        marginTop:'10%',
+        marginTop:'8%',
         marginLeft:'35%',
-        flex:1,
+        fontSize: '16',
+    },
+    tituloJugadores:{
+        marginLeft:'35%',
+        fontSize: '16',
     },
     boxjugadores: {
-        flex:6,
+        flex:3,
         justifyContent:'flex-start',
         marginLeft:'10%',
         width: '80%',
-        height: '50%',
+        height: '30%',
         borderColor:'#000000',
         borderWidth: 1
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        marginTop: 40,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width:'45%',
+        height: '40%',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        }
+    },
+    personalizar :{
+        flex:1.5,
+        marginTop: '5%',
+    },
+    button :{
+        marginLeft: '80%',
+        marginTop: '5%'
+    },
+    modalText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: '#000',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#000',
+        marginBottom: 20,
+    },
+    buttonTitle: {
+        marginTop: '10%',
+        color: 'lightBlue100'
+    },
+    option: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    optionText: {
+        marginRight: 10,
     }
 })
 
 export default function CrearSalaScreen({route, navigation }) {
 
-    const user = route.params.user;
+    // const user = route.params.user;
     const idPartida = route.params.idPartida;
-    console.log(user, idPartida);
+    // console.log(user, idPartida);
+
+    const [interval, setIntervalId] = React.useState(null);
+    const [detenido, setDetenido] = React.useState(false);
+    const [avanzar, setAvanzar] = React.useState(false);
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
+    const [jugadores, setJugadores] = React.useState([""]);
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [cobrarCarcel, setCobrarCarcel] = useState(false);
+    const [cobrarBeca, setCobrarBeca] = useState(false);
+    const [activarSubasta, setActivarSubasta] = useState(false);
+    const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
+
+    
+    const actualizarJugadores = useCallback(() => {
+        const response =  fetch(listaJugadores, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+              if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+              }
+              return response.json();
+            })
+            .then(data => {
+                // console.log("ACTUALIZAR DINERO:",data);
+                console.log(data);
+                setJugadores(data.listaJugadores);
+            })
+            .catch((error) => {
+            //Error
+            //alert(JSON.stringify(error));
+            console.error(error);
+            });
+    });
+
+    // useEffect (() =>{
+    //     console.log("detenido: ", detenido);
+    //     if(detenido){
+    //         clearInterval(interval);
+    //          setIntervalId(null);
+    //         setAvanzar(true);
+    //     }else{
+    //         const id = setInterval(() => {
+    //             actualizarJugadores();
+    //         },3000);
+    //         setIntervalId(id);
+    //     }
+
+    //     return () => {
+    //         clearInterval(interval);
+    //         setIntervalId(null);
+    //     };
+
+    // },[detenido])
+
+    // useEffect(() => {
+    //     if(avanzar){
+    //         setAvanzar(false);
+    //         const response =  fetch(actualizarPartida, {
+    //             method: 'PUT',
+    //             headers: {'Content-Type': 'application/json'},
+    //             body: JSON.stringify({"idPartida": idPartida,
+    //                                   "username": user,
+    //                                   "dineroInicial": money,
+    //                                   "nJugadores": players,
+    //                                   "jugar":true})
+    //             })
+    //             .then((response) => {
+    //             if(response.status != 200) {
+    //                 throw new Error('Error de estado: '+ response.status);
+    //             }
+    //             else{
+    //                 console.log(response.json());
+    //                 if(interval!= null){
+    //                     clearInterval(interval);
+    //                     setInterval(null);
+    //                 }
+    //                 navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
+    //         .catch((error) => {
+    //             //Error
+    //             // alert(JSON.stringify(error));
+    //             console.error(error);
+    //         });
+    //     }
+    // }, [avanzar]);
+
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
             <StyledText style={styles.titulo} big bold>Partida #{idPartida}</StyledText>
-            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Nº jugadores</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={players} 
@@ -42,13 +191,15 @@ export default function CrearSalaScreen({route, navigation }) {
                     accessibilityLabel="Jugadores" 
                     placeholder="2" 
                     mt={1} 
-                    onValueChange={(itemValue) => {const response =  fetch(actualizarPartida, {
+                    onValueChange={(itemValue) => {
+                                    const response =  fetch(actualizarPartida, {
                                     method: 'PUT',
                                     headers: {'Content-Type': 'application/json'},
                                     body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user,
+                                                        //   "username": user,
                                                           "dineroInicial": money,
-                                                          "nJugadores": players})
+                                                          "nJugadores": itemValue,
+                                                          "jugar": false})
                                     })
                                     .then((response) => {
                                     if(response.status != 200){                                        
@@ -60,9 +211,10 @@ export default function CrearSalaScreen({route, navigation }) {
                                     }})
                                 .catch((error) => {
                                     //Error
-                                    alert(JSON.stringify(error));
+                                    // alert(JSON.stringify(error));
                                     console.error(error);
-                                });}}>
+                                });
+                                }}>
                     <Select.Item label="2" value="2" />
                     <Select.Item label="3" value="3" />
                     <Select.Item label="4" value="4" />
@@ -73,7 +225,7 @@ export default function CrearSalaScreen({route, navigation }) {
                 </Select>
                 </View>
             </View>
-            <View style={{marginTop:'8%', flex:1.2, flexDirection:'row'}}>
+            <View style={{marginTop:'8%', flex:1, flexDirection:'row'}}>
                 <StyledText style={{marginLeft:'8%', marginTop:'3%'}} big bold>Dinero inicial</StyledText>
                 <View style={{marginLeft:'7%'}}>
                 <Select selectedValue={money} 
@@ -81,7 +233,30 @@ export default function CrearSalaScreen({route, navigation }) {
                     accessibilityLabel="Money" 
                     placeholder="1500" 
                     mt={1} 
-                    onValueChange={(itemValue) => setMoney(itemValue)}>
+                    onValueChange={(itemValue) => {
+                                    const response =  fetch(actualizarPartida, {
+                                    method: 'PUT',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({"idPartida": idPartida,
+                                                        //   "username": user,
+                                                          "dineroInicial": itemValue,
+                                                          "nJugadores": players,
+                                                          "jugar": false})
+                                    })
+                                    .then((response) => {
+                                    if(response.status != 200){                                        
+                                        throw new Error('Error de estado: '+ response.status);
+                                    }
+                                    else{
+                                        console.log(response.json());
+                                        setMoney(itemValue);
+                                    }})
+                                .catch((error) => {
+                                    //Error
+                                    // alert(JSON.stringify(error));
+                                    console.error(error);
+                                });
+                                }}>
                     <Select.Item label="1000" value="1000" />
                     <Select.Item label="1500" value="1500" />
                     <Select.Item label="2000" value="2000" />
@@ -90,42 +265,79 @@ export default function CrearSalaScreen({route, navigation }) {
                 </Select>
                 </View>
             </View>
-            <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
+
+            <View style={styles.personalizar}>
+            <StyledButton
+                lightblue 
+                title="PERSONALIZAR"
+                onPress={() => setModalVisible(true)}
+            />
+        
+            <View style={styles.container}>
+            <Modal style={styles.modalView} visible={isModalVisible}>
+                <View style={styles.centeredView}>
+                    <Pressable
+                       onPress={() => setModalVisible(false)}>
+                        <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
+                    </Pressable>
+                    <View>
+                        <View style={styles.option}>
+                            <Text style={styles.optionText}>Cobrar en la carcel</Text>
+                            <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
+                            {console.log("cobrarBeca " + cobrarCarcel)}
+                        </View>
+                        <View style={styles.option}>
+                            <Text style={styles.optionText}>Cobrar la beca</Text>
+                            <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
+                            {console.log("cobrarBeca " + cobrarBeca)}
+                        </View>
+                        <View style={styles.option}>
+                            <Text style={styles.optionText}>Activar las subastas</Text>
+                            <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
+                            {console.log("activarSubasta " + activarSubasta)}
+                        </View>
+                        <View style={styles.option}>
+                            <Text style={styles.optionText}>{`Aumentar créditos sin necesidad de\n igualar las asignaturas`}</Text>
+                            <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
+                        </View>
+                        <View style={styles.option}>
+                            <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
+                            <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
+                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
+                        </View>
+                        <StyledButton
+                            lightblue 
+                            title="GUARDAR"
+                            onPress={() => {setModalVisible(false);}}
+                        />
+                        {console.log("modal visible" + isModalVisible)}
+                    </View>
+                    
+                </View>
+                </Modal> 
+            </View>
+
+
+            </View>
+            <StyledText style={styles.tituloJugadores} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
-            <Text>
-                {user}
-            </Text>
+            {jugadores.map((jugador, i) =>(
+                <Text key={i}>{jugador}</Text>
+            ))}
             </ScrollView>
             </View>
-            <View style={{flex:1}}></View>
+            
             <StyledButton
                 lightblue 
                 title="JUGAR"
-                onPress={() => {const response =  fetch(actualizarPartida, {
-                                    method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
-                                    body: JSON.stringify({"idPartida": idPartida,
-                                                          "username": user,
-                                                          "dineroInicial": money,
-                                                          "nJugadores": players})
-                                    })
-                                    .then((response) => {
-                                    if(response.status != 200) {
-                                        throw new Error('Error de estado: '+ response.status);
-                                    }
-                                    else{
-                                        console.log(response.json());
-                                        navigation.navigate('Tablero', {user: user, idPartida: idPartida});
-                                    }})
-                                .catch((error) => {
-                                    //Error
-                                    alert(JSON.stringify(error));
-                                    console.error(error);
-                                });
-                            }}
+                onPress={() => {
+                    // setDetenido(!detenido);
+                    navigation.navigate('Tablero', {user: "lunaa", idPartida: 84, jugadores: ["lunaa"]});
+                }}
             />
-            <View style={{flex:1}}></View>
+            
         </View>
         </NativeBaseProvider>
     );

@@ -1,6 +1,10 @@
-import React from 'react'
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements';
+import {io} from 'socket.io-client';
+import { socketUrl } from './src/url/socket.js';
+import { SocketProvider } from './src/components/SocketContext.js';
 
 import IndexScreen from './src/screens/Index.js';
 import LogInScreen from './src/screens/Login.js';
@@ -19,15 +23,22 @@ import TiendaScreen from './src/screens/Tienda.js';
 
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
+  
+  const [socket, setSocket] = React.useState(io(socketUrl));
+  
+  useEffect(() => {
+    return () => socket.disconnect();
+  }, [socket]);
   return (
+    
+    <SocketProvider>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
           name="Index"
           component={IndexScreen}
-          optiones={{title: 'MONOPOLY'}}          
+          options={{title: 'MONOPOLY'}}          
         />
         <Stack.Screen
           name="LogIn"
@@ -42,7 +53,17 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Home'}}
+          options={({navigation}) => ({
+                    title: 'Home',
+                    headerLeft: () => (
+                      <HeaderBackButton
+                        style={{marginLeft: 0}}
+                        onPress={() => {
+                          navigation.navigate('Index');
+                        }}
+                      />
+                    ),
+                  })}
         />
         <Stack.Screen
           name="CrearSala"
@@ -86,7 +107,17 @@ export default function App() {
         <Stack.Screen
           name="Tablero"
           component={TableroScreen}
-          options={{title: 'Tablero'}}
+          options={({navigation}) => ({
+                    title: 'Tablero',
+                    headerLeft: () => (
+                      <HeaderBackButton
+                        style={{marginLeft: 0}}
+                        onPress={() => {
+                          navigation.navigate('Home', {username: username});
+                        }}
+                      />
+                    ),
+                  })}
         />
         <Stack.Screen
           name="EsperaUnirse"
@@ -101,6 +132,7 @@ export default function App() {
 
       </Stack.Navigator>
     </NavigationContainer>
+    </SocketProvider>
   );
 }
 

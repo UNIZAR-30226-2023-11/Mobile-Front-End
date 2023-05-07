@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Formik, useField } from 'formik'
 import { StyleSheet, Button, View, TouchableOpacity } from 'react-native'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { loginValidationSchema } from '../validationSchemas/login'
-
-import { login } from '../url/users'
+import CryptoJS from 'crypto-js'
+import { SocketContext } from '../components/SocketContext'
 
 const initialValues = {
-  email: '',
+  username: '',
   password:''
 }
 
@@ -51,27 +51,35 @@ const FormikInputValue =({ name, ...props}) => {
   )
 }
 
-export default function LogInScreen({navigation}){
-  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues}  
+export default function LogInScreen({navigation, route}){
+
+  const socket = React.useContext(SocketContext);
+
+  const perfil = route.params.perfil;
+
+  return <Formik validationSchema={loginValidationSchema} initialValues={initialValues} 
   onSubmit={values => {
-    const response =  fetch(login, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(values)
-    })
-    .then((response) => {
-      if(response.status!= 200){
-        throw new Error('Error de estado: '+ response.status);
-      }
-        console.log(response.json());
-        navigation.navigate('Home',{user: values.username}); 
-      })
-    .catch((error) => {
-      //Error
-      //alert(JSON.stringify(error));
-      console.error(error);
-    });
-  }}>
+     const hashedPassword = CryptoJS.SHA512(values.password).toString();
+     console.log("emitiendo socket ...", socket.id);
+     socket.emit('login', {
+                  username: values.username,
+                  password: hashedPassword,
+                  socketId: socket.id
+                },
+                (ack) => { 
+                  console.log('Server acknowledged:', ack);
+                  if(ack.cod == 0){
+                    if(perfil){
+                      navigation.navigate('Profile');
+                    }else{
+                      navigation.navigate('Home', {loggedIn: true});
+                    }
+                  }
+                  else if(ack.cod != 2){
+                    alert(ack.msg);
+                  }
+                  })
+   }}>
 
   {({handleChange, handleSubmit, values}) =>{
     return (
@@ -93,7 +101,7 @@ export default function LogInScreen({navigation}){
         />
         <View style={styles.registro}>
           <StyledText medium>No tienes cuenta? </StyledText>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp', {perfil: perfil})}>
             <StyledText medium blue>Registrarse</StyledText>
           </TouchableOpacity>
         </View>

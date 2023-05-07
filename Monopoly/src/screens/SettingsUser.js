@@ -4,6 +4,7 @@ import { Formik, useField } from 'formik'
 import StyledTextInput from '../components/StyledTextInput'
 import StyledText from '../components/StyledText'
 import { settingsUserValidationSchema } from '../validationSchemas/settingsUser'
+import { SocketContext } from '../components/SocketContext'
 
 import { updateUsuario } from '../url/users'
 
@@ -72,8 +73,9 @@ const styles = StyleSheet.create({
 
 export default function SettingsUserScreen({ route, navigation }){
 
-  const user = route.params.user;
-  console.log(user);
+  const socket = React.useContext(SocketContext);
+
+  // console.log(user);
   
   return <Formik validationSchema={settingsUserValidationSchema} 
     initialValues={initialValues}
@@ -81,26 +83,40 @@ export default function SettingsUserScreen({ route, navigation }){
       // Manejo del envío del formulario
       // Muestra una alerta después de enviar el formulario ok
       console.log(values);
+
+      socket.emit('updateUsername', {
+                  newusername: values.newusername,
+                  socketId: socket.id
+                }, (ack) => {
+                  console.log('Server acknowledged:', ack);
+                  if(ack.cod == 0){
+                    alert('Nombre de usuario actualizado correctamente');
+                    navigation.navigate('Perfil');
+                  }
+                  else if(ack.cod != 2){
+                    alert(ack.msg);
+                  }
+                });
   
-        const response =  fetch(updateUsuario, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: user, newusername: values.newusername})
-        })
-        .then((response) => {
-          if(response.status != 200){
-            throw new Error('Error de estado: '+ response.status);
-          }
-          else{
-            Alert.alert('Usuario actualizado');
-            navigation.navigate('Perfil', {user: values.newusername});
-          }})
-      .catch((error) => {
-        //Error
-        alert(JSON.stringify(error));
-        console.error(error);
-        console.log("Algo ha ido mal.")
-      });
+      //   const response =  fetch(updateUsuario, {
+      //   method: 'PUT',
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: JSON.stringify({username: user, newusername: values.newusername})
+      //   })
+      //   .then((response) => {
+      //     if(response.status != 200){
+      //       throw new Error('Error de estado: '+ response.status);
+      //     }
+      //     else{
+      //       Alert.alert('Usuario actualizado');
+      //       navigation.navigate('Perfil', {user: values.newusername});
+      //     }})
+      // .catch((error) => {
+      //   //Error
+      //   alert(JSON.stringify(error));
+      //   console.error(error);
+      //   console.log("Algo ha ido mal.")
+      // });
     }}>
 
     {({handleChange, handleSubmit, values}) =>{
@@ -108,7 +124,7 @@ export default function SettingsUserScreen({ route, navigation }){
         <View style={styles.form}>
 
             <Text style={styles.text}>Nombre de usuario actual </Text>
-            <Text style={styles.correo}>{user}</Text>
+            <Text style={styles.correo}>PONER</Text>
 
             <Text style={styles.text}>Cambiar nombre</Text>
             <FormikInputValue 

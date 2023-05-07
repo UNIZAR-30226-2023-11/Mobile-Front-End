@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Button, View, Image, Text , TouchableOpacity } from 'react-native';
 import StyledText from '../components/StyledText'
 import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { SocketContext } from '../components/SocketContext';
+import { encode } from 'base-64';
 
 const styles = StyleSheet.create({
     error: {
@@ -72,9 +74,53 @@ const styles = StyleSheet.create({
 
   })
 
-export default function ProfileScreen({ route, navigation }){
-    let user = route.params.user;
-    
+export default function ProfileScreen({ navigation }){
+
+  const isFocused = useIsFocused();
+  const socket = React.useContext(SocketContext);
+  const [imgPerfil, setImgPerfil] = React.useState(null);
+  const [correo, setCorreo] = React.useState("");
+  const [mostrarImagen, setMostrarImagen] = React.useState(false);
+
+  useEffect(() => {
+    if(isFocused){
+      socket.emit('correo',{
+      socketId: socket.id
+      }, 
+      (ack) => {
+        console.log('Server acknowledged:', ack);
+        if(ack.cod == 0){
+           setCorreo(ack.msg);
+           socket.emit('imagenPerfil',{
+            socketId: socket.id
+            }, 
+            (ack) => {
+              console.log('Server acknowledged:', ack.cod);
+              if(ack.cod == 0){
+                const blobData = ack.msg.imagen;
+                // console.log(blobData);
+                const dataUrl = `data:image/jpg;base64,${blobData}`;
+                // console.log(dataUrl);
+                setImgPerfil(dataUrl);
+                setMostrarImagen(true);
+              }
+              else if(ack.cod != 2){
+                  alert(ack.msg);
+              }
+              else{
+                alert("Se ha producido un error en el servidor, por favor, salga del perfil y vuelva a acceder");
+              }
+            });
+        }
+        else if(ack.cod != 2){
+            alert(ack.msg);
+        }
+      });
+    }
+
+  }, [isFocused]);
+
+
     return (
 
       <View style={styles.page}>
@@ -88,21 +134,23 @@ export default function ProfileScreen({ route, navigation }){
           </TouchableOpacity>
 
           {/* Boton de ajustes*/}
-          <TouchableOpacity onPress={() => navigation.navigate('Settings', {user: user})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
             <Feather name="settings" size={30} color="black" />
             <Text style={styles.descripcion}>ajustes  </Text>
           </TouchableOpacity>
         </View>
-
+        {mostrarImagen &&
         <Image
             style={styles.userImage}
-            source={require('../../assets/bob.png')}
-            />
+            source={{uri: imgPerfil}}
+            /> 
+            /* <Text>HOLA</Text> */
+          }
 
         <View style={styles.user}>
             
-          <Text>{user}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser', {user: user})}>
+          <Text>Nombre usuario</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsUser')}>
             <AntDesign name="edit" size={24} color="black" />
           </TouchableOpacity>
           
@@ -111,7 +159,7 @@ export default function ProfileScreen({ route, navigation }){
         <View style={styles.stadistics}>
         <FontAwesome5 name="book" size={22} color="black" />
         <Text style={styles.titulo}> INFORMACION </Text>
-        <Text style={styles.text}> Email: info@example.com</Text>
+        <Text style={styles.text}> Email: {correo}</Text>
        
           <AntDesign name="Trophy" size={24} color="black" />
           <Text style={styles.titulo} > ESTADÍSTICAS </Text>

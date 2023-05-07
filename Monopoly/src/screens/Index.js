@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import StyledText from '../components/StyledText';
 import StyledButton from '../components/StyledButton';
 import StyledModal from "../components/StyledModal";
-
 
 const styles = StyleSheet.create({
     logoEmpresa: {
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
 })
 
 export default function IndexScreen({navigation}) {
-  
+
   const [modalSobreNosotrosVisible, setModalSobreNosotrosVisible] = React.useState(false);
   const [modalContactoVisible, setModalContactoVisible] = React.useState(false);
 
@@ -80,17 +79,17 @@ export default function IndexScreen({navigation}) {
           <StyledButton
             lightblue
             title="Iniciar Sesión"
-            onPress={() => navigation.navigate('LogIn')}
+            onPress={() => navigation.navigate('LogIn', {perfil: false})}
           />
           <StyledButton
             lightblue
             title="Registrarse"
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('SignUp',{perfil: false})}
           />
           <StyledButton
             lightblue
             title="Jugar como invitado"
-            onPress={() => navigation.navigate('Home', {user: null})}
+            onPress={() => navigation.navigate('Home',  {loggedIn: false})}
           />
         </View>
       </View>

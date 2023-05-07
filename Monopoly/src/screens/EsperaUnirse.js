@@ -1,8 +1,10 @@
-import React from "react";
+import React, {useEffect, useCallback} from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Select, NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
+
+import { listaJugadores } from "../url/partida";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -21,11 +23,70 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function CrearSalaScreen({ route, navigation }) {
+export default function EsperaUnirseScreen({ route, navigation }) {
 
     const user = route.params.user;
     const idPartida = route.params.idPartida;
     console.log(user, idPartida);
+
+    const [interval, setIntervalId] = React.useState(null);
+    const [detenido, setDetenido] = React.useState(false);
+    const [avanzar, setAvanzar] = React.useState(false);
+    const [jugadores, setJugadores] = React.useState([""]);
+    
+    const actualizarJugadores = useCallback(() => {
+        const response =  fetch(listaJugadores, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"idPartida": idPartida})
+            })
+            .then((response) => {
+              if(response.status != 200){
+                throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+              }
+              return response.json();
+            })
+            .then(data => {
+                // console.log("ACTUALIZAR DINERO:",data);
+                console.log(data);
+                setJugadores(data.listaJugadores);
+            })
+            .catch((error) => {
+            //Error
+            //alert(JSON.stringify(error));
+            console.error(error);
+            });
+    });
+
+    useEffect (() =>{
+        console.log("detenido: ", detenido);
+        if(detenido){
+            clearInterval(interval);
+             setIntervalId(null);
+            setAvanzar(true);
+        }else{
+            const id = setInterval(() => {
+                actualizarJugadores();
+            },3000);
+            setIntervalId(id);
+        }
+
+        return () => {
+            clearInterval(interval);
+            setIntervalId(null);
+        };
+
+    },[detenido])
+
+    useEffect(() => {
+        if(avanzar){
+            if(interval!= null){
+                clearInterval(interval);
+                setInterval(null);
+            }
+            navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});
+        }
+    }, [avanzar]);
 
     return (
         <NativeBaseProvider>
@@ -40,16 +101,16 @@ export default function CrearSalaScreen({ route, navigation }) {
             <StyledText style={styles.titulo} big bold>JUGADORES</StyledText>
             <View style={styles.boxjugadores}>
             <ScrollView>
-            <Text>
-            {user}
-            </Text>
+            {jugadores.map((jugador, i) =>(
+                <Text key={i}>{jugador}</Text>
+            ))}
             </ScrollView>
             </View>
             <View style={{flex:1}}>
                 <StyledButton
                 lightblue
                 title="Ir a la sala"
-                onPress={() => {navigation.navigate('Tablero', {user: user, idPartida: idPartida})}}
+                onPress={() => { setDetenido(true);}}
                 />
             </View>
         </View>

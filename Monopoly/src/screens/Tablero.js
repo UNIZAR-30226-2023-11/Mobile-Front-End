@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, StyleSheet, Pressable } from'react-native';
+import { View, Image, StyleSheet, Pressable, Text } from 'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 
@@ -17,13 +17,15 @@ import {
     tarjetaAleatoria, 
     listarAsignaturas, 
     siguienteTurno,
-    obtenerTurnoActual
+    obtenerTurnoActual,
+    bancarrota
 } from '../url/partida';
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import StyledModalAsignaturas from '../components/StyledModalAsignaturas';
+import StyledModalTimeout from '../components/StyledModalTimeout';
 import Die from '../components/Die';
 
 import {
@@ -206,11 +208,13 @@ export default function TableroScreen({route}) {
 
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
-    const [idPartida, setIdPartida] = React.useState(route.params.idPartida);
+    const idPartida = route.params.idPartida;
+    const jugadores = route.params.jugadores;
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
     const [dobles, setDobles] = React.useState(false);
+    const [contadorDobles, setContadorDobles] = React.useState(0);
     const [tokensJugadores, setTokensJugador] = React.useState([
         {horizontal: 10, vertical: 10}, 
         {horizontal: 10, vertical: 10}, 
@@ -250,16 +254,17 @@ export default function TableroScreen({route}) {
     const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
     const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
     const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
+    const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
-    const [actualizarPlayers, setActualizarPlayers] = React.useState(false);
+    // const [actualizarPlayers, setActualizarPlayers] = React.useState(true);
     const [comprobar, setComprobar] = React.useState(false);
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
 
     //variables para la info de los jugadores
-    const [jugadores, setJugadores] = React.useState([""]);
+    // const [jugadores, setJugadores] = React.useState([""]);
     const [dinero, setDinero] = React.useState([""]);
 
     const [carta,setCarta] = React.useState();
@@ -273,7 +278,18 @@ export default function TableroScreen({route}) {
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
-    let totalJugadores = jugadores.length;
+    const [intervalActualizarInfo, setIntervalActualizarInfo] = React.useState(null);
+    const [detenidoActualizarInfo, setDetenidoActualizaInfo] = React.useState(false);
+
+    //variable para saber si el jugador está en la carcel
+    const [carcel, setCarcel] = React.useState(true);
+
+    //variables para controlar el timeout del turno
+    const [reiniciarContador, setReiniciarContador] = React.useState(false);
+    const [intervalContador, setIntervalContador] = React.useState(null);
+    const [detenidoContador, setDetenidoContador] = React.useState(false);
+    const [contador, setContador] = React.useState(90000);
+
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -342,6 +358,7 @@ export default function TableroScreen({route}) {
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
                 return;
             }
+            setReiniciarContador(true);
             console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
@@ -371,6 +388,18 @@ export default function TableroScreen({route}) {
                     setComprobar(true);
                     if(data.dado1 == data.dado2){
                         setDobles(true);
+                        if(contadorDobles == 2){
+                            alert("Te toca ir a Julio");
+                            //cambiar lo siguiente por llamada al back cnd esté
+                            let aux = tokensJugadores;
+                            aux[turnoActual].horizontal = 0;
+                            aux[turnoActual].vertical = 10;
+                            console.log(aux);
+                            setTokensJugador(aux);
+                            cambiarTurno();
+                        }else{
+                            setContadorDobles(contadorDobles+1);
+                        }
                     }
                 })
                 .catch((error) => {
@@ -382,8 +411,7 @@ export default function TableroScreen({route}) {
     
         return(
             <View>
-                {/* como pasar info del jugador ??? */}
-                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {roll();}}>
+                <Pressable  style={{flex:1, flexDirection:'row', alignSelf:'center'}} onPress={() => {roll();}}>
                     <Die face = {die1}></Die>
                     <Die face = {die2}></Die>
                 </Pressable>
@@ -401,14 +429,14 @@ export default function TableroScreen({route}) {
         })
         .then((response) => {
           if(response.status != 200){
-            throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
+            throw new Error('Error de estado: '+ response.status+' en la funcion de actualizar Dinero');
           }
           return response.json();
         })
         .then(data => {
             // console.log("ACTUALIZAR DINERO:",data);
             console.log(data);
-            setJugadores(data.listaJugadores);
+            // setJugadores(data.listaJugadores);
             setDinero(data.listaDineros);
             
             let aux = tokensJugadores;
@@ -446,6 +474,10 @@ export default function TableroScreen({route}) {
         .then((data) => {
             console.log(data);
             setTurnoActual(data.posicion);
+            if(data.jugador == username){
+                setDetenidoActualizaInfo(true);
+                setIniciarContador(true);
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -514,11 +546,13 @@ export default function TableroScreen({route}) {
                     if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
                         console.log("carcel");
                         alert("Te toca ir a Julio");
+                        //cambiar lo siguiente por llamada al back cuando este 
                         let aux = tokensJugadores;
                         aux[turnoActual].horizontal = 0;
                         aux[turnoActual].vertical = 10;
                         console.log(aux);
                         setTokensJugador(aux);
+                        setCarcel(true);
                     }
                 }
             }else{
@@ -774,7 +808,9 @@ export default function TableroScreen({route}) {
             .then(data => {
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
-                setActualizarPlayers(true);
+                setDetenidoActualizaInfo(false);
+                setContadorDobles(0);
+                // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                 //console.log(data);
             })
@@ -786,8 +822,43 @@ export default function TableroScreen({route}) {
     })
 
     useEffect(() =>{
-        actualizarDinero();
+        // actualizarDinero();
     },[])
+
+    useEffect(() =>{
+        console.log("contador cambiado ", contador);
+        if(contador == 0){
+            setDetenidoContador(true);
+            setModalTimeoutVisible(true);
+        }
+    }, [contador])
+
+    useEffect(() =>{
+        if(reiniciarContador){
+            setContador(90000);
+            setReiniciarContador(false);
+        }
+    },[reiniciarContador]);
+
+    useEffect(() =>{
+        if(detenidoContador){
+            clearInterval(intervalContador);
+            setIntervalContador(null);
+            // setContadorEnEjecucion(false);
+        }else{
+            
+            const id = setInterval(() => {
+            setContador(contador => contador - 1000);
+            }, 1000);
+        
+            setIntervalContador(id);
+        }
+
+        return () => {
+            clearInterval(intervalContador); // Limpiar intervalo al desmontar el componente
+            setIntervalContador(null); // Actualizar estado del intervalo a null
+          };
+    },[detenidoContador]);
 
     useEffect(() => {
         if(comprobar){
@@ -817,20 +888,22 @@ export default function TableroScreen({route}) {
         }
     },[aumentoCreditos]);
     
-    useEffect (() => {
-        var interval = null;
-        if(actualizarPlayers){
-            interval = setInterval(() => {
-                actualizarDinero();
-                if(jugadores[turnoActual] == username){
-                    setActualizarPlayers(false);
-                    clearInterval(interval);
-                }
-            },3000);
-        }
-        return () => clearInterval(interval);
-
-    },[actualizarPlayers]);
+    // useEffect (() => {
+    //     console.log("TURNO ACTUAL CAMBIADO")
+    //     if(detenidoActualizarInfo){
+    //         clearInterval(intervalActualizarInfo);
+    //         setIntervalActualizarInfo(null);
+    //     }else{
+    //         const id = setInterval(() => {
+    //             console.log("TURNO ACTUAL: ", turnoActual);
+    //             actualizarDinero();
+    //             console.log("JUGADORES: ", jugadores);
+    //             console.log("JUGADOR: ",jugadores[turnoActual]);
+    //         },3000);
+    //         setIntervalActualizarInfo(id);
+    //     }
+    //     return () => {clearInterval(intervalActualizarInfo);setIntervalActualizarInfo(null);}
+    // },[detenidoActualizarInfo]);
 
     useEffect(() =>{
         if(cambio){
@@ -941,6 +1014,16 @@ export default function TableroScreen({route}) {
                     </View>
                 </View>
                 <View style={styles.dados}>
+                    {jugadores[turnoActual]==username && 
+                    <Text style={{fontSize:16, textAlign: 'center'}}>
+                    {`Tiene ${Math.floor(contador/60000)} minutos y ${Math.floor((contador%60000)/1000)} segundos\n para jugar.`}
+                    </Text>
+                    } 
+                    {jugadores[turnoActual]!=username &&
+                    <StyledText medium style={{textAlign: 'center'}}>
+                        Es el turno de {jugadores[turnoActual]}
+                    </StyledText>
+                    }
                     <Dice></Dice>
                 </View>
                 <View style={styles.curso1}>
@@ -1056,6 +1139,7 @@ export default function TableroScreen({route}) {
                 idPartida={idPartida}   
                 onClose = { () => {setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible})}}
                 visible={modalAsignaturasVisible}
+                miTurno={jugadores[turnoActual]==username}
                 onRequestClose={() => {
                     setModalAsignaturasVisible({modalAsignaturasVisible: !modalAsignaturasVisible});
                 }} 
@@ -1066,6 +1150,7 @@ export default function TableroScreen({route}) {
                 small
                 title="Asignaturas"
                 onPress={() => {
+                    setReiniciarContador(true);
                     const response =  fetch(listarAsignaturas, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1102,7 +1187,24 @@ export default function TableroScreen({route}) {
                 red
                 small
                 title="Bancarrota"
-                onPress={() => console.log("Bancarrota")}
+                onPress={() => {
+                    setReiniciarContador(true);
+                    console.log("Bancarrota");
+                    const response = fetch(bancarrota,{
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({  "idPartida": idPartida, 
+                                                "username": username})
+                        .then((response) => {
+                            if(response.status!= 200){
+                                throw new Error('Error de estado: '+ response.status + ' en la función de bancarrota');
+                            }
+
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                    })}}
                 />
             </View>
         </View>
@@ -1118,22 +1220,26 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1150,22 +1256,26 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
             }}
             visible={modalCreditosVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1182,20 +1292,24 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
                        
             }}
             visible={modalEsMiaVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
@@ -1205,17 +1319,21 @@ export default function TableroScreen({route}) {
             title="Casilla comprada"
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
+                setReiniciarContador(true);
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
@@ -1225,17 +1343,21 @@ export default function TableroScreen({route}) {
             title={suerte[0]}
             text={suerte[1]}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
+                setReiniciarContador(true);
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
@@ -1245,21 +1367,38 @@ export default function TableroScreen({route}) {
             title={boletin[0]}
             text={boletin[1]}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }}
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 console.log("cerrando modal boletín");
+                setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
+                    console.log("cambiando turno");
                     setCambio(true);
                 }
             }} 
+        />
+        <StyledModalTimeout
+            visible={modalTimeoutVisible}
+            onClose = { () => {
+                setReiniciarContador(true);
+                setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                // setActualizarPlayers(true);
+            }}
+            onRequestClose = { () => {
+                setReiniciarContador(true);
+                setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                // setActualizarPlayers(true);
+            }}
         />
     </View>
     );
