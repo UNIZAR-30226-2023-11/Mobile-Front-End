@@ -5,6 +5,7 @@ import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
 
 import { listaJugadores } from "../url/partida";
+import { SocketContext } from "../components/SocketContext";
 
 const styles = StyleSheet.create({
     titulo:{
@@ -29,14 +30,27 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
 
+    const socket = React.useContext(SocketContext);
+    const [detenido, setDetenido] = React.useState(true);
     const [jugadores, setJugadores] = React.useState([""]);
     
     useEffect(() => {
         socket.on('esperaJugadores', (mensaje) => {
             // setJugadores(mensaje);
             console.log('Mensaje recibido: ' + mensaje);
-          });          
+            setDetenido(false);
+        });        
     },[])
+
+    useEffect(() => {
+        while(!detenido){
+            console.log("escuchando");
+            socket.on('esperaJugadores', (mensaje) => {
+                // setJugadores(mensaje);
+                console.log('Mensaje recibido: ' + mensaje);
+            }); 
+        }         
+    },[detenido])
 
     return (
         <NativeBaseProvider>
