@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Button, View, Modal, ScrollView, Text, Pressable } from 'react-native';
+import { StyleSheet, Button, View, Modal, ScrollView, Text, Pressable, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Select, NativeBaseProvider } from "native-base";
 import StyledButton from "../components/StyledButton";
@@ -36,8 +36,10 @@ const styles = StyleSheet.create({
     },
     titulo: {
         marginTop:'8%',
-        marginLeft:'35%',
-        
+        marginBottom: '4%',
+        fontWeight: 'bold',
+        fontSize: 20, 
+        textAlign: 'center'
     }
 });
 
@@ -51,6 +53,7 @@ export default function TestTrade(){
     const jugadores = ["jug1", "jug2", "jug3", "jug4"];
     const [modalVisible, setModalVisible] = useState(false);
     const [jugadorElegido, setJugadorElegido] = useState(null);
+    const [precioTrade, setPrecioTrade] = useState(null);
 
     const handleJugadorElegido = (jugador) => {
         setJugadorElegido(jugador);
@@ -70,21 +73,28 @@ export default function TestTrade(){
                         onPress={() => setModalVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
+
                     <Text style={styles.titulo}>Intercambio de propiedades</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-
                         <Text>Intercambiar con:  </Text>
-
                         <Select selectedValue={jugadorElegido} 
                         minWidth="200" 
                         accessibilityLabel="Jugadores" 
                         placeholder="Seleccionar jugador" 
                         mt={1} 
                         onValueChange={(itemValue) => {console.log("itemValue: " + itemValue)}}>
-                                    
                         {jugadoresItems}
                         </Select> 
                     </View>
+                    
+                    <Text>Indica el precio  </Text>
+                    <TextInput 
+                        style={styles.textInput}
+                        keyboardType = 'number-pad'
+                        onChangeText = {(text)=> this.onChanged(text)}
+                        value = {precioTrade}
+                    />
+
                 </View>
  
             </Modal> 
