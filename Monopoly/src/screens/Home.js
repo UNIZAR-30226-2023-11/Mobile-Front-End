@@ -88,7 +88,7 @@ export default function HomeScreen({ route, navigation }){
                 title="Crear sala"
                 onPress={() => {{
                                 if(!loggedIn){
-                                    if(nickname === null || nickname == ""){
+                                    if(nickname === null){
                                         alert("Por favor introduzca un nickname");
                                         return;
                                     }
