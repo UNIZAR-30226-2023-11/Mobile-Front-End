@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Pressable, Text } from 'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 
@@ -25,6 +25,7 @@ import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import StyledModalAsignaturas from '../components/StyledModalAsignaturas';
+import StyledModalTimeout from '../components/StyledModalTimeout';
 import Die from '../components/Die';
 
 import {
@@ -253,6 +254,7 @@ export default function TableroScreen({route}) {
     const [modalBoletinVisible, setModalBoletinVisible] = React.useState(false);
     const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
     const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
+    const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
@@ -281,6 +283,13 @@ export default function TableroScreen({route}) {
 
     //variable para saber si el jugador está en la carcel
     const [carcel, setCarcel] = React.useState(true);
+
+    //variables para controlar el timeout del turno
+    const [reiniciarContador, setReiniciarContador] = React.useState(false);
+    const [intervalContador, setIntervalContador] = React.useState(null);
+    const [detenidoContador, setDetenidoContador] = React.useState(false);
+    const [contador, setContador] = React.useState(90000);
+
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -349,6 +358,7 @@ export default function TableroScreen({route}) {
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
                 return;
             }
+            setReiniciarContador(true);
             console.log("rolling dice...");
             setDobles(false);
             const response =  fetch(lanzarDados, {
@@ -401,8 +411,7 @@ export default function TableroScreen({route}) {
     
         return(
             <View>
-                {/* como pasar info del jugador ??? */}
-                <Pressable  style={{flex:1, flexDirection:'row'}} onPress={() => {roll();}}>
+                <Pressable  style={{flex:1, flexDirection:'row', alignSelf:'center'}} onPress={() => {roll();}}>
                     <Die face = {die1}></Die>
                     <Die face = {die2}></Die>
                 </Pressable>
@@ -467,6 +476,7 @@ export default function TableroScreen({route}) {
             setTurnoActual(data.posicion);
             if(data.jugador == username){
                 setDetenidoActualizaInfo(true);
+                setIniciarContador(true);
             }
         })
         .catch((error) => {
@@ -815,6 +825,41 @@ export default function TableroScreen({route}) {
         // actualizarDinero();
     },[])
 
+    useEffect(() =>{
+        console.log("contador cambiado ", contador);
+        if(contador == 0){
+            setDetenidoContador(true);
+            setModalTimeoutVisible(true);
+        }
+    }, [contador])
+
+    useEffect(() =>{
+        if(reiniciarContador){
+            setContador(90000);
+            setReiniciarContador(false);
+        }
+    },[reiniciarContador]);
+
+    useEffect(() =>{
+        if(detenidoContador){
+            clearInterval(intervalContador);
+            setIntervalContador(null);
+            // setContadorEnEjecucion(false);
+        }else{
+            
+            const id = setInterval(() => {
+            setContador(contador => contador - 1000);
+            }, 1000);
+        
+            setIntervalContador(id);
+        }
+
+        return () => {
+            clearInterval(intervalContador); // Limpiar intervalo al desmontar el componente
+            setIntervalContador(null); // Actualizar estado del intervalo a null
+          };
+    },[detenidoContador]);
+
     useEffect(() => {
         if(comprobar){
             setComprobar(false);
@@ -843,22 +888,22 @@ export default function TableroScreen({route}) {
         }
     },[aumentoCreditos]);
     
-    useEffect (() => {
-        console.log("TURNO ACTUAL CAMBIADO")
-        if(detenidoActualizarInfo){
-            clearInterval(intervalActualizarInfo);
-            setIntervalActualizarInfo(null);
-        }else{
-            const id = setInterval(() => {
-                console.log("TURNO ACTUAL: ", turnoActual);
-                actualizarDinero();
-                console.log("JUGADORES: ", jugadores);
-                console.log("JUGADOR: ",jugadores[turnoActual]);
-            },3000);
-            setIntervalActualizarInfo(id);
-        }
-        return () => {clearInterval(intervalActualizarInfo);setIntervalActualizarInfo(null);}
-    },[detenidoActualizarInfo]);
+    // useEffect (() => {
+    //     console.log("TURNO ACTUAL CAMBIADO")
+    //     if(detenidoActualizarInfo){
+    //         clearInterval(intervalActualizarInfo);
+    //         setIntervalActualizarInfo(null);
+    //     }else{
+    //         const id = setInterval(() => {
+    //             console.log("TURNO ACTUAL: ", turnoActual);
+    //             actualizarDinero();
+    //             console.log("JUGADORES: ", jugadores);
+    //             console.log("JUGADOR: ",jugadores[turnoActual]);
+    //         },3000);
+    //         setIntervalActualizarInfo(id);
+    //     }
+    //     return () => {clearInterval(intervalActualizarInfo);setIntervalActualizarInfo(null);}
+    // },[detenidoActualizarInfo]);
 
     useEffect(() =>{
         if(cambio){
@@ -969,6 +1014,16 @@ export default function TableroScreen({route}) {
                     </View>
                 </View>
                 <View style={styles.dados}>
+                    {jugadores[turnoActual]==username && 
+                    <Text style={{fontSize:16, textAlign: 'center'}}>
+                    {`Tiene ${Math.floor(contador/60000)} minutos y ${Math.floor((contador%60000)/1000)} segundos\n para jugar.`}
+                    </Text>
+                    } 
+                    {jugadores[turnoActual]!=username &&
+                    <StyledText medium style={{textAlign: 'center'}}>
+                        Es el turno de {jugadores[turnoActual]}
+                    </StyledText>
+                    }
                     <Dice></Dice>
                 </View>
                 <View style={styles.curso1}>
@@ -1095,6 +1150,7 @@ export default function TableroScreen({route}) {
                 small
                 title="Asignaturas"
                 onPress={() => {
+                    setReiniciarContador(true);
                     const response =  fetch(listarAsignaturas, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
@@ -1132,6 +1188,7 @@ export default function TableroScreen({route}) {
                 small
                 title="Bancarrota"
                 onPress={() => {
+                    setReiniciarContador(true);
                     console.log("Bancarrota");
                     const response = fetch(bancarrota,{
                         method: 'POST',
@@ -1163,6 +1220,7 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
@@ -1175,6 +1233,7 @@ export default function TableroScreen({route}) {
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
@@ -1197,6 +1256,7 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
@@ -1209,6 +1269,7 @@ export default function TableroScreen({route}) {
             }}
             visible={modalCreditosVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
@@ -1231,6 +1292,7 @@ export default function TableroScreen({route}) {
             idPartida={idPartida}
             InfoCarta = {carta}
             onClose={() => {
+                setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
@@ -1242,6 +1304,7 @@ export default function TableroScreen({route}) {
             }}
             visible={modalEsMiaVisible}
             onRequestClose={() =>{
+                setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
                 console.log("cerrado");
                 // setActualizarPlayers(true);
@@ -1256,6 +1319,7 @@ export default function TableroScreen({route}) {
             title="Casilla comprada"
             text={"La casilla en la que ha caído pertenece a "+propietario+". Le debe pagar "+pago+"€."}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1265,6 +1329,7 @@ export default function TableroScreen({route}) {
             }}
             visible={modalAsignaturaCompradaVisible}
             onRequestClose={() => {
+                setReiniciarContador(true);
                 setModalAsignaturaCompradaVisible({modalAsignaturaCompradaVisible: !modalAsignaturaCompradaVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1278,6 +1343,7 @@ export default function TableroScreen({route}) {
             title={suerte[0]}
             text={suerte[1]}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1287,6 +1353,7 @@ export default function TableroScreen({route}) {
             }}
             visible={modalSuerteVisible}
             onRequestClose={() => {
+                setReiniciarContador(true);
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1300,6 +1367,7 @@ export default function TableroScreen({route}) {
             title={boletin[0]}
             text={boletin[1]}
             onClose = { () => {
+                setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1310,6 +1378,7 @@ export default function TableroScreen({route}) {
             visible={modalBoletinVisible}
             onRequestClose={() => {
                 console.log("cerrando modal boletín");
+                setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
                 if(!dobles){
@@ -1317,6 +1386,19 @@ export default function TableroScreen({route}) {
                     setCambio(true);
                 }
             }} 
+        />
+        <StyledModalTimeout
+            visible={modalTimeoutVisible}
+            onClose = { () => {
+                setReiniciarContador(true);
+                setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                // setActualizarPlayers(true);
+            }}
+            onRequestClose = { () => {
+                setReiniciarContador(true);
+                setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                // setActualizarPlayers(true);
+            }}
         />
     </View>
     );

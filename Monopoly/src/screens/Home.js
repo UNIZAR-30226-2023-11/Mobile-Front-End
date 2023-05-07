@@ -104,7 +104,7 @@ export default function HomeScreen({ route, navigation }){
                                 // })
                                 // .then(data => {
                                 //     const idPartida = data.idPartida;
-                                if(nickname === null){
+                                if(!loggedIn && nickname === null){
                                     alert("Por favor introduzca un nickname");
                                 }
                                 else{
