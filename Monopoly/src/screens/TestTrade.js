@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, Button, View, Modal, ScrollView, Text, StyledButton, Pressable } from 'react-native';
+import { StyleSheet, Button, View, Modal, ScrollView, Text, Select, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import StyledButton from "../components/StyledButton";
 import { Entypo } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
 
 
 const styles = StyleSheet.create({
@@ -26,10 +26,14 @@ export default function TestTrade(){
     const handleJugadorElegido = (jugador) => {
         setJugadorElegido(jugador);
     };
+    
+    const options = jugadores.map((jugador) => 
+    <option key={jugador} value={jugador}><Text>{jugador}</Text></option>);
+
 
     return (
         <View>
-            <Button title="TRADE" onPress={() => setModalVisible(true)} />
+            <StyledButton title="TRADE" onPress={() => setModalVisible(true)} />
 
             <Modal style={styles.modalView} visible={modalVisible}>
                 <View style={styles.centeredView}>
@@ -39,22 +43,12 @@ export default function TestTrade(){
                     </Pressable>
 
                     <Text>Crear intercambio con:</Text>
-                    <Picker
-                        selectedValue={jugadorElegido}
-                        onValueChange={handleJugadorElegido}
-                    >
-                        {opciones.map((opcion, i) => (
-                        <Picker.Item key={i} label={opcion} value={opcion} />
-                        ))}
-                    </Picker>
-        
-                    <ScrollView>
-                        {jugadores.map((jugador, i) =>(
-                            <Text key={i}>{jugador}</Text>
-                        ))}
-                    </ScrollView>
+                    <select value={jugadorElegido} onChange={handleJugadorElegido}>
+                        <option value="player">Seleccione un jugador</option>
+                        {options}
+                    </select>
                 </View>    
-                </Modal> 
+            </Modal> 
         </View>
     )
 }
