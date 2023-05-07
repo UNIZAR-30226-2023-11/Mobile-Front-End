@@ -80,6 +80,7 @@ export default function ProfileScreen({ navigation }){
   const socket = React.useContext(SocketContext);
   const [imgPerfil, setImgPerfil] = React.useState(null);
   const [correo, setCorreo] = React.useState("");
+  const [mostrarImagen, setMostrarImagen] = React.useState(false);
 
   useEffect(() => {
     if(isFocused){
@@ -94,14 +95,20 @@ export default function ProfileScreen({ navigation }){
             socketId: socket.id
             }, 
             (ack) => {
-              // console.log('Server acknowledged:', ack);
+              console.log('Server acknowledged:', ack.cod);
               if(ack.cod == 0){
-                const dataUrl = `data:image/jpeg;base64,${ack.msg.imagen}`;
+                const blobData = ack.msg.imagen;
+                // console.log(blobData);
+                const dataUrl = `data:image/jpg;base64,${blobData}`;
                 // console.log(dataUrl);
                 setImgPerfil(dataUrl);
+                setMostrarImagen(true);
               }
               else if(ack.cod != 2){
                   alert(ack.msg);
+              }
+              else{
+                alert("Se ha producido un error en el servidor, por favor, salga del perfil y vuelva a acceder");
               }
             });
         }
@@ -112,6 +119,7 @@ export default function ProfileScreen({ navigation }){
     }
 
   }, [isFocused]);
+
 
     return (
 
@@ -131,11 +139,12 @@ export default function ProfileScreen({ navigation }){
             <Text style={styles.descripcion}>ajustes  </Text>
           </TouchableOpacity>
         </View>
-        {!imgPerfil &&
+        {mostrarImagen &&
         <Image
             style={styles.userImage}
             source={{uri: imgPerfil}}
-            />
+            /> 
+            /* <Text>HOLA</Text> */
           }
 
         <View style={styles.user}>
