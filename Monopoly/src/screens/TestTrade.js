@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
 });
 
 
-export default function TestCard(){
+export default function TestTrade(){
     const navigation = useNavigation();
     return (
         
         <StyledButton>
         <View style={styles.container}>
-            
+
         </View>
         </StyledButton>
     )
