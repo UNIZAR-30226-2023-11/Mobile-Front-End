@@ -9,18 +9,6 @@ import
     AntDesign 
 } from '@expo/vector-icons';
 
-import { 
-    lanzarDados, 
-    listaJugadores, 
-    infoAsignatura, 
-    casillaComprada, 
-    tarjetaAleatoria, 
-    listarAsignaturas, 
-    siguienteTurno,
-    obtenerTurnoActual,
-    bancarrota
-} from '../url/partida';
-
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
@@ -257,6 +245,7 @@ export default function TableroScreen({route}) {
     const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
     const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
     const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
+    const [modalOfertaVisible, setModalOfertaVisible] = React.useState(false);
     // const [modalIntercambiosVisible, setModalIntercambiosVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
@@ -292,10 +281,6 @@ export default function TableroScreen({route}) {
     const [intervalContador, setIntervalContador] = React.useState(null);
     const [detenidoContador, setDetenidoContador] = React.useState(true);
     const [contador, setContador] = React.useState(90000);
-
-    //variable para la animacion de los dados
-    const [randDados, setRandDados] = React.useState(false);
-    const [intervalDados, setIntervalDados] = React.useState(null);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -494,7 +479,7 @@ export default function TableroScreen({route}) {
                     let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
                     if( found === undefined){
                         console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
-                        socket.emit('casillaComprada', {
+                        socket.emit('casilla', {
                             coordenadas: {h: tokensJugadores[turnoActual].horizontal, v: tokensJugadores[turnoActual].vertical},
                             socketId: socket.id
                         },
@@ -627,7 +612,7 @@ export default function TableroScreen({route}) {
                 // });
             }
         }else{
-            console.log("obteniendo suerte", tarjetaAleatoria);
+            // console.log("obteniendo suerte", tarjetaAleatoria);
             socket.emit('suerte',{
                 socketId: socket.id
             },
@@ -855,6 +840,39 @@ export default function TableroScreen({route}) {
     })
 
     useEffect(() =>{
+        socket.on('infoPartida',(mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            setDinero(mensaje.listaDineros);
+            let aux = tokensJugadores;
+            // console.log(aux);
+            
+            for(var i=0; i<mensaje.listaPosiciones.length; i++){
+                aux[i].horizontal = mensaje.listaPosiciones[i].h;
+                aux[i].vertical = mensaje.listaPosiciones[i].v;
+                console.log(aux[i]);
+            }
+            setTokensJugador(aux);
+        });
+            
+        socket.on('turnoActual',(mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            setTurnoActual(mensaje.posicion);
+            if(mensaje.jugador == username){
+                // setDetenidoActualizaInfo(true);
+                setReiniciarContador(true);
+            }
+        });
+
+        socket.on('puja',(mensaje)=>{
+            console.log("Mensaje recibido: " + mensaje);
+            //hacer modal de las pujas visible
+        });
+
+        socket.on('ofertaRecibida',(mensaje) =>{
+            console.log("Mensaje recibido: " + mensaje);
+            setModalOfertaVisible(true);
+        });
+
         console.log(jugadores[turnoActual], username);
         if(jugadores[turnoActual] == username){
             // setDetenidoContador(false);
@@ -1493,6 +1511,59 @@ export default function TableroScreen({route}) {
                 // setActualizarPlayers(true);
             }}
         />
+        <Modal style={styles.modalView} visible={modalOfertaVisible}>
+                <View style={styles.centeredView}>
+                    <Pressable
+                        onPress={() => setModalOfertaVisible(false)}>
+                        <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
+                    </Pressable>
+
+                    <Text style={styles.titulo}>Has recibido una oferta</Text>
+                    <View style={styles.elementoLista}>
+                        <Text>El jugador:  nombreJugador</Text>
+                        
+                    </View>
+                    <View style={styles.elementoLista}>
+                        <Text>Asignatura:  asignatura   </Text>
+                        
+                    </View>
+                    <View style={styles.elementoLista}>
+                        <Text>Precio:  $$   </Text>
+                        
+                    </View>
+                    <View style={styles.elementoPrecio}>
+                        <Text style={{marginLeft: '0%', marginRight: '11%'}}>Contraoferta:  </Text>
+                        <InputSpinner
+                            //max={10}
+                            //poner que el minimo sea la oferta + 10
+                            min={0}
+                            step={15}
+                            color={"#6e7373"}
+                            value={precioTrade}
+                            rounded={false}
+                            editable={true}
+                            onChange={(num)=>{console.log("Precio: " + num); 
+                            setPrecioTrade(num)}}></InputSpinner>
+                    </View>
+                    <View style={styles.elementoBoton}>
+                        <StyledButton style={{marginLeft: '18%', marginRight: '11%'}} 
+                        title="ACEPTAR" lightblue 
+                        onPress={() => {setModalOfertaVisible(false),
+                                        console.log("ACEPTAR OFERTA ") }}/>
+
+                <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
+                title="RECHAZAR" lightblue 
+                        onPress={() => {setModalOfertaVisible(false),
+                            console.log("RECHAZAR OFERTA ") }}/>
+                </View>
+
+                <StyledButton style={{marginLeft: '15%', marginRight: '15%'}} 
+                title="ENVIAR OFERTA" lightblue 
+                        onPress={() => {setModalOfertaVisible(false),
+                                        console.log("CONTRA oferta: " + precioTrade) }}/>
+                </View>
+ 
+            </Modal> 
     </View>
     );
 }
