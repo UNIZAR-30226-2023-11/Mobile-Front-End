@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
 
 export default function TableroScreen({route}) {
 
-    const socket = React.useContext(SocketContext);
+    const {socket} = React.useContext(SocketContext);
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
     const idPartida = route.params.idPartida;
@@ -289,9 +289,12 @@ export default function TableroScreen({route}) {
     //variables para controlar el timeout del turno
     const [reiniciarContador, setReiniciarContador] = React.useState(false);
     const [intervalContador, setIntervalContador] = React.useState(null);
-    const [detenidoContador, setDetenidoContador] = React.useState(false);
+    const [detenidoContador, setDetenidoContador] = React.useState(true);
     const [contador, setContador] = React.useState(90000);
 
+    //variable para la animacion de los dados
+    const [randDados, setRandDados] = React.useState(false);
+    const [intervalDados, setIntervalDados] = React.useState(null);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -368,6 +371,7 @@ export default function TableroScreen({route}) {
               }, (ack) => {
                 console.log('Server acknowledged:', ack);
                 if(ack.cod == 0){
+                    setRandDados(false);
                     setDie1(ack.msg.dado1);
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
@@ -806,8 +810,35 @@ export default function TableroScreen({route}) {
     })
 
     useEffect(() =>{
+        console.log(jugadores[turnoActual], username);
+        if(jugadores[turnoActual] == username){
+            setDetenidoContador(false);
+            console.log("te toca");
+        }
         // actualizarDinero();
     },[])
+
+    // useEffect(() => {
+    //     if(!randDados){
+    //         clearInterval(intervalContador);
+    //         setIntervalDados(null);
+    //         // setContadorEnEjecucion(false);
+    //     }else{
+    //         const id = setInterval(() => {
+    //             let die_1 =  Math.floor(Math.random() * 6) + 1;
+    //             let die_2 =  Math.floor(Math.random() * 6) + 1;
+    //             setDie1(die1);
+    //             setDie2(die2);
+    //         }, 500);
+        
+    //         setIntervalDados(id);
+    //     }
+
+    //     return () => {
+    //         clearInterval(intervalDados); // Limpiar intervalo al desmontar el componente
+    //         setIntervalDados(null); // Actualizar estado del intervalo a null
+    //       };
+    // },[randDados])
 
     useEffect(() =>{
         console.log("contador cambiado ", contador);

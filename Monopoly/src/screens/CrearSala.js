@@ -101,7 +101,7 @@ export default function CrearSalaScreen({route, navigation }) {
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
-    const [jugadores, setJugadores] = React.useState([""]);
+    const [jugadores, setJugadores] = React.useState(["lunaa"]);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [cobrarCarcel, setCobrarCarcel] = useState(false);
@@ -288,7 +288,7 @@ export default function CrearSalaScreen({route, navigation }) {
                     }, (ack) => {
                         console.log('Server acknowledged:', ack);
                         if(ack.cod == 0){
-                            navigation.navigate('Tablero', {user:ack.msg.username, idPartida: idPartida, jugadores: jugadores});
+                            navigation.navigate('Tablero', {user:"lunaa", idPartida: idPartida, jugadores: jugadores});
                         }
                         else if(ack.cod == 2){
                             alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo.");
