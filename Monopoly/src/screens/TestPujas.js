@@ -96,67 +96,10 @@ export default function TestPujas(){
                     </View>
                     <Text>Carlotita ha pujado €€€ </Text>
                     <Text>Nombre de la carta </Text>
-                    {/* aqui mostrar modal de la carta de la asignatura */}
+                    {/* aqui mostrar modal de la carta de la asignatura !!!!! */}
                     <StyledButton title="infoAsignatura"
                         onPress={() => {console.log("MOSTRAR MODAL INFO ASIGNATURA ") }}/>  
                 </View>
-            </Modal> 
-
-
-            <Modal style={styles.modalView} visible={modalRVisible}>
-                <View style={styles.centeredView}>
-                    <Pressable
-                        onPress={() => setModalVisible(false)}>
-                        <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
-                    </Pressable>
-
-                    <Text style={styles.titulo}>Has recibido una oferta</Text>
-                    <View style={styles.elementoLista}>
-                        <Text>El jugador:  nombreJugador</Text>
-                        
-                    </View>
-                    <View style={styles.elementoLista}>
-                        <Text>Asignatura:  asignatura   </Text>
-                        
-                    </View>
-                    <View style={styles.elementoLista}>
-                        <Text>Precio:  $$   </Text>
-                        
-                    </View>
-                    
-
-                    <View style={styles.elementoPrecio}>
-                        <Text style={{marginLeft: '0%', marginRight: '11%'}}>Contraoferta:  </Text>
-                        <InputSpinner
-                            //max={10}
-                            //poner que el minimo sea la oferta + 10
-                            min={0}
-                            step={15}
-                            color={"#6e7373"}
-                            value={precioTrade}
-                            rounded={false}
-                            editable={true}
-                            onChange={(num)=>{console.log("Precio: " + num); 
-                            setPrecioTrade(num)}}></InputSpinner>
-                    </View>
-                    <View style={styles.elementoBoton}>
-                        <StyledButton style={{marginLeft: '18%', marginRight: '11%'}} 
-                        title="ACEPTAR" lightblue 
-                        onPress={() => {setModalRVisible(false),
-                                        console.log("ACEPTAR OFERTA ") }}/>
-
-                <StyledButton style={{marginLeft: '0%', marginRight: '15%'}} 
-                title="RECHAZAR" lightblue 
-                        onPress={() => {setModalRVisible(false),
-                            console.log("RECHAZAR OFERTA ") }}/>
-                </View>
-
-                <StyledButton style={{marginLeft: '15%', marginRight: '15%'}} 
-                title="ENVIAR OFERTA" lightblue 
-                        onPress={() => {setModalRVisible(false),
-                                        console.log("CONTRA oferta: " + precioTrade) }}/>
-                </View>
- 
             </Modal> 
 
             </NativeBaseProvider>
