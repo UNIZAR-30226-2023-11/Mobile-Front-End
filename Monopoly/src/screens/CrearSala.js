@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
 export default function CrearSalaScreen({route, navigation }) {
 
     const {socket} = React.useContext(SocketContext);
-    // const user = route.params.user;
+    const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
-    const [jugadores, setJugadores] = React.useState(["lunaa"]);
+    const [jugadores, setJugadores] = React.useState([user]);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [cobrarCarcel, setCobrarCarcel] = useState(false);

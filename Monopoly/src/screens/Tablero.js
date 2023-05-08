@@ -257,6 +257,7 @@ export default function TableroScreen({route}) {
     const [modalCreditosVisible, setModalCreditosVisible] = React.useState(false);
     const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
     const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
+    // const [modalIntercambiosVisible, setModalIntercambiosVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
@@ -393,6 +394,7 @@ export default function TableroScreen({route}) {
                             aux[turnoActual].vertical = 10;
                             console.log(aux);
                             setTokensJugador(aux);
+                            setCarcel(true);
                             cambiarTurno();
                         }else{
                             setContadorDobles(contadorDobles+1);
@@ -812,7 +814,7 @@ export default function TableroScreen({route}) {
     useEffect(() =>{
         console.log(jugadores[turnoActual], username);
         if(jugadores[turnoActual] == username){
-            setDetenidoContador(false);
+            // setDetenidoContador(false);
             console.log("te toca");
         }
         // actualizarDinero();
@@ -1238,6 +1240,7 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
+                // setModalIntercambiosVisible(true);
                 // setActualizarPlayers(true);
                 if(!dobles){
                     console.log("cambiando turno");

@@ -78,6 +78,7 @@ export default function TestTrade(){
     const [precioTrade, setPrecioTrade] = useState(null);
 
     const handleJugadorElegido = (jugador) => {
+        console.log("Jugador: " + jugador)
         setJugadorElegido(jugador);
     };
 
@@ -106,7 +107,7 @@ export default function TestTrade(){
                         accessibilityLabel="Jugadores" 
                         placeholder="Seleccionar jugador" 
                         mt={1} 
-                        onValueChange={(itemValue) => {console.log("Jugador: " + itemValue)}}>
+                        onValueChange={(itemValue) => {handleJugadorElegido(itemValue)}}>
                         {jugadoresItems}
                         </Select> 
                     </View>

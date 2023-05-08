@@ -96,7 +96,7 @@ export default function ProfileScreen({ navigation }){
         if(ack.cod == 0){
           setNombre(ack.msg.nombreUser);
             setCorreo(ack.msg.correo);
-            const blobData = ack.msg.imagen.imagen;
+            const blobData = ack.msg.imagen;
             const dataUrl = `data:image/jpg;base64,${blobData}`;
             console.log("IMAGEN");
             console.log(blobData);
