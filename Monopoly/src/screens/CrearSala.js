@@ -229,27 +229,22 @@ export default function CrearSalaScreen({route, navigation }) {
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar en la carcel</Text>
                             <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
-                            {console.log("cobrarCarcel " + cobrarCarcel)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar la beca</Text>
                             <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
-                            {console.log("cobrarBeca " + cobrarBeca)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Activar las subastas</Text>
                             <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
-                            {console.log("activarSubasta " + activarSubasta)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>{`Aumentar créditos sin necesidad de\n igualar las asignaturas`}</Text>
                             <Switch value={aumentarCreditos} onValueChange={setAumentarCreditos} />
-                            {console.log("aumentarCreditos " + aumentarCreditos)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
                             <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
-                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
                         </View>
                         <StyledButton
                             lightblue 

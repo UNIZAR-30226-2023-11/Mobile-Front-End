@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import { View, Image, StyleSheet, Pressable, Text } from 'react-native';
+import { View, Image, StyleSheet, Pressable, Text, Modal } from 'react-native';
 import 
 {   FontAwesome, 
     FontAwesome5, 
     MaterialCommunityIcons, 
     Ionicons,
     MaterialIcons,
+    Entypo,
     AntDesign 
 } from '@expo/vector-icons';
+import InputSpinner from 'react-native-input-spinner';
+
 
 import StyledText from '../components/StyledText';
 import StyledModal from '../components/StyledModal';
@@ -282,6 +285,8 @@ export default function TableroScreen({route}) {
     const [detenidoContador, setDetenidoContador] = React.useState(true);
     const [contador, setContador] = React.useState(90000);
 
+    const [precioTrade, setPrecioTrade] = React.useState(null);
+
     const stylestoken = StyleSheet.create({
         token1:{
             position: 'absolute',
@@ -357,7 +362,7 @@ export default function TableroScreen({route}) {
               }, (ack) => {
                 console.log('Server acknowledged:', ack);
                 if(ack.cod == 0){
-                    setRandDados(false);
+                    // setRandDados(false);
                     setDie1(ack.msg.dado1);
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
