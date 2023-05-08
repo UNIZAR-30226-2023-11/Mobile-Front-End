@@ -85,8 +85,6 @@ export default function TestPujas(){
                     <Text style={styles.titulo}>PUJA</Text>
                     <View style={styles.elementoLista}>
                         <Text>PRECIO PUJA $$$ </Text>
-                        
-                
                     </View>
                     <View style={styles.elementoBoton}>
                         <StyledButton title="+10€"
@@ -96,8 +94,12 @@ export default function TestPujas(){
                         <StyledButton title="+100€"
                         onPress={() => {console.log("BOTON 100€ PULSADO ") }}/>                                
                     </View>
+                    <Text>Carlotita ha pujado €€€ </Text>
+                    <Text>Nombre de la carta </Text>
+                    {/* aqui mostrar modal de la carta de la asignatura */}
+                    <StyledButton title="infoAsignatura"
+                        onPress={() => {console.log("MOSTRAR MODAL INFO ASIGNATURA ") }}/>  
                 </View>
- 
             </Modal> 
 
 
