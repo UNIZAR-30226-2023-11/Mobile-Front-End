@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Select, NativeBaseProvider } from "native-base";
 import StyledButton from "../components/StyledButton";
 import { Entypo } from '@expo/vector-icons';
-import InputSpinner from 'react-native-input-spinner';
 
 
 const styles = StyleSheet.create({
@@ -101,7 +100,6 @@ export default function TestPujas(){
                         onPress={() => {console.log("MOSTRAR MODAL INFO ASIGNATURA ") }}/>  
                 </View>
             </Modal> 
-
             </NativeBaseProvider>
         </View>
     )
