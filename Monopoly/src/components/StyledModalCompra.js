@@ -117,8 +117,8 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
     const [modalIntercambiosVisible, setModalIntercambiosVisible] = React.useState(false);
     const [modalPreguntaIntercambiosVisible, setModalPreguntaIntercambiosVisible] = React.useState(false);
     
-    const [jugadorElegido, setJugadorElegido] = useState(null);
-    const [precioTrade, setPrecioTrade] = useState(null);
+    const [jugadorElegido, setJugadorElegido] = React.useState(null);
+    const [precioTrade, setPrecioTrade] = React.useState(null);
 
     const handleJugadorElegido = (jugador) => {
         console.log("Jugador: " + jugador)

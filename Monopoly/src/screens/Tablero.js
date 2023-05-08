@@ -273,7 +273,7 @@ export default function TableroScreen({route}) {
     const [carta,setCarta] = React.useState();
     const [propietario, setPropietario] = React.useState("");
     const [pago, setPago] = React.useState(0);
-    const [boletin, setBoletin] = React.useState([""]);
+    const [boletin, setBoletin] = React.useState({nombre: '', descripcion: ''});
     const [suerte, setSuerte] = React.useState([""]);
 
     //variable para guardar las asignaturas del jugador
@@ -420,66 +420,66 @@ export default function TableroScreen({route}) {
 
     const actualizarDinero = useCallback(() =>{
         console.log("ACTUALIZAR DINERO");
-        const response =  fetch(listaJugadores, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({"idPartida": idPartida})
-        })
-        .then((response) => {
-          if(response.status != 200){
-            throw new Error('Error de estado: '+ response.status+' en la funcion de actualizar Dinero');
-          }
-          return response.json();
-        })
-        .then(data => {
-            // console.log("ACTUALIZAR DINERO:",data);
-            console.log(data);
-            // setJugadores(data.listaJugadores);
-            setDinero(data.listaDineros);
+        // const response =  fetch(listaJugadores, {
+        // method: 'PUT',
+        // headers: {'Content-Type': 'application/json'},
+        // body: JSON.stringify({"idPartida": idPartida})
+        // })
+        // .then((response) => {
+        //   if(response.status != 200){
+        //     throw new Error('Error de estado: '+ response.status+' en la funcion de actualizar Dinero');
+        //   }
+        //   return response.json();
+        // })
+        // .then(data => {
+        //     // console.log("ACTUALIZAR DINERO:",data);
+        //     console.log(data);
+        //     // setJugadores(data.listaJugadores);
+        //     setDinero(data.listaDineros);
             
-            let aux = tokensJugadores;
-            // console.log(aux);
+        //     let aux = tokensJugadores;
+        //     // console.log(aux);
             
-            for(var i=0; i<data.listaPosiciones.length; i++){
-                aux[i].horizontal = data.listaPosiciones[i].h;
-                aux[i].vertical = data.listaPosiciones[i].v;
-                console.log(aux[i]);
-            }
-            setTokensJugador(aux);
+        //     for(var i=0; i<data.listaPosiciones.length; i++){
+        //         aux[i].horizontal = data.listaPosiciones[i].h;
+        //         aux[i].vertical = data.listaPosiciones[i].v;
+        //         console.log(aux[i]);
+        //     }
+        //     setTokensJugador(aux);
             
-            actualizarTurno();
-        })
-        .catch((error) => {
-        //Error
-        //alert(JSON.stringify(error));
-        console.error(error);
-        });
+        //     actualizarTurno();
+        // })
+        // .catch((error) => {
+        // //Error
+        // //alert(JSON.stringify(error));
+        // console.error(error);
+        // });
     },[])
 
     const actualizarTurno = useCallback(() =>{
         console.log("Obteniendo turno");
-        const response = fetch(obtenerTurnoActual,{
-            method: 'PUT',
-            headers : {'Content-Type': 'application/json'},
-            body : JSON.stringify({"idPartida": idPartida})
-        })
-        .then((response) => {
-            if(response.status != 200){
-                throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            setTurnoActual(data.posicion);
-            if(data.jugador == username){
-                setDetenidoActualizaInfo(true);
-                setIniciarContador(true);
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-        })
+        // const response = fetch(obtenerTurnoActual,{
+        //     method: 'PUT',
+        //     headers : {'Content-Type': 'application/json'},
+        //     body : JSON.stringify({"idPartida": idPartida})
+        // })
+        // .then((response) => {
+        //     if(response.status != 200){
+        //         throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
+        //     }
+        //     return response.json();
+        // })
+        // .then((data) => {
+        //     console.log(data);
+        //     setTurnoActual(data.posicion);
+        //     if(data.jugador == username){
+        //         setDetenidoActualizaInfo(true);
+        //         setIniciarContador(true);
+        //     }
+        // })
+        // .catch((error) => {
+        //     console.error(error);
+        // })
     })
 
     const comprobarAsignatura = useCallback(() => {
@@ -494,45 +494,74 @@ export default function TableroScreen({route}) {
                     let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
                     if( found === undefined){
                         console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
-                        const response = fetch(casillaComprada,{
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "username": username,
-                                                    "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
-                                                    "idPartida": idPartida})
-                        })
-                        .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log("COMPROBAR ASIGNATURA");
-                            console.log(data.jugador);
-                            console.log(data.dinero)
-                            if(data.jugador!=null){
-                                if(data.jugador==username){
-                                    console.log("es mia");
-                                    infoCasilla(true, data.aumento);
+                        socket.emit('casillaComprada', {
+                            coordenadas: {h: tokensJugadores[turnoActual].horizontal, v: tokensJugadores[turnoActual].vertical},
+                            socketId: socket.id
+                        },
+                        (ack)=>{
+                            if(ack.cod == 0){
+                                if(ack.msg.jugador!=null){
+                                    if(ack.msg.jugador==username){
+                                        console.log("es mia");
+                                        infoCasilla(true, ack.msg.aumento);
+                                    }
+                                    else{
+                                    console.log("comprada");
+                                    console.log(ack.msg);
+                                    setPropietario(ack.msg.jugador);
+                                    setPago(ack.msg.dinero);
+                                    setModalAsignaturaCompradaVisible(true);
+                                    }
                                 }
                                 else{
-                                console.log("comprada");
-                                console.log(data);
-                                setPropietario(data.jugador);
-                                setPago(data.dinero);
-                                setModalAsignaturaCompradaVisible(true);
+                                    console.log("no comprada");                
+                                    infoCasilla(false, false);
                                 }
                             }
-                            else{
-                                console.log("no comprada");                
-                                infoCasilla(false, false);
-                        }})
-                        .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
-                        });
+                            else if(ack.cod == 2){
+                                comprobarAsignatura();
+                            }
+                        })
+                       
+                        // const response = fetch(casillaComprada,{
+                        //     method: 'PUT',
+                        //     headers: {'Content-Type': 'application/json'},
+                        //     body: JSON.stringify({  "username": username,
+                        //                             "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
+                        //                             "idPartida": idPartida})
+                        // })
+                        // .then((response) => {
+                        //     if(response.status != 200){
+                        //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
+                        //     }
+                        //     return response.json();
+                        // })
+                        // .then(data => {
+                        //     console.log("COMPROBAR ASIGNATURA");
+                        //     console.log(data.jugador);
+                        //     console.log(data.dinero)
+                        //     if(data.jugador!=null){
+                        //         if(data.jugador==username){
+                        //             console.log("es mia");
+                        //             infoCasilla(true, data.aumento);
+                        //         }
+                        //         else{
+                        //         console.log("comprada");
+                        //         console.log(data);
+                        //         setPropietario(data.jugador);
+                        //         setPago(data.dinero);
+                        //         setModalAsignaturaCompradaVisible(true);
+                        //         }
+                        //     }
+                        //     else{
+                        //         console.log("no comprada");                
+                        //         infoCasilla(false, false);
+                        // }})
+                        // .catch((error) => {
+                        //     //Error
+                        //     //alert(JSON.stringify(error));
+                        //     console.error(error);
+                        // });
                     }
                     else{
                         console.log("pagos");
@@ -556,191 +585,208 @@ export default function TableroScreen({route}) {
             }else{
                 //console.log("boletin");
                 console.log("obteniendo boletín");
-                const response = fetch(tarjetaAleatoria,{
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({  "idPartida": idPartida,
-                                            "username": username,
-                                            "tipo": "boletin"        
-                                        })
-                })
-                .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de boletín');
+                socket.emit('boletin',{
+                    socketId: socket.id
+                },
+                (ack)=>{
+                    if(ack.cod == 0){
+                        let aux = {nombre: ack.msg[0].nombre,descripcion: ack.msg[0].descripcion};
+                        console.log(aux);
+                        setBoletin(aux);
                     }
-                    return response.json();
+                    else if(ack.cod == 2){
+                        comprobarAsignatura();
+                    }
                 })
-                .then(data => {
-                    console.log("BOLETIN");
-                    console.log(data[0]);
-                    let aux = [data[0].nombre, data[0].descripcion];
-                    console.log(aux);
-                    setBoletin(aux);
-                    setModalBoletinVisible(true);
-                })
-                .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                });
+                // const response = fetch(tarjetaAleatoria,{
+                //     method: 'PUT',
+                //     headers: {'Content-Type': 'application/json'},
+                //     body: JSON.stringify({  "idPartida": idPartida,
+                //                             "username": username,
+                //                             "tipo": "boletin"        
+                //                         })
+                // })
+                // .then((response) => {
+                //     if(response.status != 200){
+                //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de boletín');
+                //     }
+                //     return response.json();
+                // })
+                // .then(data => {
+                //     console.log("BOLETIN");
+                //     console.log(data[0]);
+                //     let aux = {nombre: data[0].nombre,descripcion: data[0].descripcion};
+                //     console.log(aux);
+                //     setBoletin(aux);
+                //     setModalBoletinVisible(true);
+                // })
+                // .catch((error) => {
+                //     //Error
+                //     //alert(JSON.stringify(error));
+                //     console.error(error);
+                // });
             }
         }else{
             console.log("obteniendo suerte", tarjetaAleatoria);
-            const response = fetch(tarjetaAleatoria,{
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({  "idPartida": idPartida,
-                                        "username": username,
-                                        "tipo": "suerte"        
-                                    })
-            })
-            .then((response) => {
-                if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de suerte');
+            socket.emit('suerte',{
+                socketId: socket.id
+            },
+            (ack)=>{
+                if(ack.cod == 0){
+                    let aux = {nombre: ack.msg[0].nombre,descripcion: ack.msg[0].descripcion};
+                    console.log(aux);
+                    setBoletin(aux);
                 }
-                return response.json();
+                else if(ack.cod == 2){
+                    comprobarAsignatura();
+                }
             })
-            .then(data => {
-                console.log("SUERTE");
-                console.log(data[0]);
-                let aux = [data[0].nombre, data[0].descripcion];
-                console.log(aux);
-                setSuerte(aux);
-                setModalSuerteVisible(true);
-            })
-            .catch((error) => {
-                //Error
-                //alert(JSON.stringify(error));
-                console.error(error);
-            }); 
+            // const response = fetch(tarjetaAleatoria,{
+            //     method: 'PUT',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify({  "idPartida": idPartida,
+            //                             "username": username,
+            //                             "tipo": "suerte"        
+            //                         })
+            // })
+            // .then((response) => {
+            //     if(response.status != 200){
+            //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de suerte');
+            //     }
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     console.log("SUERTE");
+            //     console.log(data[0]);
+            //     let aux = [data[0].nombre, data[0].descripcion];
+            //     console.log(aux);
+            //     setSuerte(aux);
+            //     setModalSuerteVisible(true);
+            // })
+            // .catch((error) => {
+            //     //Error
+            //     //alert(JSON.stringify(error));
+            //     console.error(error);
+            // }); 
         }
     });
 
     const infoCasilla= useCallback((esMia, aumento) => {
-        const response = fetch(infoAsignatura,{
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical}})
-        })
-        .then((response) => {
-            if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-            }
-            return response.json();
-        })
-        .then(data => {
-            //console.log(data);
-            if(data.casillaInfo.tipo == 'A'){
-                console.log("asignatura ", data.casillaInfo.cuatrimestre);
-                switch(data.casillaInfo.cuatrimestre){
+        socket.emit('infoCasilla',{
+            coordenadas:{h: tokensJugadores[turnoActual].horizontal,v: tokensJugadores[turnoActual].vertical} 
+        },
+        (ack)=> {
+            if(ack.msg.casillaInfo.tipo == 'A'){
+                console.log("asignatura ", ack.msg.casillaInfo.cuatrimestre);
+                switch(ack.msg.casillaInfo.cuatrimestre){
                     case 1:
                         setCarta(<Asignatura_1
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 2:
                         setCarta(<Asignatura_2
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 3:
                         setCarta(
                         <Asignatura_3
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 4:
                         setCarta(                                            
                         <Asignatura_4
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 5:
                         setCarta(                                            
                         <Asignatura_5
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                           title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break;  
                     case 6:
                         setCarta(                                            
                         <Asignatura_6
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 7:
                         setCarta(                                            
                         <Asignatura_7
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                     case 8:
                         setCarta(                                            
                         <Asignatura_8
-                            title={data.casillaInfo.nombre}
-                            coste={data.casillaInfo.precioCompra}
-                            matricula={data.casillaInfo.matricula}
-                            precio1C={data.casillaInfo.precio1C}
-                            precio2C={data.casillaInfo.precio2C}
-                            precio3C={data.casillaInfo.precio3C}
-                            precio4C={data.casillaInfo.precio4C}
-                            optatividad={data.casillaInfo.devolucionMatricula}
-                            precioCredito={data.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.casillaInfo.nombre}
+                            coste={ack.msg.casillaInfo.precioCompra}
+                            matricula={ack.msg.casillaInfo.matricula}
+                            precio1C={ack.msg.casillaInfo.precio1C}
+                            precio2C={ack.msg.casillaInfo.precio2C}
+                            precio3C={ack.msg.casillaInfo.precio3C}
+                            precio4C={ack.msg.casillaInfo.precio4C}
+                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
                         />);
                         break; 
                 }
@@ -754,16 +800,17 @@ export default function TableroScreen({route}) {
                     setCompra(true);
                 }
             }
-            else if(data.casillaInfo.tipo == 'F'){
+            else if(ack.msg.casillaInfo.tipo == 'F'){
                 //console.log("evento");
-                setCarta(                                    <Evento
-                    title={data.casillaInfo.nombre}
-                    coste={data.casillaInfo.precioCompra}
-                    matricula={data.casillaInfo.matricula}
-                    precio1C={data.casillaInfo.precio1C}
-                    precio2C={data.casillaInfo.precio2C}
-                    precio3C={data.casillaInfo.precio3C}
-                    optatividad={data.casillaInfo.devolucionMatricula}
+                setCarta(                                    
+                <Evento
+                    title={ack.msg.casillaInfo.nombre}
+                    coste={ack.msg.casillaInfo.precioCompra}
+                    matricula={ack.msg.casillaInfo.matricula}
+                    precio1C={ack.msg.casillaInfo.precio1C}
+                    precio2C={ack.msg.casillaInfo.precio2C}
+                    precio3C={ack.msg.casillaInfo.precio3C}
+                    optatividad={ack.msg.casillaInfo.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
                 if(!esMia){
@@ -772,10 +819,11 @@ export default function TableroScreen({route}) {
             }
             else if(data.casillaInfo.tipo == 'I'){
                 //console.log("recurso");
-                setCarta(                                   <Recurso
-                    title={data.casillaInfo.nombre}
-                    coste={data.casillaInfo.precioCompra}
-                    optatividad={data.casillaInfo.devolucionMatricula}
+                setCarta(                                   
+                <Recurso
+                    title={ack.msg.casillaInfo.nombre}
+                    coste={ack.msg.casillaInfo.precioCompra}
+                    optatividad={ack.msg.casillaInfo.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
                 if(!esMia){
@@ -784,11 +832,6 @@ export default function TableroScreen({route}) {
             }
             //console.log(carta);
         })
-        .catch((error) => {
-            //Error
-            //alert(JSON.stringify(error));
-            console.error(error);
-        });
     });
 
     const cambiarTurno = useCallback(() => {
@@ -797,8 +840,8 @@ export default function TableroScreen({route}) {
           }, (ack) => {
             console.log('Server acknowledged:', ack);
             if(ack.cod == 0){
-                console.log("TURNO:",data);
-                setTurnoActual(data.posicion);
+                console.log("TURNO:",ack.msg);
+                setTurnoActual(ack.msg.posicion);
                 setDetenidoActualizaInfo(false);
                 setContadorDobles(0);
                 // setActualizarPlayers(true);
@@ -1167,36 +1210,57 @@ export default function TableroScreen({route}) {
                 title="Asignaturas"
                 onPress={() => {
                     setReiniciarContador(true);
-                    const response =  fetch(listarAsignaturas, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({  "username": username,
-                                            "idPartida": idPartida})
-                    })
-                    .then((response) => {
-                    if(response.status != 200){
-                        throw new Error('Error de estado: '+ response.status+ ' en la función de listar asignaturas');
-                    }
-                    return response.json();
-                    })
-                    .then(data => {
-                        console.log("Asignaturas:\n ",data);
-                        let vector = new Array();
-                        for(let i = 0; i<data.casillas.length; i++) {
-                            let aux = { nombre: data.casillas[i].nombre,
-                                        h: data.casillas[i].coordenadas.h, 
-                                        v: data.casillas[i].coordenadas.v }
-                            vector.push(aux);
+                    socket.emit('listarAsignaturas',{
+                        socketId: socket.id
+                    },
+                    (ack) => {
+                        if(ack.cod==0){
+                            console.log("Asignaturas:\n ",ack.msg);
+                            let vector = new Array();
+                            for(let i = 0; i<ack.msg.casillas.length; i++) {
+                                let aux = { nombre: ack.msg.casillas[i].nombre,
+                                            h: ack.msg.casillas[i].coordenadas.h, 
+                                            v: ack.msg.casillas[i].coordenadas.v }
+                                vector.push(aux);
+                            }
+                            console.log(vector);
+                            setAsignaturas(vector);
+                            setModalAsignaturasVisible(true);
                         }
-                        console.log(vector);
-                        setAsignaturas(vector);
-                        setModalAsignaturasVisible(true);
+                        else if(ack.cod == 2){
+                            alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo");
+                        }
                     })
-                    .catch((error) => {
-                    //Error
-                    //alert(JSON.stringify(error));
-                    console.error(error);
-                    });
+                    // const response =  fetch(listarAsignaturas, {
+                    // method: 'PUT',
+                    // headers: {'Content-Type': 'application/json'},
+                    // body: JSON.stringify({  "username": username,
+                    //                         "idPartida": idPartida})
+                    // })
+                    // .then((response) => {
+                    // if(response.status != 200){
+                    //     throw new Error('Error de estado: '+ response.status+ ' en la función de listar asignaturas');
+                    // }
+                    // return response.json();
+                    // })
+                    // .then(data => {
+                    //     console.log("Asignaturas:\n ",data);
+                    //     let vector = new Array();
+                    //     for(let i = 0; i<data.casillas.length; i++) {
+                    //         let aux = { nombre: data.casillas[i].nombre,
+                    //                     h: data.casillas[i].coordenadas.h, 
+                    //                     v: data.casillas[i].coordenadas.v }
+                    //         vector.push(aux);
+                    //     }
+                    //     console.log(vector);
+                    //     setAsignaturas(vector);
+                    //     setModalAsignaturasVisible(true);
+                    // })
+                    // .catch((error) => {
+                    // //Error
+                    // //alert(JSON.stringify(error));
+                    // console.error(error);
+                    // });
                     }}
                 /><StyledButton
                 style={styles.botones}
@@ -1206,21 +1270,30 @@ export default function TableroScreen({route}) {
                 onPress={() => {
                     setReiniciarContador(true);
                     console.log("Bancarrota");
-                    const response = fetch(bancarrota,{
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({  "idPartida": idPartida, 
-                                                "username": username})
-                        .then((response) => {
-                            if(response.status!= 200){
-                                throw new Error('Error de estado: '+ response.status + ' en la función de bancarrota');
-                            }
-
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    socket.emit('bancarrota',{},
+                    (ack) => {
+                        if(ack.cod == 0){
+                            //navegar
+                        }
+                        else if(ack.cod == 2){
+                            alert("Se ha producido un error. Por favor vuelva a intentarlo");
+                        }
                     })}}
+                    // const response = fetch(bancarrota,{
+                    //     method: 'POST',
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     body: JSON.stringify({  "idPartida": idPartida, 
+                    //                             "username": username})
+                    //     .then((response) => {
+                    //         if(response.status!= 200){
+                    //             throw new Error('Error de estado: '+ response.status + ' en la función de bancarrota');
+                    //         }
+
+                    //     })
+                    //     .catch((error) => {
+                    //         console.log(error);
+                    //     })
+                    // })}}
                 />
             </View>
         </View>
@@ -1230,6 +1303,7 @@ export default function TableroScreen({route}) {
             text="¿Desea comprar la carta?"
             aumentarCreditos={false}
             esMia={false}
+            jugadores={jugadores}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
@@ -1267,6 +1341,7 @@ export default function TableroScreen({route}) {
             text="¿Desea aumentar los créditos?"
             aumentarCreditos={true}
             esMia={true}
+            jugadores={jugadores}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
@@ -1303,6 +1378,7 @@ export default function TableroScreen({route}) {
             text={`La casilla en la que ha caído es suya pero no puede aumentarle los créditos hasta que no consiga todas las del mismo cuatrimestre.\n\n¿Desea terminar su turno ya o quiere realizar algún intercambio?`}
             aumentarCreditos={false}
             esMia={true}
+            jugadores={jugadores}
             c_hor={tokensJugadores[turnoActual].horizontal}
             c_ver={tokensJugadores[turnoActual].vertical}
             username={username}
