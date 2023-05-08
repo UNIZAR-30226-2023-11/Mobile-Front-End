@@ -5,6 +5,8 @@ import StyledButton from "./StyledButton"
 import { Select, NativeBaseProvider } from "native-base";
 import InputSpinner from 'react-native-input-spinner';
 import { comprarAsignatura, aumentarCreditosAsignatura } from '../url/partida';
+import { faMugSaucer } from '@fortawesome/free-solid-svg-icons';
+import { SocketContext } from './SocketContext';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -113,6 +115,8 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
     c_hor, c_ver, username, idPartida, aumentarCreditos, esMia, jugadores}
     ){
 
+    const {socket} = React.useContext(SocketContext);
+
     const [modalAumentoVisible, setModalAumentoVisible] = React.useState(false);
     const [modalIntercambiosVisible, setModalIntercambiosVisible] = React.useState(false);
     const [modalPreguntaIntercambiosVisible, setModalPreguntaIntercambiosVisible] = React.useState(false);
@@ -169,32 +173,23 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Comprar"
                         onPress={() => {
                             console.log("comprando..", c_hor, c_ver);
-                            const response =  fetch(comprarAsignatura, {
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "username": username,
-                                                    "coordenadas":{"h": c_hor,"v": c_ver},
-                                                    "idPartida": idPartida})
-                            })
-                            .then((response) => {
-                            if(response.status != 201){
-                                throw new Error('Error de estado: '+ response.status);
-                            }
-                            console.log("comprada");
-                            return response.json();
-                            })
-                            .then(data => {
-                                if(data.aumento){
-                                    setModalAumentoVisible(true);
-                                }else{
-                                    onClose();
+                            socket.emit('comprarAignatura',{
+                                coordenadas: {h: c_hor, v: c_ver}
+                            },
+                            (ack) => {
+                                if(ack.cod == 0){
+                                    console.log("comprada");
+                                    if(ack.msg.aumento){
+                                        setModalAumentoVisible(true);
+                                    }else{
+                                        onClose();
+                                    }
+                                }
+                                else if(ack.cod == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
                                 }
                             })
-                            .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
-                            });}}
+                        }}
                         purple
                     />}
                      {aumentarCreditos && esMia &&
@@ -203,25 +198,19 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Aumentar creditos"
                         onPress={() => {
                             console.log("aumentando creditos..", c_hor, c_ver);
-                            const response =  fetch(aumentarCreditosAsignatura, {
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "idPartida": idPartida,
-                                                    "username": username,
-                                                    "coordenadas":{"h": c_hor,"v": c_ver}})
-                            })
-                            .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status);
-                            }
-                            console.log("aumentados");
-                            onClose();
-                            })
-                            .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
-                            });}}
+                            socket.emit('aumentarCreditosAsignaturas',{
+                                coordenadas: {h: c_hor, v: c_ver}
+                            },
+                            (ack) =>{
+                                if(ack.cod == 0){
+                                    console.log("aumentados");
+                                    onClose();
+                                }
+                                else if(ack.cod == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, intentelo de nuevo.");
+                                }
+                            });
+                        }}
                         purple
                     />}
                 </View>
