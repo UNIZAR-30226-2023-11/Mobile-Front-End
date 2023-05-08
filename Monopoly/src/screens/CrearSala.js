@@ -107,86 +107,10 @@ export default function CrearSalaScreen({route, navigation }) {
     useEffect(()=>{
         socket.on('esperaJugadores', (mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
-            // String msg = mensaje;
-            // const subcadenas = msg.split(',');
-            // setJugadores(subcadenas);
+            const subcadenas = mensaje.split(",");
+            setJugadores(subcadenas);
         });
     },[])
-    
-    // const actualizarJugadores = useCallback(() => {
-    //     const response =  fetch(listaJugadores, {
-    //         method: 'PUT',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify({"idPartida": idPartida})
-    //         })
-    //         .then((response) => {
-    //           if(response.status != 200){
-    //             throw new Error('Error de estado: '+ response.status+' en la funcion de listar jugadores');
-    //           }
-    //           return response.json();
-    //         })
-    //         .then(data => {
-    //             // console.log("ACTUALIZAR DINERO:",data);
-    //             console.log(data);
-    //             setJugadores(data.listaJugadores);
-    //         })
-    //         .catch((error) => {
-    //         //Error
-    //         //alert(JSON.stringify(error));
-    //         console.error(error);
-    //         });
-    // });
-
-    // useEffect (() =>{
-    //     console.log("detenido: ", detenido);
-    //     if(detenido){
-    //         clearInterval(interval);
-    //          setIntervalId(null);
-    //         setAvanzar(true);
-    //     }else{
-    //         const id = setInterval(() => {
-    //             actualizarJugadores();
-    //         },3000);
-    //         setIntervalId(id);
-    //     }
-
-    //     return () => {
-    //         clearInterval(interval);
-    //         setIntervalId(null);
-    //     };
-
-    // },[detenido])
-
-    // useEffect(() => {
-    //     if(avanzar){
-    //         setAvanzar(false);
-    //         const response =  fetch(actualizarPartida, {
-    //             method: 'PUT',
-    //             headers: {'Content-Type': 'application/json'},
-    //             body: JSON.stringify({"idPartida": idPartida,
-    //                                   "username": user,
-    //                                   "dineroInicial": money,
-    //                                   "nJugadores": players,
-    //                                   "jugar":true})
-    //             })
-    //             .then((response) => {
-    //             if(response.status != 200) {
-    //                 throw new Error('Error de estado: '+ response.status);
-    //             }
-    //             else{
-    //                 console.log(response.json());
-    //                 if(interval!= null){
-    //                     clearInterval(interval);
-    //                     setInterval(null);
-    //                 }
-    //                 navigation.navigate('Tablero', {user: user, idPartida: idPartida, jugadores: jugadores});                }})
-    //         .catch((error) => {
-    //             //Error
-    //             // alert(JSON.stringify(error));
-    //             console.error(error);
-    //         });
-    //     }
-    // }, [avanzar]);
 
     return (
         <NativeBaseProvider>
@@ -206,7 +130,11 @@ export default function CrearSalaScreen({route, navigation }) {
                                     dineroInicial: money,
                                     nJugadores: itemValue,
                                     normas: {
-
+                                        cobrarCarcel: cobrarCarcel,
+                                        cobrarBeca: cobrarBeca,
+                                        activarSubasta: activarSubasta,
+                                        aumentarCreditos: aumentarCreditos,
+                                        reiniciarJuegoBancarrota: reiniciarJuegoBancarrota
                                     },
                                     jugar: false,
                                     socketId: socket.id
@@ -244,7 +172,11 @@ export default function CrearSalaScreen({route, navigation }) {
                                     dineroInicial: itemValue,
                                     nJugadores: players,
                                     normas: {
-
+                                        cobrarCarcel: cobrarCarcel,
+                                        cobrarBeca: cobrarBeca,
+                                        activarSubasta: activarSubasta,
+                                        aumentarCreditos: aumentarCreditos,
+                                        reiniciarJuegoBancarrota: reiniciarJuegoBancarrota
                                     },
                                     jugar: false,
                                     socketId: socket.id

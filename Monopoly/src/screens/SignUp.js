@@ -55,7 +55,7 @@ const FormikInputValue =({ name, ...props}) => {
 
 export default function SignUpScreen({navigation, route}){
 
-  const socket = React.useContext(SocketContext);
+  const {socket, setLoggedIn} = React.useContext(SocketContext);
   const perfil = route.params.perfil
  
   return <Formik validationSchema={signinValidationSchema} initialValues={initialValues} 
@@ -76,7 +76,8 @@ export default function SignUpScreen({navigation, route}){
                     if(perfil){
                       navigation.navigate('Perfil');
                     }else{
-                      navigation.navigate('Home', {loggedIn: true});
+                      setLoggedIn(true);
+                      navigation.navigate('Home');
                     }
                   }
                   else if(ack.cod != 2){

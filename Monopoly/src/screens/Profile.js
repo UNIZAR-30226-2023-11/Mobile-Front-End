@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 export default function ProfileScreen({ navigation }){
 
   const isFocused = useIsFocused();
-  const socket = React.useContext(SocketContext);
+  const {socket} = React.useContext(SocketContext);
   const [nombre, setNombre] = React.useState("");
   const [imgPerfil, setImgPerfil] = React.useState(null);
   const [correo, setCorreo] = React.useState("");
@@ -95,17 +95,19 @@ export default function ProfileScreen({ navigation }){
         console.log('Server acknowledged:', ack);
         if(ack.cod == 0){
           setNombre(ack.msg.nombreUser);
-           setCorreo(ack.msg.correo);
-           const blobData = ack.msg.imagen;
-           const dataUrl = `data:image/jpg;base64,${blobData}`;
-           setImgPerfil(dataUrl);
-          //  setMostrarImagen(true);
+            setCorreo(ack.msg.correo);
+            const blobData = ack.msg.imagen.imagen;
+            const dataUrl = `data:image/jpg;base64,${blobData}`;
+            console.log("IMAGEN");
+            console.log(blobData);
+            setImgPerfil(dataUrl);
+            setMostrarImagen(true);
             setMonedas(ack.msg.monedas);
             setVictorias(ack.msg.victorias);
             setPartidasJugadas(ack.msg.partidasJugadas);
         }
-        else if(ack.cod != 2){
-            alert(ack.msg);
+        else if(ack.cod == 2){
+            alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
         }
       });
     }

@@ -42,6 +42,7 @@ import {
 } from '../components/MonopolyCard';
 
 import StyledButton from '../components/StyledButton';
+import { SocketContext } from '../components/SocketContext';
 
 const ancho = 34.3;
 
@@ -206,6 +207,7 @@ const styles = StyleSheet.create({
 
 export default function TableroScreen({route}) {
 
+    const socket = React.useContext(SocketContext);
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
     const idPartida = route.params.idPartida;
@@ -361,32 +363,23 @@ export default function TableroScreen({route}) {
             setReiniciarContador(true);
             console.log("rolling dice...");
             setDobles(false);
-            const response =  fetch(lanzarDados, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({  "username": username,
-                                        "idPartida": idPartida})
-                })
-                .then((response) => {
-                  if(response.status != 200){
-                    throw new Error('Error de estado: '+ response.status+ ' en la función de lanzar dados');
-                  }
-                  return response.json();
-                })
-                .then(data => {
-                    console.log("DADOS:",data);
-                    setDie1(data.dado1);
-                    setDie2(data.dado2);
+            socket.emit('lanzarDados', {
+                socketId: socket.id
+              }, (ack) => {
+                console.log('Server acknowledged:', ack);
+                if(ack.cod == 0){
+                    setDie1(ack.msg.dado1);
+                    setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].horizontal = data.coordenadas.h;
-                    aux[turnoActual].vertical = data.coordenadas.v;
+                    aux[turnoActual].horizontal = ack.msg.coordenadas.h;
+                    aux[turnoActual].vertical = ack.msg.coordenadas.v;
                     // aux[turnoActual].horizontal = 4;
                     // aux[turnoActual].vertical = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
-                    if(data.dado1 == data.dado2){
+                    if(ack.msg.dado1 == ack.msg.dado2){
                         setDobles(true);
                         if(contadorDobles == 2){
                             alert("Te toca ir a Julio");
@@ -401,12 +394,11 @@ export default function TableroScreen({route}) {
                             setContadorDobles(contadorDobles+1);
                         }
                     }
-                })
-                .catch((error) => {
-                //Error
-                //alert(JSON.stringify(error));
-                console.error(error);
-                });
+                }
+                else if(ack.cod == 2){
+                    alert("Se ha producido un error en el servidor. Vuelva a lanzar los dados");
+                }
+              });
         }
     
         return(
@@ -794,18 +786,11 @@ export default function TableroScreen({route}) {
     });
 
     const cambiarTurno = useCallback(() => {
-        const response =  fetch(siguienteTurno, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({"idPartida": idPartida})
-            })
-            .then((response) => {
-            if(response.status != 200){
-                throw new Error('Error de estado: '+ response.status+ ' en la función de siguiente turno');
-            }
-            return response.json();
-            })
-            .then(data => {
+        socket.emit('siguienteTurno', {
+            socketId: socket.id
+          }, (ack) => {
+            console.log('Server acknowledged:', ack);
+            if(ack.cod == 0){
                 console.log("TURNO:",data);
                 setTurnoActual(data.posicion);
                 setDetenidoActualizaInfo(false);
@@ -813,12 +798,11 @@ export default function TableroScreen({route}) {
                 // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
                 //console.log(data);
-            })
-            .catch((error) => {
-            //Error
-            //alert(JSON.stringify(error));
-            console.error(error);
-            });
+            }
+            else if(ack.cod == 2){
+                cambiarTurno();
+            }
+          });
     })
 
     useEffect(() =>{

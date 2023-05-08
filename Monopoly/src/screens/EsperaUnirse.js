@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         flex:6,
         justifyContent:'flex-start',
         marginLeft:'10%',
+        marginBottom: '20%',
         width: '80%',
         height: '50%',
         borderColor:'#000000',
@@ -31,26 +32,16 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     // console.log(user, idPartida);
 
     const socket = React.useContext(SocketContext);
-    const [detenido, setDetenido] = React.useState(true);
+    // const [detenido, setDetenido] = React.useState(true);
     const [jugadores, setJugadores] = React.useState([""]);
 
     useEffect(()=>{
         socket.on('esperaJugadores', (mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
-            // String msg = mensaje;
-            // const subcadenas = msg.split(',');
+            // const subcadenas = mensaje.split(',');
             // setJugadores(subcadenas);
         });
     },[])
-    // useEffect(() => {
-    //     while(!detenido){
-    //         console.log("escuchando");
-    //         socket.on('esperaJugadores', (mensaje) => {
-    //             // setJugadores(mensaje);
-    //             console.log('Mensaje recibido: ' + mensaje);
-    //         }); 
-    //     }         
-    // },[detenido])
 
     return (
         <NativeBaseProvider>
@@ -69,13 +60,6 @@ export default function EsperaUnirseScreen({ route, navigation }) {
                 <Text key={i}>{jugador}</Text>
             ))}
             </ScrollView>
-            </View>
-            <View style={{flex:1}}>
-                <StyledButton
-                lightblue
-                title="Ir a la sala"
-                onPress={() => { setDetenido(true);}}
-                />
             </View>
         </View>
         </NativeBaseProvider>

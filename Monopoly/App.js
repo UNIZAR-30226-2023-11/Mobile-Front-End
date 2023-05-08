@@ -114,7 +114,7 @@ export default function App() {
                       <HeaderBackButton
                         style={{marginLeft: 0}}
                         onPress={() => {
-                          navigation.navigate('Home', {username: username});
+                          navigation.navigate('Home');
                         }}
                       />
                     ),

@@ -40,9 +40,8 @@ const styles = StyleSheet.create({
 
 export default function HomeScreen({ route, navigation }){
 
-    let loggedIn = route.params.loggedIn;
+    const {socket, loggedIn} = React.useContext(SocketContext);
 
-    const socket = React.useContext(SocketContext);
     const [nickname, setNickname] = React.useState(null);
     const [modalReglasVisible, setModalReglasVisible] = React.useState(false);
 

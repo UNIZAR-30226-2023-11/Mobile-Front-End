@@ -9,6 +9,13 @@ export function SocketProvider({ children }) {
 
   const [desconectado, setDesconectado] = React.useState(true);
   const [socket, setSocket] = React.useState(io(socketUrl));
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  const contextValue = {
+    socket,
+    loggedIn,
+    setLoggedIn
+  };
   
   useEffect(() => {
     // console.log("Socket id: " + socket.id);
@@ -41,5 +48,5 @@ export function SocketProvider({ children }) {
   }},
   [desconectado]);
 
-  return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
+  return <SocketContext.Provider value={contextValue}>{children}</SocketContext.Provider>;
 }
