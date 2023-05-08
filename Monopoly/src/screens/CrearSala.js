@@ -117,6 +117,11 @@ export default function CrearSalaScreen({route, navigation }) {
                 const subcadenas = mensajeCadena.split(",");
                 setJugadores(subcadenas);
         });
+
+        socket.on('comenzarPartida', (mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
+        }); 
     },[])
 
     return (
@@ -288,7 +293,6 @@ export default function CrearSalaScreen({route, navigation }) {
                     }, (ack) => {
                         console.log('Server acknowledged:', ack);
                         if(ack.cod == 0){
-                            navigation.navigate('Tablero', {user:"lunaa", idPartida: idPartida, jugadores: jugadores});
                         }
                         else if(ack.cod == 2){
                             alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo.");
