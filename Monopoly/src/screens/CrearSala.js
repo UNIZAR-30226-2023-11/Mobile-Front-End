@@ -83,12 +83,18 @@ const styles = StyleSheet.create({
     },
     optionText: {
         marginRight: 10,
+    },
+    jugadores:{
+        fontSize: 20,
+        marginTop:'2%',
+        textAlign: 'center',
+        marginRight: '4%',
     }
 })
 
 export default function CrearSalaScreen({route, navigation }) {
 
-    const socket = React.useContext(SocketContext);
+    const {socket} = React.useContext(SocketContext);
     // const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
@@ -106,9 +112,10 @@ export default function CrearSalaScreen({route, navigation }) {
 
     useEffect(()=>{
         socket.on('esperaJugadores', (mensaje) => {
-            console.log('Mensaje recibido: ' + mensaje);
-            const subcadenas = mensaje.split(",");
-            setJugadores(subcadenas);
+                console.log('Mensaje recibido: ' + mensaje);
+                const mensajeCadena = mensaje ? mensaje.toString() : "";
+                const subcadenas = mensajeCadena.split(",");
+                setJugadores(subcadenas);
         });
     },[])
 
@@ -257,7 +264,7 @@ export default function CrearSalaScreen({route, navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             {jugadores.map((jugador, i) =>(
-                <Text key={i}>{jugador}</Text>
+                <Text key={i} style={styles.jugadores}>{jugador}</Text>
             ))}
             </ScrollView>
             </View>
@@ -280,9 +287,14 @@ export default function CrearSalaScreen({route, navigation }) {
                         socketId: socket.id
                     }, (ack) => {
                         console.log('Server acknowledged:', ack);
+                        if(ack.cod == 0){
+                            navigation.navigate('Tablero', {user:ack.msg.username, idPartida: idPartida, jugadores: jugadores});
+                        }
+                        else if(ack.cod == 2){
+                            alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo.");
+                        }
                     });
                     // setDetenido(!detenido);
-                    navigation.navigate('Tablero', {user: "lunaa", idPartida: 84, jugadores: ["lunaa"]});
                 }}
             />
             

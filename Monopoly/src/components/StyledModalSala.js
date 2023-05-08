@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
+import { SocketContext } from './SocketContext';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -45,13 +46,24 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function StyledModalSala({style={}, onClose, visible, onRequestClose, title, text, buttonText, goTo}){
+export default function StyledModalSala({style={}, onClose, visible, onRequestClose, title, text, buttonText, idPartida, navigation}){
 
     const modalStyles = [
         styles.modalView,
         style
-    
     ]
+
+    const {socket} = React.useContext(SocketContext);
+
+
+    useEffect(()=>{
+        socket.on('esperaJugadores', (mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            const mensajeCadena = mensaje.toString();
+            const subcadenas = mensajeCadena.split(",");
+            navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas})
+        });
+    })
 
     return(
         <Modal
@@ -69,7 +81,28 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
             <Text style={styles.modalTitle}>{title}</Text>
             <ScrollView style={{marginHorizontal: 20}}>
                 <Text style={styles.modalText}>{text}</Text>
-                <StyledButton lightblue title={buttonText} onPress={goTo}></StyledButton>
+                <StyledButton 
+                lightblue title={buttonText} 
+                onPress={() =>{
+                    console.log("pulsado");
+                    socket.emit('unirJugador', {
+                        idPartida: idPartida,
+                        socketId: socket.id
+                        }, (ack) => {
+                            console.log('Server acknowledged:', ack);
+                            if(ack.cod == 4){
+                                alert("No se admiten mas jugadores en la partida");
+                            }
+                            else if(ack.cod != 2){
+                                alert(ack.msg);
+                            }
+                            else if(ack.cod!=0){
+                                alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
+                            }
+                    });
+                }}
+
+                />
             </ScrollView>
             </View>
         </View>

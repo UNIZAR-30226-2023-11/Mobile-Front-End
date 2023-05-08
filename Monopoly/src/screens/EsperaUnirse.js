@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
         height: '50%',
         borderColor:'#000000',
         borderWidth: 1
+    },
+    jugadores:{
+        fontSize: 20,
+        marginTop:'2%',
+        textAlign: 'center',
+        marginRight: '4%',
     }
 })
 
@@ -31,15 +37,19 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
 
-    const socket = React.useContext(SocketContext);
+    const {socket} = React.useContext(SocketContext);
     // const [detenido, setDetenido] = React.useState(true);
-    const [jugadores, setJugadores] = React.useState([""]);
+    const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
     useEffect(()=>{
         socket.on('esperaJugadores', (mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
-            // const subcadenas = mensaje.split(',');
-            // setJugadores(subcadenas);
+            const mensajeCadena = mensaje ? mensaje.toString() : "";
+            const subcadenas = mensajeCadena.split(",");
+            setJugadores(subcadenas);
+        });
+        socket.on('jugar',(mensaje)=>{
+            navigation.navigate("Tablero", {user: mensaje.user, idPartida: idPartida, jugadores: jugadores});
         });
     },[])
 
@@ -57,7 +67,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             <View style={styles.boxjugadores}>
             <ScrollView>
             {jugadores.map((jugador, i) =>(
-                <Text key={i}>{jugador}</Text>
+                <Text key={i} style={styles.jugadores} >{jugador}</Text>
             ))}
             </ScrollView>
             </View>

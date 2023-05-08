@@ -51,28 +51,9 @@ export default function UnirseSalaScreen({ route, navigation }) {
                 text={"Partida #"+idPartida}
                 style={styles.modal}
                 buttonText="Unirme"
-                goTo= {() => {{console.log("pulsado");
-                    socket.emit('unirJugador', {
-                        idPartida: idPartida,
-                        socketId: socket.id
-                        }, (ack) => {
-                            if(ack.cod == 0){
-                                navigation.navigate('EsperaUnirse', {idPartida: idPartida})
-                            }
-                            else if(ack.cod == 4){
-                                alert("No se admiten mas jugadores en la partida");
-                            }
-                            else if(ack.cod != 2){
-                                alert(ack.msg);
-                            }
-                            else{
-                                alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
-                            }
-
-                        console.log('Server acknowledged:', ack);
-                    });
-                }}}
-                onClose = { () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
+                idPartida={idPartida}
+                navigation={navigation}
+                onClose={ () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
                 visible={modalPartidaVisible}
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
