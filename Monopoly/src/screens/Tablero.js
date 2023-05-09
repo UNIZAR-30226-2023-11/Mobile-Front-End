@@ -270,7 +270,7 @@ export default function TableroScreen({route}) {
     const [suerte, setSuerte] = React.useState({nombre:'', descripcion: ''});
 
     //variable para guardar las asignaturas del jugador
-    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: false}]);
+    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: false, hipotecar: false}]);
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
@@ -369,10 +369,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].horizontal = ack.msg.coordenadas.h;
-                    aux[turnoActual].vertical = ack.msg.coordenadas.v;
-                    // aux[turnoActual].horizontal = 4;
-                    // aux[turnoActual].vertical = 10;
+                    // aux[turnoActual].horizontal = ack.msg.coordenadas.h;
+                    // aux[turnoActual].vertical = ack.msg.coordenadas.v;
+                    aux[turnoActual].horizontal = 1;
+                    aux[turnoActual].vertical = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -1253,7 +1253,8 @@ export default function TableroScreen({route}) {
                                 let aux = { nombre: ack.msg[i].nombre,
                                             h: ack.msg[i].coordenadas.h, 
                                             v: ack.msg[i].coordenadas.v,
-                                            disminuir: true}
+                                            disminuir: true,
+                                            hipotecar: true}
                                 vector.push(aux);
                             }
                             console.log(vector);
@@ -1348,12 +1349,13 @@ export default function TableroScreen({route}) {
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
                 // setModalIntercambiosVisible(true);
-                // setActualizarPlayers(true);
+                // setActualizarPlayers(true);                      
+            }}
+            acabarTurno={()=>{
                 if(!dobles){
                     console.log("cambiando turno");
                     setCambio(true);
                 }
-                       
             }}
             visible={modalCompraVisible}
             onRequestClose={() =>{
@@ -1361,11 +1363,6 @@ export default function TableroScreen({route}) {
                 setCompra(false);
                 setModalCompraVisible({modalCompraVisible: !modalCompraVisible});
                 console.log("cerrado");
-                // setActualizarPlayers(true);
-                if(!dobles){
-                    console.log("cambiando turno");
-                    setCambio(true);
-                }
             }}
         />
         <StyledModalCompra
@@ -1384,13 +1381,13 @@ export default function TableroScreen({route}) {
                 setReiniciarContador(true);
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
-                console.log("cerrado");
-                // setActualizarPlayers(true);
+                console.log("cerrado");                       
+            }} 
+            acabarTurno={()=>{
                 if(!dobles){
                     console.log("cambiando turno");
                     setCambio(true);
                 }
-                       
             }}
             visible={modalCreditosVisible}
             onRequestClose={() =>{
@@ -1398,11 +1395,6 @@ export default function TableroScreen({route}) {
                 setAumentoCreditos(false);
                 setModalCreditosVisible({modalCreditosVisible: !modalCreditosVisible});
                 console.log("cerrado");
-                // setActualizarPlayers(true);
-                if(!dobles){
-                    console.log("cambiando turno");
-                    setCambio(true);
-                }
             }}
         />
         <StyledModalCompra
@@ -1420,24 +1412,19 @@ export default function TableroScreen({route}) {
             onClose={() => {
                 setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
-                console.log("cerrado");
-                // setActualizarPlayers(true);
+                console.log("cerrado");                       
+            }}         
+            acabarTurno={()=>{
                 if(!dobles){
                     console.log("cambiando turno");
                     setCambio(true);
                 }
-                       
             }}
             visible={modalEsMiaVisible}
             onRequestClose={() =>{
                 setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
                 console.log("cerrado");
-                // setActualizarPlayers(true);
-                if(!dobles){
-                    console.log("cambiando turno");
-                    setCambio(true);
-                }
             }}
         />
         <StyledModal

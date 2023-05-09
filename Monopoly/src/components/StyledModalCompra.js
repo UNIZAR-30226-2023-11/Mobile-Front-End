@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     
 });
 
-export default function StyledModalCompra({InfoCarta, onClose, visible, onRequestClose, doubles, text, 
-    c_hor, c_ver, username, idPartida, aumentarCreditos, esMia, jugadores}
+export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visible, onRequestClose, doubles, text, 
+    c_hor, c_ver, aumentarCreditos, esMia, jugadores}
     ){
 
     const {socket} = React.useContext(SocketContext);
@@ -156,6 +156,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Acabar turno"
                         onPress={() =>{
                             onClose();
+                            acabarTurno();
                             setModalPreguntaIntercambiosVisible(true);
                         }}
                         purple
@@ -188,6 +189,8 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                                 }
                                 else if(ack.cod == 9){
                                     alert("No tienes suficiente dinero");
+                                    onClose();
+                                    setModalPreguntaIntercambiosVisible(true);
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
@@ -275,6 +278,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         style={styles.boton}
                         title="Aumentar créditos"
                         onPress={() => {
+                            console.log("aumentando créditos");
                             socket.emit('aumentarCreditos',{
                                 socketId: socket.id,
                                 coordenadas: {h: c_hor, v: c_ver}
@@ -283,6 +287,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                                 if(ack.cod == 0){
                                     console.log("aumentados");
                                     onClose();
+                                    setModalPreguntaIntercambiosVisible();
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, intentelo de nuevo.");
@@ -310,7 +315,10 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                     <StyledButton
                         style={styles.boton}
                         title="Acabar turno"
-                        onPress={() => {setModalPreguntaIntercambiosVisible({modalPreguntaIntercambiosVisible: !modalPreguntaIntercambiosVisible})}}
+                        onPress={() => {
+                            setModalPreguntaIntercambiosVisible({modalPreguntaIntercambiosVisible: !modalPreguntaIntercambiosVisible})
+                            acabarTurno();
+                        }}
                         purple
                     />
                     <StyledButton
@@ -373,8 +381,18 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                     </View>
 
                         <StyledButton title="ENVIAR" lightblue 
-                        onPress={() => {setModalVisible(false),
-                                        console.log("Precio final: " + precioTrade) }}/>
+                        onPress={() => {
+                            setModalVisible(false),
+                            console.log("Precio final: " + precioTrade)
+                            socket.emit('intercambio',{
+
+                            } ,(ack) => {
+                                if(ack.cod == 0){
+                                    setModalPreguntaIntercambiosVisible({modalPreguntaIntercambiosVisible: !modalPreguntaIntercambiosVisible})
+                                    acabarTurno();
+                                }
+                            }) 
+                        }}/>
                 </View>
  
             </Modal> 

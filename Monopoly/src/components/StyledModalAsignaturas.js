@@ -353,8 +353,8 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         style={styles.boton}
                         title="Vender"
                         onPress={() => {
-                            console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
-                            socket.emit('venderAsignatura',{
+                            console.log("vendiendo...",  coordenadas.h, coordenadas.v, socket.id);
+                            socket.emit('vender',{
                                 coordenadas: {h: coordenadas.h, v: coordenadas.v},
                                 socketId: socket.id
                             },
@@ -438,8 +438,8 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         style={styles.boton}
                         title="Vender"
                         onPress={() => {
-                            console.log("Optativizando...", idPartida, username, coordenadas.h, coordenadas.v);
-                            socket.emit('venderAsignatura',{
+                            console.log("Optativizando...", coordenadas.h, coordenadas.v);
+                            socket.emit('hipotecar',{
                                 coordenadas: {h: coordenadas.h, v: coordenadas.v},
                                 socketId: socket.id
                             },
