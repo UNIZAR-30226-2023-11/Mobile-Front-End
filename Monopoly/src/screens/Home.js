@@ -187,7 +187,8 @@ export default function HomeScreen({ route, navigation }){
             <StyledButton
                 homeScreen
                 title="Reglas"
-                onPress={() => setModalReglasVisible(true)}
+                //onPress={() => setModalReglasVisible(true)}
+                onPress={() => navigation.navigate('TestPujas')}
             />
         </View>
     );
