@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
-import { Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import StyledButton from './StyledButton';
 
 import { infoAsignatura, venderAsignatura } from '../url/partida';
@@ -96,6 +96,8 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
     const [modalVenderVisible, setModalVenderVisible] = React.useState(false);
     const [modalDisminuirVisible, setModalDisminuirVisible] = React.useState(false);
+    const [modalHipotecarVisible, setModalHipotecarVisible] = React.useState(false);
+
     const [carta,setCarta] = React.useState();
     const [coordenadas, setCoordenadas] = React.useState({h: 0, v: 0});
 
@@ -293,6 +295,19 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         }}>
                         <FontAwesome name="cart-arrow-down" size={24} color="red" />
                     </Pressable>}
+                    {value.hipotecar && 
+                    <Pressable
+                        onPress={() => {
+                            if(miTurno){
+                                setModalHipotecarVisible(true);
+                                setCoordenadas({h:value.h, v:value.v})
+                            }
+                            else{
+                                alert("Espera a que sea su turno para hacer optativa la asignaturas");
+                            }
+                        }}>
+                    <FontAwesome5 name="hand-holding-usd" size={24} color="blue" />        
+                    </Pressable>}
                   </View>
                 ))
             }
@@ -339,7 +354,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         title="Vender"
                         onPress={() => {
                             console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
-                            socket.emit('vender',{
+                            socket.emit('venderAsignatura',{
                                 coordenadas: {h: coordenadas.h, v: coordenadas.v},
                                 socketId: socket.id
                             },
@@ -402,6 +417,52 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
             </View>
         </View>
         </Modal>
+
+        <Modal
+        animationType="slide"
+        visible={modalHipotecarVisible}
+        onRequestClose={() => {setModalHipotecarVisible({modalHipotecarVisible: !modalHipotecarVisible})}}
+        transparent={true}
+        props>
+        <View style={styles.centeredView}>
+            <View style={styles.modalViewVender}>
+                <Text style={styles.modalTextVender}>¿Desea hacer optativa la asignatura?</Text>
+                <View style={styles.botones}>
+                    <StyledButton
+                        style={styles.boton}
+                        title="Cancelar"
+                        onPress={() => {setModalVenderVisible({modalHipotecarVisible: !modalHipotecarVisible})}}
+                        red
+                    />
+                    <StyledButton
+                        style={styles.boton}
+                        title="Vender"
+                        onPress={() => {
+                            console.log("Optativizando...", idPartida, username, coordenadas.h, coordenadas.v);
+                            socket.emit('venderAsignatura',{
+                                coordenadas: {h: coordenadas.h, v: coordenadas.v},
+                                socketId: socket.id
+                            },
+                            (ack) => {
+                                if(ack.msg == 0){
+                                    console.log("Optativizada");
+                                    setModalVenderVisible({modalHipotecarVisible: !modalHipotecarVisible})
+                                    onClose();
+                                }
+                                else if(ack.msg == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
+                                }
+                            })
+                        }}
+                        green
+                    />
+                </View>
+            </View>
+        </View>
+        </Modal>                
+
+
+
         </View>
     )
 }
