@@ -17,6 +17,7 @@ import StyledModal from '../components/StyledModal';
 import StyledModalCompra from '../components/StyledModalCompra';
 import StyledModalAsignaturas from '../components/StyledModalAsignaturas';
 import StyledModalTimeout from '../components/StyledModalTimeout';
+import StyledModalCarcel from '../components/StyledModalCarcel';
 import Die from '../components/Die';
 
 import {
@@ -249,7 +250,7 @@ export default function TableroScreen({route}) {
     const [modalEsMiaVisible, setModalEsMiaVisible] = React.useState(false);
     const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
     const [modalOfertaVisible, setModalOfertaVisible] = React.useState(false);
-    // const [modalIntercambiosVisible, setModalIntercambiosVisible] = React.useState(false);
+    const [modalCarcelVisible, setModalCarcelVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
@@ -269,7 +270,7 @@ export default function TableroScreen({route}) {
     const [suerte, setSuerte] = React.useState([""]);
 
     //variable para guardar las asignaturas del jugador
-    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:""}]);
+    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: boolean}]);
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
@@ -278,6 +279,7 @@ export default function TableroScreen({route}) {
 
     //variable para saber si el jugador está en la carcel
     const [carcel, setCarcel] = React.useState(true);
+    const [cartaJulio, setCartaJulio] = React.useState(false);
 
     //variables para controlar el timeout del turno
     const [reiniciarContador, setReiniciarContador] = React.useState(false);
@@ -844,6 +846,29 @@ export default function TableroScreen({route}) {
           });
     })
 
+    const tieneCartaJulio = useCallback(() => {
+        console.log("tiene carta julio?");
+        socket.emit('cartaJulio',{
+            socketId: socket.id
+        },
+        (ack) => {
+            console.log("Server acknowledge: " + ack);
+            if(ack.cod == 0){
+                if(ack.msg == 1){ //TODO: ver que nos pasan
+                    setCartaJulio(true);
+                }
+                else{
+                    setCartaJulio(false);
+                }
+                setModalCarcelVisible(true);
+            }
+            else{
+                alert("Se ha producido un error, intentando de nuevo");
+                tieneCartaJulio();
+            }
+        })
+    })
+
     useEffect(() =>{
         socket.on('infoPartida',(mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
@@ -864,6 +889,9 @@ export default function TableroScreen({route}) {
             setTurnoActual(mensaje.posicion);
             if(mensaje.jugador == username){
                 // setDetenidoActualizaInfo(true);
+                if(carcel){
+                    tieneCartaJulio();
+                }
                 setReiniciarContador(true);
             }
         });
@@ -1214,7 +1242,7 @@ export default function TableroScreen({route}) {
                 </View>
             </View>
             <View style={styles.asignaturas}>
-                <StyledModalAsignaturas
+            <StyledModalAsignaturas
                 title="MIS ASIGNATURAS"
                 asignaturas={asignaturas}
                 username={username}
@@ -1243,7 +1271,8 @@ export default function TableroScreen({route}) {
                             for(let i = 0; i<ack.msg.casillas.length; i++) {
                                 let aux = { nombre: ack.msg.casillas[i].nombre,
                                             h: ack.msg.casillas[i].coordenadas.h, 
-                                            v: ack.msg.casillas[i].coordenadas.v }
+                                            v: ack.msg.casillas[i].coordenadas.v,
+                                            disminuir: ack.msg.disminuir }
                                 vector.push(aux);
                             }
                             console.log(vector);
@@ -1568,7 +1597,25 @@ export default function TableroScreen({route}) {
                                         console.log("CONTRA oferta: " + precioTrade) }}/>
                 </View>
  
-            </Modal> 
+            </Modal>
+            <StyledModalCarcel
+            title={"Estás en la cárcel"}
+            text={"¿Como quieres salir?"}
+            cartaJulio={cartaJulio}
+            onClose = { () => {
+                setModalCarcelVisible({modalCarcelVisible: !modalCarcelVisible});
+                setCambio(true);
+            }}
+            onCloseRoll={() => {
+                setModalCarcelVisible({modalCarcelVisible: !modalCarcelVisible});
+                roll();
+            }}
+            visible={modalCarcelVisible}
+            onRequestClose={() => {
+                setModalCarcelVisible({modalCarcelVisible: !modalCarcelVisible});
+                setCambio(true);
+            }} 
+            /> 
     </View>
     );
 }

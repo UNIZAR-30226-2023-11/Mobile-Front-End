@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text } from 'react-native';
-import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import StyledButton from './StyledButton';
 
 import { infoAsignatura, venderAsignatura } from '../url/partida';
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModalAsignaturas({style={}, onClose, visible, onRequestClose, title, asignaturas, username, idPartida, miTurno}){
+export default function StyledModalAsignaturas({style={}, onClose, visible, onRequestClose, title, asignaturas, miTurno}){
 
     const modalStyles = [
         styles.modalView,
@@ -95,6 +95,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
     const {socket} = React.useContext(SocketContext);
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
     const [modalVenderVisible, setModalVenderVisible] = React.useState(false);
+    const [modalDisminuirVisible, setModalDisminuirVisible] = React.useState(false);
     const [carta,setCarta] = React.useState();
     const [coordenadas, setCoordenadas] = React.useState({h: 0, v: 0});
 
@@ -279,6 +280,19 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         }}>
                         <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
                     </Pressable>
+                    {value.disminuir && 
+                    <Pressable
+                        onPress={() => {
+                            if(miTurno){
+                                setModalDisminuirVisible(true);
+                                setCoordenadas({h:value.h, v:value.v})
+                            }
+                            else{
+                                alert("Espera a que sea su turno para disminuir los créditos de la asignaturas");
+                            }
+                        }}>
+                        <FontAwesome name="cart-arrow-down" size={24} color="red" />
+                    </Pressable>}
                   </View>
                 ))
             }
@@ -312,7 +326,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
         props>
         <View style={styles.centeredView}>
             <View style={styles.modalViewVender}>
-                <Text style={styles.modalTextVender}>¿Esta seguro de que desea vender la asignatura?</Text>
+                <Text style={styles.modalTextVender}>¿Desea vender la asignatura?</Text>
                 <View style={styles.botones}>
                     <StyledButton
                         style={styles.boton}
@@ -326,12 +340,55 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         onPress={() => {
                             console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
                             socket.emit('venderAsignatura',{
-                                coordenadas: {h: coordenadas.h, v: coordenadas.v}
+                                coordenadas: {h: coordenadas.h, v: coordenadas.v},
+                                socketId: socket.id
                             },
                             (ack) => {
                                 if(ack.msg == 0){
                                     console.log("vendida");
                                     setModalVenderVisible({modalVenderVisible: !modalVenderVisible})
+                                    onClose();
+                                }
+                                else if(ack.msg == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
+                                }
+                            })
+                        }}
+                        green
+                    />
+                </View>
+            </View>
+        </View>
+        </Modal>
+        <Modal
+        animationType="slide"
+        visible={modalDisminuirVisible}
+        onRequestClose={() => {setModalDisminuirVisible({modalDisminuirVisible: !modalDisminuirVisible})}}
+        transparent={true}
+        props>
+        <View style={styles.centeredView}>
+            <View style={styles.modalViewVender}>
+                <Text style={styles.modalTextVender}>¿Desea disminuir los créditos de la asignatura?</Text>
+                <View style={styles.botones}>
+                    <StyledButton
+                        style={styles.boton}
+                        title="Cancelar"
+                        onPress={() => {setModalDisminuirVisible({modalDisminuirVisible: !modalDisminuirVisible})}}
+                        red
+                    />
+                    <StyledButton
+                        style={styles.boton}
+                        title="Disminuir créditos"
+                        onPress={() => {
+                            console.log("disminuyendo créditos...", coordenadas.h, coordenadas.v);
+                            socket.emit('disminuirCreditos',{
+                                coordenadas: {h: coordenadas.h, v: coordenadas.v},
+                                socketId: socket.id
+                            },
+                            (ack) => {
+                                if(ack.msg == 0){
+                                    console.log("disminuidos");
+                                    setModalDisminuirVisible({modalDisminuirVisible: !modalDisminuirVisible})
                                     onClose();
                                 }
                                 else if(ack.msg == 2){
