@@ -267,7 +267,7 @@ export default function TableroScreen({route}) {
     const [propietario, setPropietario] = React.useState("");
     const [pago, setPago] = React.useState(0);
     const [boletin, setBoletin] = React.useState({nombre: '', descripcion: ''});
-    const [suerte, setSuerte] = React.useState([""]);
+    const [suerte, setSuerte] = React.useState({nombre:'', descripcion: ''});
 
     //variable para guardar las asignaturas del jugador
     const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: false}]);
@@ -650,117 +650,117 @@ export default function TableroScreen({route}) {
             coordenadas:{h: tokensJugadores[turnoActual].horizontal,v: tokensJugadores[turnoActual].vertical} 
         },
         (ack)=> {
-            if(ack.msg.casillaInfo.tipo == 'A'){
-                console.log("asignatura ", ack.msg.casillaInfo.cuatrimestre);
-                switch(ack.msg.casillaInfo.cuatrimestre){
+            if(ack.msg.tipo == 'A'){
+                console.log("asignatura ", ack.msg.cuatrimestre);
+                switch(ack.msg.cuatrimestre){
                     case 1:
                         setCarta(<Asignatura_1
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 2:
                         setCarta(<Asignatura_2
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 3:
                         setCarta(
                         <Asignatura_3
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 4:
                         setCarta(                                            
                         <Asignatura_4
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 5:
                         setCarta(                                            
                         <Asignatura_5
-                           title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                           title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break;  
                     case 6:
                         setCarta(                                            
                         <Asignatura_6
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 7:
                         setCarta(                                            
                         <Asignatura_7
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                     case 8:
                         setCarta(                                            
                         <Asignatura_8
-                            title={ack.msg.casillaInfo.nombre}
-                            coste={ack.msg.casillaInfo.precioCompra}
-                            matricula={ack.msg.casillaInfo.matricula}
-                            precio1C={ack.msg.casillaInfo.precio1C}
-                            precio2C={ack.msg.casillaInfo.precio2C}
-                            precio3C={ack.msg.casillaInfo.precio3C}
-                            precio4C={ack.msg.casillaInfo.precio4C}
-                            optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                            precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                            title={ack.msg.nombre}
+                            coste={ack.msg.precioCompra}
+                            matricula={ack.msg.matricula}
+                            precio1C={ack.msg.precio1C}
+                            precio2C={ack.msg.precio2C}
+                            precio3C={ack.msg.precio3C}
+                            precio4C={ack.msg.precio4C}
+                            optatividad={ack.msg.devolucionMatricula}
+                            precioCredito={ack.msg.precioCompraCreditos}
                         />);
                         break; 
                 }
@@ -774,30 +774,30 @@ export default function TableroScreen({route}) {
                     setCompra(true);
                 }
             }
-            else if(ack.msg.casillaInfo.tipo == 'F'){
+            else if(ack.msg.tipo == 'F'){
                 //console.log("evento");
                 setCarta(                                    
                 <Evento
-                    title={ack.msg.casillaInfo.nombre}
-                    coste={ack.msg.casillaInfo.precioCompra}
-                    matricula={ack.msg.casillaInfo.matricula}
-                    precio1C={ack.msg.casillaInfo.precio1C}
-                    precio2C={ack.msg.casillaInfo.precio2C}
-                    precio3C={ack.msg.casillaInfo.precio3C}
-                    optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                    title={ack.msg.nombre}
+                    coste={ack.msg.precioCompra}
+                    matricula={ack.msg.matricula}
+                    precio1C={ack.msg.precio1C}
+                    precio2C={ack.msg.precio2C}
+                    precio3C={ack.msg.precio3C}
+                    optatividad={ack.msg.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
                 if(!esMia){
                     setCompra(true);
                 }
             }
-            else if(data.casillaInfo.tipo == 'I'){
+            else if(ack.msg.tipo == 'I'){
                 //console.log("recurso");
                 setCarta(                                   
                 <Recurso
-                    title={ack.msg.casillaInfo.nombre}
-                    coste={ack.msg.casillaInfo.precioCompra}
-                    optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                    title={ack.msg.nombre}
+                    coste={ack.msg.precioCompra}
+                    optatividad={ack.msg.devolucionMatricula}
                     imageSource={require('../../assets/bob.png')}
                 />);
                 if(!esMia){
@@ -1466,8 +1466,8 @@ export default function TableroScreen({route}) {
         />
         <StyledModal
             style={{height: '30%'}}
-            title={suerte[0]}
-            text={suerte[1]}
+            title={suerte.nombre}
+            text={suerte.descripcion}
             onClose = { () => {
                 setReiniciarContador(true);
                 setModalSuerteVisible({modalSuerteVisible: !modalSuerteVisible})

@@ -156,7 +156,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Acabar turno"
                         onPress={() =>{
                             onClose();
-                            setModalPreguntasIntercambiosVisible(true);
+                            setModalPreguntaIntercambiosVisible(true);
                         }}
                         purple
                     />}
@@ -184,6 +184,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                                 }
                                 else if(ack.cod == 7){
                                     onClose();
+                                    setModalPreguntaIntercambiosVisible(true);
                                 }
                                 else if(ack.cod == 9){
                                     alert("No tienes suficiente dinero");
@@ -208,6 +209,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                             (ack) =>{
                                 if(ack.cod == 0){
                                     console.log("aumentados");
+                                    setModalPreguntaIntercambiosVisible(true);
                                     onClose();
                                 }
                                 else if(ack.cod == 2){
@@ -241,6 +243,7 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                     title="Realizar intercambio"
                     onPress={() =>{
                         console.log("realizando intercambio");
+                        setModalIntercambiosVisible(true);
                         onClose();
                     }}
                     purple
