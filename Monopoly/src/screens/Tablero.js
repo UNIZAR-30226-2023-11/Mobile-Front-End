@@ -377,6 +377,9 @@ export default function TableroScreen({route}) {
                     setTokensJugador(aux);
                     setComprobar(true);
                     if(ack.msg.dado1 == ack.msg.dado2){
+                        if(carcel){
+                            setCarcel(false);
+                        }
                         setDobles(true);
                         if(contadorDobles == 2){
                             alert("Te toca ir a Julio");
@@ -391,6 +394,9 @@ export default function TableroScreen({route}) {
                         }else{
                             setContadorDobles(contadorDobles+1);
                         }
+                    }
+                    else if(carcel){
+                        cambiarTurno();
                     }
                 }
                 else if(ack.cod == 2){
@@ -491,24 +497,24 @@ export default function TableroScreen({route}) {
                             socketId: socket.id
                         },
                         (ack)=>{
-                            if(ack.cod == 0){
-                                if(ack.msg.jugador!=null){
-                                    if(ack.msg.jugador==username){
-                                        console.log("es mia");
-                                        infoCasilla(true, ack.msg.aumento);
-                                    }
-                                    else{
-                                    console.log("comprada");
-                                    console.log(ack.msg);
-                                    setPropietario(ack.msg.jugador);
-                                    setPago(ack.msg.dinero);
-                                    setModalAsignaturaCompradaVisible(true);
-                                    }
-                                }
-                                else{
-                                    console.log("no comprada");                
-                                    infoCasilla(false, false);
-                                }
+                            if(ack.cod == 5){
+                                console.log("comprada");
+                                console.log(ack.msg);
+                                setPropietario(ack.msg.jugador);
+                                setPago(ack.msg.dinero);
+                                setModalAsignaturaCompradaVisible(true);
+                            }
+                            else if(ack.cod == 6){
+                                console.log("es mia");
+                                infoCasilla(true, true);
+                            }
+                            else if(ack.cod == 7){
+                                console.log("es mia");
+                                infoCasilla(true, false);
+                            }
+                            else if(ack.cod == 8){
+                                console.log("no comprada");                
+                                infoCasilla(false, false);
                             }
                             else if(ack.cod == 2){
                                 comprobarAsignatura();
@@ -664,7 +670,7 @@ export default function TableroScreen({route}) {
     });
 
     const infoCasilla= useCallback((esMia, aumento) => {
-        socket.emit('infoCasilla',{
+        socket.emit('infoAsignatura',{
             coordenadas:{h: tokensJugadores[turnoActual].horizontal,v: tokensJugadores[turnoActual].vertical} 
         },
         (ack)=> {
