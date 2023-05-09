@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Select, NativeBaseProvider } from "native-base";
 import StyledButton from "../components/StyledButton";
 import { Entypo } from '@expo/vector-icons';
+import StyledModalSala from "../components/StyledModalSala";
+
 
 
 const styles = StyleSheet.create({
@@ -79,19 +81,25 @@ const styles = StyleSheet.create({
     pujas: {
         marginTop: '4%',
         marginBottom: '4%',
+    },
+    modal: {
+        height: '30%',
+        width: '84%',
     }
 });
 
 
-export default function TestPujas(){
+export default function TestPujas(navigation){
     
     const [modalPujaVisible, setModalPujaVisible] = useState(false);
+    const [modalPartidaVisible, setModalPartidaVisible] = useState(false);
     const [precioTrade, setPrecioTrade] = useState(null);
 
     return (
         <View>
             {/* un boton para ver el modal de PUJAS */}
             <StyledButton title="PUJAR" onPress={() => setModalPujaVisible(true)} />
+            <StyledButton title="PARTIDAS EN JUEGO" onPress={() => setModalPartidaVisible(true)} />
         <NativeBaseProvider>
             <Modal style={styles.modalView} visible={modalPujaVisible}>
                 <View style={styles.centeredView}>
@@ -119,7 +127,25 @@ export default function TestPujas(){
                         onPress={() => {console.log("MOSTRAR MODAL INFO ASIGNATURA ") }}/>  
                 </View>
             </Modal> 
+
+
+            <StyledModalSala
+                title="Partida en juego"
+    text={"Tienes una partida en juego, ¿deseas unirte?" /*idPartida*/}
+                style={styles.modal}
+                buttonText="Unirme"
+                idPartida="5"
+                navigation={navigation}
+                onClose={ () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
+                visible={modalPartidaVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalReglasVisible({modalPartidaVisible: !modalPartidaVisible});
+                }} 
+            />
+
             </NativeBaseProvider>
         </View>
+
     )
 }
