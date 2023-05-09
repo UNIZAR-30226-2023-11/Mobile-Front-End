@@ -42,8 +42,16 @@ export default function IndexScreen({navigation}) {
         <View style={{flex:0.6, flexDirection:'row'}}>
         <StyledModal
                 title="SOBRE NOSOTROS"
-                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    Lorem ipsum dolor sit amet, con sectetuer adipiscing elit, sed do eiusmod tempor incididunt ut lab et d Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidid id odio ut aliquip ex ea commodo consequat"   
+                text = {`                  ¡Conócenos!
+                
+Conoce al equipo técnico que forma la empresa Susan L. Graham, que está formado por 7 personas:
+
+      Luna Álvarez - developer
+      Lucía Beltrán - developer
+      Pilar Fierro - developer
+      Martina Gracia - developer
+      Daniel Carrizo - developer
+      Antoine Gajan - developer`} 
                 onClose = { () => {setModalSobreNosotrosVisible({modalSobreNosotrosVisible: !modalSobreNosotrosVisible})}}
                 visible={modalSobreNosotrosVisible}
                 onRequestClose={() => {
