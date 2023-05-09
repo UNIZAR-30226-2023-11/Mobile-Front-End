@@ -339,7 +339,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         title="Vender"
                         onPress={() => {
                             console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
-                            socket.emit('venderAsignatura',{
+                            socket.emit('vender',{
                                 coordenadas: {h: coordenadas.h, v: coordenadas.v},
                                 socketId: socket.id
                             },

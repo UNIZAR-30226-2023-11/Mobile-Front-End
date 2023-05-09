@@ -173,17 +173,20 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Comprar"
                         onPress={() => {
                             console.log("comprando..", c_hor, c_ver);
-                            socket.emit('comprarAignatura',{
+                            socket.emit('comprarCasilla',{
+                                socketId: socket.id,
                                 coordenadas: {h: c_hor, v: c_ver}
                             },
                             (ack) => {
-                                if(ack.cod == 0){
+                                if(ack.cod == 6){
                                     console.log("comprada");
-                                    if(ack.msg.aumento){
-                                        setModalAumentoVisible(true);
-                                    }else{
-                                        onClose();
-                                    }
+                                    setModalAumentoVisible(true);
+                                }
+                                else if(ack.cod == 7){
+                                    onClose();
+                                }
+                                else if(ack.cod == 9){
+                                    alert("No tienes suficiente dinero");
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
@@ -198,7 +201,8 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         title="Aumentar creditos"
                         onPress={() => {
                             console.log("aumentando creditos..", c_hor, c_ver);
-                            socket.emit('aumentarCreditosAsignaturas',{
+                            socket.emit('aumentarCreditos',{
+                                socketId: socket.id,
                                 coordenadas: {h: c_hor, v: c_ver}
                             },
                             (ack) =>{
@@ -268,25 +272,18 @@ export default function StyledModalCompra({InfoCarta, onClose, visible, onReques
                         style={styles.boton}
                         title="Aumentar créditos"
                         onPress={() => {
-                            const response =  fetch(aumentarCreditosAsignatura, {
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "idPartida": idPartida,
-                                                    "username": username,
-                                                    "coordenadas":{"h": c_hor,"v": c_ver}})
-                            })
-                            .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status);
-                            }
-                            console.log("aumentados");
-                            setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})
-                            onClose();
-                            })
-                            .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
+                            socket.emit('aumentarCreditos',{
+                                socketId: socket.id,
+                                coordenadas: {h: c_hor, v: c_ver}
+                            },
+                            (ack) =>{
+                                if(ack.cod == 0){
+                                    console.log("aumentados");
+                                    onClose();
+                                }
+                                else if(ack.cod == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, intentelo de nuevo.");
+                                }
                             });
                         }}
                         purple

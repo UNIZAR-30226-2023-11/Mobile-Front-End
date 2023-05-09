@@ -270,7 +270,7 @@ export default function TableroScreen({route}) {
     const [suerte, setSuerte] = React.useState([""]);
 
     //variable para guardar las asignaturas del jugador
-    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: boolean}]);
+    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: false}]);
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
@@ -278,7 +278,7 @@ export default function TableroScreen({route}) {
     const [detenidoActualizarInfo, setDetenidoActualizaInfo] = React.useState(false);
 
     //variable para saber si el jugador está en la carcel
-    const [carcel, setCarcel] = React.useState(true);
+    const [carcel, setCarcel] = React.useState(false);
     const [cartaJulio, setCartaJulio] = React.useState(false);
 
     //variables para controlar el timeout del turno
@@ -588,41 +588,16 @@ export default function TableroScreen({route}) {
                 },
                 (ack)=>{
                     if(ack.cod == 0){
-                        let aux = {nombre: ack.msg[0].nombre,descripcion: ack.msg[0].descripcion};
+                        let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
                         console.log(aux);
                         setBoletin(aux);
+                        setModalBoletinVisible(true);
                     }
                     else if(ack.cod == 2){
                         comprobarAsignatura();
                     }
                 })
-                // const response = fetch(tarjetaAleatoria,{
-                //     method: 'PUT',
-                //     headers: {'Content-Type': 'application/json'},
-                //     body: JSON.stringify({  "idPartida": idPartida,
-                //                             "username": username,
-                //                             "tipo": "boletin"        
-                //                         })
-                // })
-                // .then((response) => {
-                //     if(response.status != 200){
-                //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de boletín');
-                //     }
-                //     return response.json();
-                // })
-                // .then(data => {
-                //     console.log("BOLETIN");
-                //     console.log(data[0]);
-                //     let aux = {nombre: data[0].nombre,descripcion: data[0].descripcion};
-                //     console.log(aux);
-                //     setBoletin(aux);
-                //     setModalBoletinVisible(true);
-                // })
-                // .catch((error) => {
-                //     //Error
-                //     //alert(JSON.stringify(error));
-                //     console.error(error);
-                // });
+               
             }
         }else{
             // console.log("obteniendo suerte", tarjetaAleatoria);
@@ -631,9 +606,10 @@ export default function TableroScreen({route}) {
             },
             (ack)=>{
                 if(ack.cod == 0){
-                    let aux = {nombre: ack.msg[0].nombre,descripcion: ack.msg[0].descripcion};
+                    let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
                     console.log(aux);
-                    setBoletin(aux);
+                    setSuerte(aux);
+                    setModalSuerteVisible(true);
                 }
                 else if(ack.cod == 2){
                     comprobarAsignatura();
@@ -917,7 +893,6 @@ export default function TableroScreen({route}) {
             // setDetenidoContador(false);
             console.log("te toca");
         }
-        // actualizarDinero();
     },[])
 
     // useEffect(() => {
@@ -1267,18 +1242,18 @@ export default function TableroScreen({route}) {
                 title="Asignaturas"
                 onPress={() => {
                     setReiniciarContador(true);
-                    socket.emit('listarAsignaturas',{
+                    socket.emit('listaAsignaturasC',{
                         socketId: socket.id
                     },
                     (ack) => {
                         if(ack.cod==0){
                             console.log("Asignaturas:\n ",ack.msg);
                             let vector = new Array();
-                            for(let i = 0; i<ack.msg.casillas.length; i++) {
-                                let aux = { nombre: ack.msg.casillas[i].nombre,
-                                            h: ack.msg.casillas[i].coordenadas.h, 
-                                            v: ack.msg.casillas[i].coordenadas.v,
-                                            disminuir: ack.msg.disminuir }
+                            for(let i = 0; i<ack.msg.length; i++) {
+                                let aux = { nombre: ack.msg[i].nombre,
+                                            h: ack.msg[i].coordenadas.h, 
+                                            v: ack.msg[i].coordenadas.v,
+                                            disminuir: true}
                                 vector.push(aux);
                             }
                             console.log(vector);
