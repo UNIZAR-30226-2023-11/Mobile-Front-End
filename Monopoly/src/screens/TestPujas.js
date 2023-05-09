@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Select, NativeBaseProvider } from "native-base";
 import StyledButton from "../components/StyledButton";
 import { Entypo } from '@expo/vector-icons';
+import StyledModalSala from "../components/StyledModalSala";
+
 
 
 const styles = StyleSheet.create({
@@ -56,51 +58,94 @@ const styles = StyleSheet.create({
         marginRight: '28%',
     },
     elementoBoton:{
-        flexDirection: 'row', 
-        alignItems: 'center',
+        flexDirection: 'column', 
+        //alignItems: 'center',
+        //marginLeft: '8%',
+        //marginRight: '8%'
+    },
+    elementoBoton1:{ 
+        //alignItems: 'center',
+        //marginLeft: '8%',
+        //marginRight: '8%'
+    },
+    elementoBoton2:{
+        //alignItems: 'center',
+        //marginLeft: '8%',
+        //marginRight: '8%'
+    },
+    elementoBoton3:{
+        //alignItems: 'center',
         marginLeft: '8%',
         marginRight: '8%'
     },
+    pujas: {
+        marginTop: '4%',
+        marginBottom: '4%',
+    },
+    modal: {
+        height: '30%',
+        width: '84%',
+    }
 });
 
 
-export default function TestPujas(){
+export default function TestPujas(navigation){
     
     const [modalPujaVisible, setModalPujaVisible] = useState(false);
+    const [modalPartidaVisible, setModalPartidaVisible] = useState(false);
     const [precioTrade, setPrecioTrade] = useState(null);
 
     return (
         <View>
             {/* un boton para ver el modal de PUJAS */}
-            <StyledButton title="PUJAR" onPress={() => setModalVisible(true)} />
+            <StyledButton title="PUJAR" onPress={() => setModalPujaVisible(true)} />
+            <StyledButton title="PARTIDAS EN JUEGO" onPress={() => setModalPartidaVisible(true)} />
         <NativeBaseProvider>
             <Modal style={styles.modalView} visible={modalPujaVisible}>
                 <View style={styles.centeredView}>
                     <Pressable
-                        onPress={() => setModalVisible(false)}>
+                        onPress={() => setModalPujaVisible(false)}>
                         <Entypo name="circle-with-cross" size={35} color="red" style={styles.button}/>
                     </Pressable>
 
                     <Text style={styles.titulo}>PUJA</Text>
                     <View style={styles.elementoLista}>
-                        <Text>PRECIO PUJA $$$ </Text>
+                        <Text style={styles.titulo} >PRECIO PUJA $$$ </Text>
                     </View>
                     <View style={styles.elementoBoton}>
-                        <StyledButton title="+10€"
+                        <StyledButton style={styles.elementoBoton1} title="+10€"
                         onPress={() => {console.log("BOTON 5€ PULSADO ") }}/>
-                        <StyledButton title="+50€"
+                        <StyledButton style={styles.elementoBoton2} title="+50€"
                         onPress={() => {console.log("BOTON 50€ PULSADO ") }}/>
-                        <StyledButton title="+100€"
+                        <StyledButton style={styles.elementoBoton2}title="+100€"
                         onPress={() => {console.log("BOTON 100€ PULSADO ") }}/>                                
                     </View>
-                    <Text>Carlotita ha pujado €€€ </Text>
+                    <Text style={styles.pujas}>Carlotita ha pujado €€€ </Text>
                     <Text>Nombre de la carta </Text>
                     {/* aqui mostrar modal de la carta de la asignatura !!!!! */}
                     <StyledButton title="infoAsignatura"
                         onPress={() => {console.log("MOSTRAR MODAL INFO ASIGNATURA ") }}/>  
                 </View>
             </Modal> 
+
+
+            <StyledModalSala
+                title="Partida en juego"
+    text={"Tienes una partida en juego, ¿deseas unirte?" /*idPartida*/}
+                style={styles.modal}
+                buttonText="Unirme"
+                idPartida="5"
+                navigation={navigation}
+                onClose={ () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
+                visible={modalPartidaVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalReglasVisible({modalPartidaVisible: !modalPartidaVisible});
+                }} 
+            />
+
             </NativeBaseProvider>
         </View>
+
     )
 }
