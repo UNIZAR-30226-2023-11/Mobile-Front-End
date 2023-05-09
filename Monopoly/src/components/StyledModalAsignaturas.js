@@ -417,6 +417,52 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
             </View>
         </View>
         </Modal>
+
+        <Modal
+        animationType="slide"
+        visible={modalHipotecarVisible}
+        onRequestClose={() => {setModalHipotecarVisible({modalHipotecarVisible: !modalHipotecarVisible})}}
+        transparent={true}
+        props>
+        <View style={styles.centeredView}>
+            <View style={styles.modalViewVender}>
+                <Text style={styles.modalTextVender}>¿Desea hacer optativa la asignatura?</Text>
+                <View style={styles.botones}>
+                    <StyledButton
+                        style={styles.boton}
+                        title="Cancelar"
+                        onPress={() => {setModalVenderVisible({modalHipotecarVisible: !modalHipotecarVisible})}}
+                        red
+                    />
+                    <StyledButton
+                        style={styles.boton}
+                        title="Vender"
+                        onPress={() => {
+                            console.log("Optativizando...", idPartida, username, coordenadas.h, coordenadas.v);
+                            socket.emit('venderAsignatura',{
+                                coordenadas: {h: coordenadas.h, v: coordenadas.v},
+                                socketId: socket.id
+                            },
+                            (ack) => {
+                                if(ack.msg == 0){
+                                    console.log("Optativizada");
+                                    setModalVenderVisible({modalHipotecarVisible: !modalHipotecarVisible})
+                                    onClose();
+                                }
+                                else if(ack.msg == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
+                                }
+                            })
+                        }}
+                        green
+                    />
+                </View>
+            </View>
+        </View>
+        </Modal>                
+
+
+
         </View>
     )
 }
