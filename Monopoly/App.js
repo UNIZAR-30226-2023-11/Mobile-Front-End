@@ -20,6 +20,7 @@ import SettingsPasswordScreen from './src/screens/SettingsPassword.js';
 import SettingsUserScreen from './src/screens/SettingsUser.js';
 import TableroScreen from './src/screens/Tablero.js';
 import TestTradeScreen from './src/screens/TestTrade.js';
+import TestPujasScreen from './src/screens/TestPujas.js';
 import TiendaScreen from './src/screens/Tienda.js';
 
 const Stack = createNativeStackNavigator();
@@ -136,6 +137,12 @@ export default function App() {
           component={TestTradeScreen}
           options={{title: 'Intercambios'}}   
           />
+
+        <Stack.Screen 
+          name="TestPujas" 
+          component={TestPujasScreen}
+          options={{title: 'Pujas'}}   
+          />  
 
       </Stack.Navigator>
     </NavigationContainer>
