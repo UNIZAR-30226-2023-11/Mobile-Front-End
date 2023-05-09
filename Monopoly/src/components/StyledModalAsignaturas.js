@@ -17,6 +17,7 @@ import {
     Recurso,
     Evento
 } from '../components/MonopolyCard';
+import { SocketContext } from './SocketContext';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -91,7 +92,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
         styles.modalView,
         style
     ]
-
+    const {socket} = React.useContext(SocketContext);
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
     const [modalVenderVisible, setModalVenderVisible] = React.useState(false);
     const [carta,setCarta] = React.useState();
@@ -118,137 +119,154 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                 <View key={index}  style={{flex:1, flexDirection:'row', marginTop: '10%', justifyContent:'space-between'}}>
                     <Pressable
                         onPress={() => {
-                            const response = fetch(infoAsignatura,{
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({"coordenadas":{"h": value.h,"v": value.v}})
-                        })
-                        .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            //console.log(data);
-                            if(data.casillaInfo.tipo == 'A'){
-                                console.log("asignatura ", data.casillaInfo.cuatrimestre);
-                                switch(data.casillaInfo.cuatrimestre){
-                                    case 1:
-                                        setCarta(<Asignatura_1
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 2:
-                                        setCarta(<Asignatura_2
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 3:
-                                        setCarta(
-                                        <Asignatura_3
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 4:
-                                        setCarta(                                            
-                                        <Asignatura_4
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 5:
-                                        setCarta(                                            
-                                        <Asignatura_5
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break;  
-                                    case 6:
-                                        setCarta(                                            
-                                        <Asignatura_6
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 7:
-                                        setCarta(                                            
-                                        <Asignatura_7
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
-                                    case 8:
-                                        setCarta(                                            
-                                        <Asignatura_8
-                                            title={data.casillaInfo.nombre}
-                                            coste={data.casillaInfo.precioCompra}
-                                            description={""}
-                                        />);
-                                        break; 
+                            socket.emit('infoCasilla',{
+                                coordenadas:{h: tokensJugadores[turnoActual].horizontal,v: tokensJugadores[turnoActual].vertical} 
+                            },
+                            (ack)=> {
+                                if(ack.msg.casillaInfo.tipo == 'A'){
+                                    console.log("asignatura ", ack.msg.casillaInfo.cuatrimestre);
+                                    switch(ack.msg.casillaInfo.cuatrimestre){
+                                        case 1:
+                                            setCarta(<Asignatura_1
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 2:
+                                            setCarta(<Asignatura_2
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 3:
+                                            setCarta(
+                                            <Asignatura_3
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 4:
+                                            setCarta(                                            
+                                            <Asignatura_4
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 5:
+                                            setCarta(                                            
+                                            <Asignatura_5
+                                            title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break;  
+                                        case 6:
+                                            setCarta(                                            
+                                            <Asignatura_6
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 7:
+                                            setCarta(                                            
+                                            <Asignatura_7
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                        case 8:
+                                            setCarta(                                            
+                                            <Asignatura_8
+                                                title={ack.msg.casillaInfo.nombre}
+                                                coste={ack.msg.casillaInfo.precioCompra}
+                                                matricula={ack.msg.casillaInfo.matricula}
+                                                precio1C={ack.msg.casillaInfo.precio1C}
+                                                precio2C={ack.msg.casillaInfo.precio2C}
+                                                precio3C={ack.msg.casillaInfo.precio3C}
+                                                precio4C={ack.msg.casillaInfo.precio4C}
+                                                optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                                precioCredito={ack.msg.casillaInfo.precioCompraCreditos}
+                                            />);
+                                            break; 
+                                    }
                                 }
-                            }
-                            else if(data.casillaInfo.tipo == 'F'){
-                                //console.log("evento");
-                                setCarta(                                    <Evento
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={""}
-                                    imageSource={require('../../assets/bob.png')}
-                                />);
-                            }
-                            else if(data.casillaInfo.tipo == 'I'){
-                                //console.log("recurso");
-                                setCarta(                                   <Recurso
-                                    title={data.casillaInfo.nombre}
-                                    coste={data.casillaInfo.precioCompra}
-                                    description={""}
-                                    imageSource={require('../../assets/bob.png')}
-                                />);
-                            }
-                            setModalCartaVisible(true)
+                                else if(ack.msg.casillaInfo.tipo == 'F'){
+                                    //console.log("evento");
+                                    setCarta(                                    
+                                    <Evento
+                                        title={ack.msg.casillaInfo.nombre}
+                                        coste={ack.msg.casillaInfo.precioCompra}
+                                        matricula={ack.msg.casillaInfo.matricula}
+                                        precio1C={ack.msg.casillaInfo.precio1C}
+                                        precio2C={ack.msg.casillaInfo.precio2C}
+                                        precio3C={ack.msg.casillaInfo.precio3C}
+                                        optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                else if(data.casillaInfo.tipo == 'I'){
+                                    //console.log("recurso");
+                                    setCarta(                                   
+                                    <Recurso
+                                        title={ack.msg.casillaInfo.nombre}
+                                        coste={ack.msg.casillaInfo.precioCompra}
+                                        optatividad={ack.msg.casillaInfo.devolucionMatricula}
+                                        imageSource={require('../../assets/bob.png')}
+                                    />);
+                                }
+                                //console.log(carta);
                             })
-                        .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
-                        });}}>
+                        }}>
                         <Text style={styles.modalText}>{value.nombre}</Text> 
                     </Pressable>
-                    {/* {miTurno && <Pressable
-                        onPress={() => {
-                            console.log("vendiendo...", value.nombre);
-                            const response =  fetch(venderAsignatura, {
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "idPartida": idPartida,
-                                                    "username": username,
-                                                    "coordenadas":{"h": value.h,"v": value.v}})
-                            })
-                            .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status);
-                            }
-                            console.log("aumentados");
-                            onClose();
-                            })
-                            .catch((error) => {
-                            //Error
-                            //alert(JSON.stringify(error));
-                            console.error(error);
-                            });}}>
-                        <MaterialCommunityIcons name="trash-can-outline" size={24} color="red" />
-                    </Pressable>} */}
                     <Pressable
                         onPress={() => {
                             if(miTurno){
@@ -307,26 +325,20 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                         title="Vender"
                         onPress={() => {
                             console.log("vendiendo...", idPartida, username, coordenadas.h, coordenadas.v);
-                            const response =  fetch(venderAsignatura, {
-                            method: 'PUT',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({  "idPartida": idPartida,
-                                                    "username": username,
-                                                    "coordenadas":{"h": coordenadas.h,"v": coordenadas.v}})
+                            socket.emit('venderAsignatura',{
+                                coordenadas: {h: coordenadas.h, v: coordenadas.v}
+                            },
+                            (ack) => {
+                                if(ack.msg == 0){
+                                    console.log("vendida");
+                                    setModalVenderVisible({modalVenderVisible: !modalVenderVisible})
+                                    onClose();
+                                }
+                                else if(ack.msg == 2){
+                                    alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
+                                }
                             })
-                            .then((response) => {
-                            if(response.status != 200){
-                                throw new Error('Error de estado: '+ response.status);
-                            }
-                            console.log("vendida");
-                            setModalVenderVisible({modalVenderVisible: !modalVenderVisible})
-                            onClose();
-                            })
-                            .catch((error) => {
-                            //Error
-                            alert(JSON.stringify(error));
-                            console.error(error);
-                            });}}
+                        }}
                         green
                     />
                 </View>

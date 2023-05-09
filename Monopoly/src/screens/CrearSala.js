@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
 export default function CrearSalaScreen({route, navigation }) {
 
     const {socket} = React.useContext(SocketContext);
-    // const user = route.params.user;
+    const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
 
     const [players, setPlayers] = React.useState(2);
     const [money, setMoney] = React.useState(1500);
-    const [jugadores, setJugadores] = React.useState(["lunaa"]);
+    const [jugadores, setJugadores] = React.useState([user]);
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [cobrarCarcel, setCobrarCarcel] = useState(false);
@@ -117,6 +117,11 @@ export default function CrearSalaScreen({route, navigation }) {
                 const subcadenas = mensajeCadena.split(",");
                 setJugadores(subcadenas);
         });
+
+        socket.on('comenzarPartida', (mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
+        }); 
     },[])
 
     return (
@@ -224,27 +229,22 @@ export default function CrearSalaScreen({route, navigation }) {
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar en la carcel</Text>
                             <Switch value={cobrarCarcel} onValueChange={setCobrarCarcel} />
-                            {console.log("cobrarCarcel " + cobrarCarcel)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Cobrar la beca</Text>
                             <Switch value={cobrarBeca} onValueChange={setCobrarBeca} />
-                            {console.log("cobrarBeca " + cobrarBeca)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Activar las subastas</Text>
                             <Switch value={activarSubasta} onValueChange={setActivarSubasta} />
-                            {console.log("activarSubasta " + activarSubasta)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>{`Aumentar créditos sin necesidad de\n igualar las asignaturas`}</Text>
                             <Switch value={aumentarCreditos} onValueChange={setAumentarCreditos} />
-                            {console.log("aumentarCreditos " + aumentarCreditos)}
                         </View>
                         <View style={styles.option}>
                             <Text style={styles.optionText}>Reiniciar el juego en bancarrota</Text>
                             <Switch value={reiniciarJuegoBancarrota} onValueChange={setReiniciarJuegoBancarrota} />
-                            {console.log("reiniciarJuego " + reiniciarJuegoBancarrota)}
                         </View>
                         <StyledButton
                             lightblue 
@@ -288,7 +288,6 @@ export default function CrearSalaScreen({route, navigation }) {
                     }, (ack) => {
                         console.log('Server acknowledged:', ack);
                         if(ack.cod == 0){
-                            navigation.navigate('Tablero', {user:"lunaa", idPartida: idPartida, jugadores: jugadores});
                         }
                         else if(ack.cod == 2){
                             alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo.");

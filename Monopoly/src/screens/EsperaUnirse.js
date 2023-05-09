@@ -48,9 +48,11 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             const subcadenas = mensajeCadena.split(",");
             setJugadores(subcadenas);
         });
-        socket.on('jugar',(mensaje)=>{
-            navigation.navigate("Tablero", {user: mensaje.user, idPartida: idPartida, jugadores: jugadores});
-        });
+        
+        socket.on('comenzarPartida', (mensaje) => {
+            console.log('Mensaje recibido: ' + mensaje);
+            navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
+        }); 
     },[])
 
     return (

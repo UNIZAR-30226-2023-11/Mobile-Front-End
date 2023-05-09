@@ -113,7 +113,7 @@ export default function HomeScreen({ route, navigation }){
                                 }, (ack) => {
                                     console.log('Server acknowledged:', ack);
                                     if(ack.cod == 0){
-                                        navigation.navigate('CrearSala', {idPartida: ack.msg});
+                                        navigation.navigate('CrearSala', {idPartida: ack.msg.id, user: ack.msg.username});
                                     }
                                     else if(ack.cod != 2){
                                         alert(ack.msg);
