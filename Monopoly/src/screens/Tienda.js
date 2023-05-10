@@ -92,7 +92,8 @@ function estaEnUso(id){
 //falta añadir funcionalidad al boton
 const renderItem = ({ item , route}) => {
   let indice = 0;
-  const infoTienda = route.params.infoTienda;
+  let tienda = route.params.infoTienda;
+  let infoTienda = tienda;
   const usados = infoTienda.map(item => item.usado);
   const comprados = infoTienda.map(item => item.comprado);
 
@@ -135,29 +136,31 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
-    const tienda = route.params.infoTienda;
+    let tienda = route.params.infoTienda;
     //personalizar precio con monedas
-    console.log(username, infoTienda);
+    console.log(username, tienda);
 
     //const nombres = infoTienda.map(item => item.nombre);
     //const imagenes = infoTienda.map(item => item.imagen);
     //const precios = infoTienda.map(item => item.precio);
     //const usados = infoTienda.map(item => item.usado);
     //const comprados = infoTienda.map(item => item.comprado);
-    const infoTienda = [...infoTienda]
-    const fichas = infoTienda.slice(0, 9).map((item, index) => ({
+    let infoTienda = tienda;
+
+    const fichas = infoTienda.filter((item, index) => index < 9).map((item, index) => ({
       id: index,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
       precio: item.precio,
     }));
     
-    const avatares = infoTienda.slice(9, 18).map((item, index) => ({
+    const avatares = infoTienda.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
       id: index + 9,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
       precio: item.precio,
     }));
+    
     
     return (
         <ScrollView stickyHeaderIndices={[0]}>
