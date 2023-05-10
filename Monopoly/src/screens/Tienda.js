@@ -137,30 +137,28 @@ export default function TiendaScreen({ route, navigation }){
     const username = route.params.user;
     const infoTienda = route.params.infoTienda;
     //personalizar precio con monedas
-    const money = '100';
-    console.log(username);
+    console.log(infoTienda);
 
-    const nombres = infoTienda.map(item => item.nombre);
-    const imagenes = infoTienda.map(item => item.imagen);
-    const precios = infoTienda.map(item => item.precio);
-    const usados = infoTienda.map(item => item.usado);
-    const comprados = infoTienda.map(item => item.comprado);
+    //const nombres = infoTienda.map(item => item.nombre);
+    //const imagenes = infoTienda.map(item => item.imagen);
+    //const precios = infoTienda.map(item => item.precio);
+    //const usados = infoTienda.map(item => item.usado);
+    //const comprados = infoTienda.map(item => item.comprado);
 
     const fichas = infoTienda.slice(0, 9).map((item, index) => ({
       id: index,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
-      precio: precios[index],
+      precio: item.precio,
     }));
     
     const avatares = infoTienda.slice(9, 18).map((item, index) => ({
       id: index + 9,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
-      precio: precios[index + 9],
+      precio: item.precio,
     }));
     
-
     return (
         <ScrollView stickyHeaderIndices={[0]}>
         <Header username={'@' + username} money={money + 'M'} />
@@ -184,16 +182,6 @@ export default function TiendaScreen({ route, navigation }){
                         numColumns={3}
                     />
                     </View>
-
-                    <View>
-                    <Text style={styles.texto}>Tableros</Text>
-                    <FlatList
-                        data={tableros}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id.toString()}
-                        numColumns={3}
-                    />
-                </View>
             </View>    
         </ScrollView>        
     );
