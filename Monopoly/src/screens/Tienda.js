@@ -79,52 +79,22 @@ const styles = StyleSheet.create({
       },
   })
 
-const nombres = infoTienda.map(item => item.nombre);
-const imagenes = infoTienda.map(item => item.imagen);
-const precios = infoTienda.map(item => item.precio);
-const usados = infoTienda.map(item => item.usado);
-const comprados = infoTienda.map(item => item.comprado);
-
-const fichas = [
-    { id: 1, image: `data:image/jpg;base64,${imagenes[0]}`, text: nombres[0], precio: precios[0]},
-    { id: 2, image:  `data:image/jpg;base64,${imagenes[1]}`, text: nombres[1], precio: precios[1]},
-    { id: 3, image:  `data:image/jpg;base64,${imagenes[2]}`, text: nombres[2], precio: precios[2]},
-    { id: 4, image:  `data:image/jpg;base64,${imagenes[3]}`, text: nombres[3], precio: precios[3]},
-    { id: 5, image:  `data:image/jpg;base64,${imagenes[4]}`, text: nombres[4], precio: precios[4]},
-    { id: 6, image:  `data:image/jpg;base64,${imagenes[5]}`, text: nombres[5], precio: precios[5]},
-    { id: 7, image:  `data:image/jpg;base64,${imagenes[6]}`, text: nombres[6], precio: precios[6]},
-    { id: 8, image:  `data:image/jpg;base64,${imagenes[7]}`, text: nombres[7], precio: precios[7]},
-    { id: 9, image:  `data:image/jpg;base64,${imagenes[8]}`, text: nombres[8], precio: precios[8]},
-];
-
-const avatares = [
-    { id: 1, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 1', precio: precios[9]},
-    { id: 2, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 2', precio: precios[10]},
-    { id: 3, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 3', precio: precios[11]},
-    { id: 4, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 4', precio: precios[12]},
-    { id: 5, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 5', precio: precios[13]},
-    { id: 6, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 6', precio: precios[14]},
-    { id: 7, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 7', precio: precios[15]},
-    { id: 8, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 8', precio: precios[16]},
-    { id: 9, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 9', precio: precios[17]},
-];
-
-
 function estaComprada(id){
-  //llamar a la funcion de back que muestre elementos comprados
-  return false;
+  return comprados[id];
 }
 
 function estaEnUso(id){
   //lamar a la funcion de back que muestre elementos en uso
-  return true;
+  return usados[id];
 }
 
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
-const renderItem = ({ item }) => {
-  const comprado = estaComprada(item.id);
-  const usado = estaEnUso(item.id);
+const renderItem = ({ item , route}) => {
+  let indice = 0;
+  const infoTienda = route.params.infoTienda;
+  const usados = infoTienda.map(item => item.usado);
+  const comprados = infoTienda.map(item => item.comprado);
 
   return (
     <View style={styles.itemContainer}>
@@ -132,7 +102,7 @@ const renderItem = ({ item }) => {
       <Text style={styles.itemText}>{item.text}</Text>
       
       {/*si aun no esta comprado*/}
-      {!comprado && (
+      {!comprados[indice] && (
         <View>
           <Text style={styles.itemPrecio}>€{item.precio}</Text>
           <TouchableOpacity style={styles.itemButton}>
@@ -141,16 +111,15 @@ const renderItem = ({ item }) => {
         </View>  
       )}
       {/*si ya esta comprado*/}
-      {comprado && !usado && (
+      {comprados[indice] && !usados[indice] && (
           <TouchableOpacity style={styles.itemButton}>
           <Text style={styles.itemButtonText}>Usar</Text>
         </TouchableOpacity>
       )}
       {/*si ya esta comprado y ademas esta en uso*/}
-      {comprado && usado && (
+      {comprados[indice] && usados[indice] && (
           <Text>Actual</Text>
       )}
-
     </View>
 ); };
 
@@ -170,6 +139,27 @@ export default function TiendaScreen({ route, navigation }){
     //personalizar precio con monedas
     const money = '100';
     console.log(username);
+
+    const nombres = infoTienda.map(item => item.nombre);
+    const imagenes = infoTienda.map(item => item.imagen);
+    const precios = infoTienda.map(item => item.precio);
+    const usados = infoTienda.map(item => item.usado);
+    const comprados = infoTienda.map(item => item.comprado);
+
+    const fichas = infoTienda.slice(0, 9).map((item, index) => ({
+      id: index,
+      image: `data:image/jpg;base64,${item.imagen}`,
+      text: item.nombre,
+      precio: precios[index],
+    }));
+    
+    const avatares = infoTienda.slice(9, 18).map((item, index) => ({
+      id: index + 9,
+      image: `data:image/jpg;base64,${item.imagen}`,
+      text: item.nombre,
+      precio: precios[index + 9],
+    }));
+    
 
     return (
         <ScrollView stickyHeaderIndices={[0]}>
