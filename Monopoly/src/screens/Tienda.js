@@ -81,20 +81,15 @@ const styles = StyleSheet.create({
       },
   })
 
-  const [nombres, setNombres] = React.useState([]);
-  const [imagenes, setImagenes] = React.useState([]);
-  const [precios, setPrecios] = React.useState([]);
-  const [usados, setUsados] = React.useState([]);
-  const [comprados, setComprados] = React.useState([]);  
-
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
-const renderItem = ({item}) => {
-
+const renderItem = ({item, comprados}) => {
+  const img = require('../../assets/bob.png')
   return (
+    
     <View style={styles.itemContainer}>
-      <Image style={styles.itemImage} source={item.image} />
-      <Text style={styles.itemText}>{item.text}</Text>
+      <Image style={styles.itemImage} source={img} />
+      <Text style={styles.itemText}>{item.nombre}</Text>
       
       {/*si aun no esta comprado*/}
       {!comprados[item.id] && (
@@ -130,35 +125,49 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
+    const {socket} = React.useContext(SocketContext);
     //personalizar precio con monedas
     console.log(username);
 
-
-
+    const [nombres, setNombres] = React.useState([]);
+    const [imagenes, setImagenes] = React.useState([]);
+    const [precios, setPrecios] = React.useState([]);
+    const [usados, setUsados] = React.useState([]);
+    const [comprados, setComprados] = React.useState([]);  
+    let [fichas, setFichas] = React.useState();  
+    let [avatares, setAvatares] = React.useState();  
 
     socket.emit('tienda', {socketId: socket.id}, (ack) => {
       console.log('Server acknowledged:', ack);
       if (ack.cod === 0) {
-        const fichas = ack.datos.filter((item, index) => index < 9).map((item, index) => ({
+        fichas = ack.msg.filter((item, index) => index < 9 && item.imagen).map((item, index) => ({
           id: index,
-          image: `data:image/jpg;base64,${item.imagen}`,
+          //image: `data:image/jpg;base64,${item.imagen}`,
+          //image: require('../../assets/bob.png'),
           text: item.nombre,
           precio: item.precio,
         }));
+        console.log("Fichas: " + fichas);
     
-        const avatares = ack.datos.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
+        avatares = ack.msg.filter((item, index) => index >= 9 && index < 18 && item.imagen).map((item, index) => ({
           id: index + 9,
-          image: `data:image/jpg;base64,${item.imagen}`,
+          //image: `data:image/jpg;base64,${item.imagen}`,
+          //image: require('../../assets/bob.png'),
           text: item.nombre,
           precio: item.precio,
         }));
+
+        //esta vacio porque solo hay de momento 2 elementos en el array
+        console.log("Avatares: " + avatares);
         
         //se rellenan los arrays con las imagenes
-        setNombres(ack.datos.map(item => item.nombre));
-        setImagenes(ack.datos.map(item => `data:image/jpg;base64,${item.imagen}`));
-        setPrecios(ack.datos.map(item => item.precio));
-        setUsados(ack.datos.map(item => item.usado));
-        setComprados(ack.datos.map(item => item.comprado));
+        setNombres(ack.msg.map(item => item.nombre));
+        //setImagenes('../../assets.bob.png');
+        setImagenes(ack.msg.map(item => item.imagen ? `data:image/jpg;base64,${item.imagen}` : '../../assets/bob.png'));
+        //setImagenes(ack.msg.map(item => `data:image/jpg;base64,${item.imagen}`));
+        setPrecios(ack.msg.map(item => item.precio));
+        setUsados(ack.msg.map(item => item.usado));
+        setComprados(ack.msg.map(item => item.comprado));
     
         setFichas(fichas);
         setAvatares(avatares);
@@ -170,7 +179,7 @@ export default function TiendaScreen({ route, navigation }){
     
     return (
         <ScrollView stickyHeaderIndices={[0]}>
-        <Header username={'@' + username} money={money + 'M'} />
+        <Header username={'@' + username} money={100 + 'M'} />
             <View>
                 <View>
                     <Text style={styles.texto}>Fichas</Text>
