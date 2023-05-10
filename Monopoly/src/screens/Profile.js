@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   })
 
 export default function ProfileScreen({ navigation }){
-
+  const infoTienda = null;
   const isFocused = useIsFocused();
   const {socket} = React.useContext(SocketContext);
   const [nombre, setNombre] = React.useState("");
@@ -131,13 +131,12 @@ export default function ProfileScreen({ navigation }){
                         console.log('Server acknowledged:', ack);
                         if(ack.cod == 0){
                           infoTienda = ack;
+                          navigation.navigate('Tienda', {user: nombre , infoTienda: infoTienda});
                         }
                         else if(ack.cod == 2){
                             alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
                         }
                       });
-
-                      navigation.navigate('Tienda', {user: nombre , tienda: ack});
                     }}>
 
 

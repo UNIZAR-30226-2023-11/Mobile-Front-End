@@ -135,16 +135,16 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
-    const infoTienda = route.params.infoTienda;
+    const tienda = route.params.infoTienda;
     //personalizar precio con monedas
-    console.log(infoTienda);
+    console.log(username, infoTienda);
 
     //const nombres = infoTienda.map(item => item.nombre);
     //const imagenes = infoTienda.map(item => item.imagen);
     //const precios = infoTienda.map(item => item.precio);
     //const usados = infoTienda.map(item => item.usado);
     //const comprados = infoTienda.map(item => item.comprado);
-
+    const infoTienda = [...infoTienda]
     const fichas = infoTienda.slice(0, 9).map((item, index) => ({
       id: index,
       image: `data:image/jpg;base64,${item.imagen}`,
