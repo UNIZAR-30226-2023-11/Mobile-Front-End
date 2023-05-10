@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet , Text , Button, Pressable, Image, FlatList, TouchableOpacity, ScrollView} from'react-native';
 //import { unirPartida } from '../url/partida';
+import { SocketContext } from '../components/SocketContext';
+import { encode } from 'base-64';
 
 
 const styles = StyleSheet.create({
@@ -79,16 +81,15 @@ const styles = StyleSheet.create({
       },
   })
 
+  const [nombres, setNombres] = React.useState([]);
+  const [imagenes, setImagenes] = React.useState([]);
+  const [precios, setPrecios] = React.useState([]);
+  const [usados, setUsados] = React.useState([]);
+  const [comprados, setComprados] = React.useState([]);  
+
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
-const renderItem = ({ item , route}) => {
-  let indice = 0;
-  let tienda = route.params.infoTienda;
-  console.log(tienda);
-  let infoTienda = tienda;
-  console.log(infoTienda);
-  let usados = infoTienda.map(item => item.usado);
-  let comprados = infoTienda.map(item => item.comprado);
+const renderItem = ({item}) => {
 
   return (
     <View style={styles.itemContainer}>
@@ -96,7 +97,7 @@ const renderItem = ({ item , route}) => {
       <Text style={styles.itemText}>{item.text}</Text>
       
       {/*si aun no esta comprado*/}
-      {!comprados[indice] && (
+      {!comprados[item.id] && (
         <View>
           <Text style={styles.itemPrecio}>€{item.precio}</Text>
           <TouchableOpacity style={styles.itemButton}>
@@ -105,13 +106,13 @@ const renderItem = ({ item , route}) => {
         </View>  
       )}
       {/*si ya esta comprado*/}
-      {comprados[indice] && !usados[indice] && (
+      {comprados[item.id] && !usados[item.id] && (
           <TouchableOpacity style={styles.itemButton}>
           <Text style={styles.itemButtonText}>Usar</Text>
         </TouchableOpacity>
       )}
       {/*si ya esta comprado y ademas esta en uso*/}
-      {comprados[indice] && usados[indice] && (
+      {comprados[item.id] && usados[item.id] && (
           <Text>Actual</Text>
       )}
     </View>
@@ -129,31 +130,42 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
-    let tienda = route.params.infoTienda;
     //personalizar precio con monedas
-    console.log(username, tienda);
+    console.log(username);
 
-    //const nombres = infoTienda.map(item => item.nombre);
-    //const imagenes = infoTienda.map(item => item.imagen);
-    //const precios = infoTienda.map(item => item.precio);
-    //const usados = infoTienda.map(item => item.usado);
-    //const comprados = infoTienda.map(item => item.comprado);
-    let infoTienda = tienda;
-    console.log(infoTienda);
 
-    let fichas = infoTienda.filter((item, index) => index < 9).map((item, index) => ({
-      id: index,
-      image: `data:image/jpg;base64,${item.imagen}`,
-      text: item.nombre,
-      precio: item.precio,
-    }));
+
+
+    socket.emit('tienda', {socketId: socket.id}, (ack) => {
+      console.log('Server acknowledged:', ack);
+      if (ack.cod === 0) {
+        const fichas = ack.datos.filter((item, index) => index < 9).map((item, index) => ({
+          id: index,
+          image: `data:image/jpg;base64,${item.imagen}`,
+          text: item.nombre,
+          precio: item.precio,
+        }));
     
-    let avatares = infoTienda.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
-      id: index + 9,
-      image: `data:image/jpg;base64,${item.imagen}`,
-      text: item.nombre,
-      precio: item.precio,
-    }));
+        const avatares = ack.datos.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
+          id: index + 9,
+          image: `data:image/jpg;base64,${item.imagen}`,
+          text: item.nombre,
+          precio: item.precio,
+        }));
+        
+        //se rellenan los arrays con las imagenes
+        setNombres(ack.datos.map(item => item.nombre));
+        setImagenes(ack.datos.map(item => `data:image/jpg;base64,${item.imagen}`));
+        setPrecios(ack.datos.map(item => item.precio));
+        setUsados(ack.datos.map(item => item.usado));
+        setComprados(ack.datos.map(item => item.comprado));
+    
+        setFichas(fichas);
+        setAvatares(avatares);
+      } else if (ack.cod === 2) {
+        alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
+      }
+    });
     
     
     return (

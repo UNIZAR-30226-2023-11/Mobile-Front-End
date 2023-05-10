@@ -123,23 +123,7 @@ export default function ProfileScreen({ navigation }){
         <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-end',  marginTop:'4%', marginRight: '4%'}}>
 
           {/* Boton de compras */}
-          <TouchableOpacity onPress={() => { 
-                    socket.emit('tienda',{
-                      socketId: socket.id
-                      }, 
-                      (ack) => {
-                        console.log('Server acknowledged:', ack);
-                        if(ack.cod == 0){
-                          infoTienda = ack;
-                          navigation.navigate('Tienda', {user: nombre , infoTienda: infoTienda});
-                        }
-                        else if(ack.cod == 2){
-                            alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
-                        }
-                      });
-                    }}>
-
-
+          <TouchableOpacity onPress={() => { navigation.navigate('Tienda', {user: nombre}); }}>
             <AntDesign name="shoppingcart" size={30} color="black"/>
             <Text style={styles.descripcion}>tienda      </Text>
           </TouchableOpacity>
