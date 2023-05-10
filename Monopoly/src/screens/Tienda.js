@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
-const renderItem = ({item, comprados}) => {
+const renderItem = ({item}) => {
   const img = require('../../assets/bob.png')
   return (
     
@@ -92,7 +92,8 @@ const renderItem = ({item, comprados}) => {
       <Text style={styles.itemText}>{item.nombre}</Text>
       
       {/*si aun no esta comprado*/}
-      {!comprados[item.id] && (
+      {console.log("item comprado: " + item.comprado)}
+      {!item.comprado && (
         <View>
           <Text style={styles.itemPrecio}>€{item.precio}</Text>
           <TouchableOpacity style={styles.itemButton}>
@@ -101,13 +102,13 @@ const renderItem = ({item, comprados}) => {
         </View>  
       )}
       {/*si ya esta comprado*/}
-      {comprados[item.id] && !usados[item.id] && (
+      {item.comprado && !item.usado && (
           <TouchableOpacity style={styles.itemButton}>
           <Text style={styles.itemButtonText}>Usar</Text>
         </TouchableOpacity>
       )}
       {/*si ya esta comprado y ademas esta en uso*/}
-      {comprados[item.id] && usados[item.id] && (
+      {item.comprado && item.usado && (
           <Text>Actual</Text>
       )}
     </View>
@@ -129,9 +130,6 @@ export default function TiendaScreen({ route, navigation }){
     //personalizar precio con monedas
     console.log(username);
 
-    const [nombres, setNombres] = React.useState([]);
-    const [imagenes, setImagenes] = React.useState([]);
-    const [precios, setPrecios] = React.useState([]);
     const [usados, setUsados] = React.useState([]);
     const [comprados, setComprados] = React.useState([]);  
     let [fichas, setFichas] = React.useState();  
@@ -140,37 +138,21 @@ export default function TiendaScreen({ route, navigation }){
     socket.emit('tienda', {socketId: socket.id}, (ack) => {
       console.log('Server acknowledged:', ack);
       if (ack.cod === 0) {
-        fichas = ack.msg.filter((item, index) => index < 9 && item.imagen).map((item, index) => ({
-          id: index,
-          //image: `data:image/jpg;base64,${item.imagen}`,
-          //image: require('../../assets/bob.png'),
-          text: item.nombre,
+        fichas = ack.msg.map(item => ({
+          id: 0,
+          nombre: item.nombre,
           precio: item.precio,
-        }));
-        console.log("Fichas: " + fichas);
-    
-        avatares = ack.msg.filter((item, index) => index >= 9 && index < 18 && item.imagen).map((item, index) => ({
-          id: index + 9,
-          //image: `data:image/jpg;base64,${item.imagen}`,
-          //image: require('../../assets/bob.png'),
-          text: item.nombre,
-          precio: item.precio,
+          usado: item.usado,
+          comprado: item.comprado,
+          imagen: item.imagen
         }));
 
-        //esta vacio porque solo hay de momento 2 elementos en el array
-        console.log("Avatares: " + avatares);
-        
-        //se rellenan los arrays con las imagenes
-        setNombres(ack.msg.map(item => item.nombre));
-        //setImagenes('../../assets.bob.png');
-        setImagenes(ack.msg.map(item => item.imagen ? `data:image/jpg;base64,${item.imagen}` : '../../assets/bob.png'));
-        //setImagenes(ack.msg.map(item => `data:image/jpg;base64,${item.imagen}`));
-        setPrecios(ack.msg.map(item => item.precio));
-        setUsados(ack.msg.map(item => item.usado));
-        setComprados(ack.msg.map(item => item.comprado));
+        console.log("Fichas:  " + fichas[0].nombre, fichas[0].precio, fichas[0].usado, fichas[0].comprado, fichas[0].imagen);
+        console.log("Fichas:  " + fichas[1].nombre, fichas[1].precio, fichas[1].usado, fichas[1].comprado, fichas[1].imagen);
     
         setFichas(fichas);
-        setAvatares(avatares);
+        //console.log("Fichas: " + fichas);
+
       } else if (ack.cod === 2) {
         alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
       }
@@ -193,12 +175,12 @@ export default function TiendaScreen({ route, navigation }){
 
                     <View>
                     <Text style={styles.texto}>Avatares</Text>
-                    <FlatList
+                    {/* <FlatList
                         data={avatares}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                         numColumns={3}
-                    />
+                    /> */}
                     </View>
             </View>    
         </ScrollView>        
