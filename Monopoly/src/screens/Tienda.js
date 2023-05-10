@@ -79,34 +79,34 @@ const styles = StyleSheet.create({
       },
   })
 
+const nombres = infoTienda.map(item => item.nombre);
+const imagenes = infoTienda.map(item => item.imagen);
+const precios = infoTienda.map(item => item.precio);
+const usados = infoTienda.map(item => item.usado);
+const comprados = infoTienda.map(item => item.comprado);
+
 const fichas = [
-    { id: 1, image: require('../../assets/token1.png'), text: 'Elemento 1', precio: 100},
-    { id: 2, image: require('../../assets/token2.png'), text: 'Elemento 2', precio: 100},
-    { id: 3, image: require('../../assets/token3.png'), text: 'Elemento 3', precio: 100},
-    { id: 4, image: require('../../assets/token4.png'), text: 'Elemento 4', precio: 100},
-    { id: 5, image: require('../../assets/token5.png'), text: 'Elemento 5', precio: 100},
-    { id: 6, image: require('../../assets/token6.png'), text: 'Elemento 6', precio: 100},
-    { id: 7, image: require('../../assets/token7.png'), text: 'Elemento 7', precio: 100},
-    { id: 8, image: require('../../assets/token8.png'), text: 'Elemento 8', precio: 100},
-    { id: 9, image: require('../../assets/token9.png'), text: 'Elemento 9', precio: 100},
+    { id: 1, image: `data:image/jpg;base64,${imagenes[0]}`, text: nombres[0], precio: precios[0]},
+    { id: 2, image:  `data:image/jpg;base64,${imagenes[1]}`, text: nombres[1], precio: precios[1]},
+    { id: 3, image:  `data:image/jpg;base64,${imagenes[2]}`, text: nombres[2], precio: precios[2]},
+    { id: 4, image:  `data:image/jpg;base64,${imagenes[3]}`, text: nombres[3], precio: precios[3]},
+    { id: 5, image:  `data:image/jpg;base64,${imagenes[4]}`, text: nombres[4], precio: precios[4]},
+    { id: 6, image:  `data:image/jpg;base64,${imagenes[5]}`, text: nombres[5], precio: precios[5]},
+    { id: 7, image:  `data:image/jpg;base64,${imagenes[6]}`, text: nombres[6], precio: precios[6]},
+    { id: 8, image:  `data:image/jpg;base64,${imagenes[7]}`, text: nombres[7], precio: precios[7]},
+    { id: 9, image:  `data:image/jpg;base64,${imagenes[8]}`, text: nombres[8], precio: precios[8]},
 ];
 
 const avatares = [
-    { id: 1, image: require('../../assets/shop/cat1.png'), text: 'Elemento 1', precio: 100},
-    { id: 2, image: require('../../assets/shop/cat2.png'), text: 'Elemento 2', precio: 100},
-    { id: 3, image: require('../../assets/shop/cat3.png'), text: 'Elemento 3', precio: 100},
-    { id: 4, image: require('../../assets/shop/cat4.png'), text: 'Elemento 4', precio: 100},
-    { id: 5, image: require('../../assets/shop/cat5.png'), text: 'Elemento 5', precio: 100},
-    { id: 6, image: require('../../assets/shop/cat6.png'), text: 'Elemento 6', precio: 100},
-    { id: 7, image: require('../../assets/shop/cat7.png'), text: 'Elemento 7', precio: 100},
-    { id: 8, image: require('../../assets/shop/cat8.png'), text: 'Elemento 8', precio: 100},
-    { id: 9, image: require('../../assets/shop/cat9.png'), text: 'Elemento 9', precio: 100},
-];
-
-const tableros = [
-    { id: 1, image: require('../../assets/bob.png'), text: 'Elemento 1', precio: 100},
-    { id: 2, image: require('../../assets/bob.png'), text: 'Elemento 2', precio: 100},
-    { id: 3, image: require('../../assets/bob.png'), text: 'Elemento 3', precio: 100},
+    { id: 1, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 1', precio: precios[9]},
+    { id: 2, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 2', precio: precios[10]},
+    { id: 3, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 3', precio: precios[11]},
+    { id: 4, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 4', precio: precios[12]},
+    { id: 5, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 5', precio: precios[13]},
+    { id: 6, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 6', precio: precios[14]},
+    { id: 7, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 7', precio: precios[15]},
+    { id: 8, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 8', precio: precios[16]},
+    { id: 9, image: `data:image/jpg;base64,${imagenes[8]}`, text: 'Elemento 9', precio: precios[17]},
 ];
 
 
@@ -166,6 +166,7 @@ const Header = ({ username, money }) => {
 export default function TiendaScreen({ route, navigation }){
     //coger el precio de la BD
     const username = route.params.user;
+    const infoTienda = route.params.infoTienda;
     //personalizar precio con monedas
     const money = '100';
     console.log(username);

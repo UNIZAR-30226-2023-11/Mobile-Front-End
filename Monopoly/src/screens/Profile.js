@@ -5,6 +5,7 @@ import { AntDesign, Feather, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SocketContext } from '../components/SocketContext';
 import { encode } from 'base-64';
+import { PresenceTransition } from 'native-base';
 
 const styles = StyleSheet.create({
     error: {
@@ -129,14 +130,14 @@ export default function ProfileScreen({ navigation }){
                       (ack) => {
                         console.log('Server acknowledged:', ack);
                         if(ack.cod == 0){
-                          
+                          infoTienda = ack;
                         }
                         else if(ack.cod == 2){
                             alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
                         }
                       });
 
-                      navigation.navigate('Tienda', {user: nombre , });
+                      navigation.navigate('Tienda', {user: nombre , tienda: ack});
                     }}>
 
 
