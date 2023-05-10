@@ -164,23 +164,13 @@ export default function TiendaScreen({ route, navigation }){
         <Header username={'@' + username} money={100 + 'M'} />
             <View>
                 <View>
-                    <Text style={styles.texto}>Fichas</Text>
+                    <Text style={styles.texto}>Fichas y avatares</Text>
                     <FlatList
                         data={fichas}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                         numColumns={3}
                     />
-                    </View>
-
-                    <View>
-                    <Text style={styles.texto}>Avatares</Text>
-                    {/* <FlatList
-                        data={avatares}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id.toString()}
-                        numColumns={3}
-                    /> */}
                     </View>
             </View>    
         </ScrollView>        
