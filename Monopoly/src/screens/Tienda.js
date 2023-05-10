@@ -79,23 +79,16 @@ const styles = StyleSheet.create({
       },
   })
 
-function estaComprada(id){
-  return comprados[id];
-}
-
-function estaEnUso(id){
-  //lamar a la funcion de back que muestre elementos en uso
-  return usados[id];
-}
-
 //se podria poner tambien una barra con nombre user y dinero €€€
 //falta añadir funcionalidad al boton
 const renderItem = ({ item , route}) => {
   let indice = 0;
   let tienda = route.params.infoTienda;
+  console.log(tienda);
   let infoTienda = tienda;
-  const usados = infoTienda.map(item => item.usado);
-  const comprados = infoTienda.map(item => item.comprado);
+  console.log(infoTienda);
+  let usados = infoTienda.map(item => item.usado);
+  let comprados = infoTienda.map(item => item.comprado);
 
   return (
     <View style={styles.itemContainer}>
@@ -146,15 +139,16 @@ export default function TiendaScreen({ route, navigation }){
     //const usados = infoTienda.map(item => item.usado);
     //const comprados = infoTienda.map(item => item.comprado);
     let infoTienda = tienda;
+    console.log(infoTienda);
 
-    const fichas = infoTienda.filter((item, index) => index < 9).map((item, index) => ({
+    let fichas = infoTienda.filter((item, index) => index < 9).map((item, index) => ({
       id: index,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
       precio: item.precio,
     }));
     
-    const avatares = infoTienda.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
+    let avatares = infoTienda.filter((item, index) => index >= 9 && index < 18).map((item, index) => ({
       id: index + 9,
       image: `data:image/jpg;base64,${item.imagen}`,
       text: item.nombre,
