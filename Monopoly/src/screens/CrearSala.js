@@ -120,14 +120,16 @@ export default function CrearSalaScreen({route, navigation }) {
         navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
     }, [navigation, idPartida]);
 
-    useEffect(()=>{
-        socket.on('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
+    const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);
 
-        socket.on('comenzarPartida', (mensaje) => handleComenzarPartida(mensaje));
+    useEffect(()=>{
+        socket.on('esperaJugadores', esperaJugadoresListener);
+        socket.on('comenzarPartida', comenzarPartidaListener);
 
         return () => {
-            socket.off('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
-            socket.off('comenzarPartida', (mensaje) => handleComenzarPartida(mensaje));
+            socket.off('esperaJugadores', esperaJugadoresListener);
+            socket.off('comenzarPartida', comenzarPartidaListener);
         };
 
     },[])

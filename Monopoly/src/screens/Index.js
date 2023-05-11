@@ -97,7 +97,7 @@ Conoce al equipo técnico que forma la empresa Susan L. Graham, que está formad
           <StyledButton
             lightblue
             title="Jugar como invitado"
-            onPress={() => navigation.navigate('Tablero',{user:"lunaa", jugadores: ["lunaa"]})}
+            onPress={() => navigation.navigate('Home')}
           />
         </View>
       </View>

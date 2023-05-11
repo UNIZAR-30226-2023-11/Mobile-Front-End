@@ -39,14 +39,17 @@ export default function UnirseSalaScreen({ route, navigation }) {
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         console.log(subcadenas);
-        navigation.replace('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
+        navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
       }, [navigation, idPartida]);
 
+    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
+
     useEffect(()=>{
-        socket.on('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+        socket.on('esperaJugadores', esperaJugadoresListener);
 
         return () => {
-            socket.off('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+            socket.off('esperaJugadores', esperaJugadoresListener);
+            console.log("Desmontando");
         };
 
     },[])
