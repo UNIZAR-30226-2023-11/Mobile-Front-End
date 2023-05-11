@@ -92,7 +92,7 @@ export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visi
                         }}
                         purple
                     />}
-                    <StyledButton
+                    { pagarJulio && <StyledButton
                         style={styles.boton}
                         title="Pagar"
                         onPress={() => {
@@ -108,7 +108,7 @@ export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visi
                             })
                         }}
                         purple
-                    />
+                    />}
                     <StyledButton
                         style={styles.boton}
                         title="Tirar los dados"

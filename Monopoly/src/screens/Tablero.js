@@ -285,6 +285,7 @@ export default function TableroScreen({route}) {
     //variable para saber si el jugador está en la carcel
     const [carcel, setCarcel] = React.useState(false);
     const [cartaJulio, setCartaJulio] = React.useState(false);
+    const [pagarJulio, setPagarJulio] = React.useState(true);
 
     //variables para controlar el timeout del turno
     const [reiniciarContador, setReiniciarContador] = React.useState(false);
@@ -381,28 +382,33 @@ export default function TableroScreen({route}) {
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
-                    if(ack.msg.dado1 == ack.msg.dado2){
-                        if(carcel){
-                            setCarcel(false);
-                        }
-                        setDobles(true);
-                        if(contadorDobles == 2){
-                            alert("Te toca ir a Julio");
-                            //cambiar lo siguiente por llamada al back cnd esté
-                            let aux = tokensJugadores;
-                            aux[turnoActual].horizontal = 0;
-                            aux[turnoActual].vertical = 10;
-                            console.log(aux);
-                            setTokensJugador(aux);
-                            setCarcel(true);
-                            cambiarTurno();
-                        }else{
-                            setContadorDobles(contadorDobles+1);
-                        }
-                    }
-                    else if(carcel){
-                        console.log("estas en la carcel");
+                    if(ack.msg.dobles == 3){
                         cambiarTurno();
+                    }
+                    else{
+                        if(ack.msg.dado1 == ack.msg.dado2){
+                            // if(carcel){
+                            //     setCarcel(false);
+                            // }
+                            setDobles(true);
+                            if(contadorDobles == 2){
+                                alert("Te toca ir a Julio");
+                                //cambiar lo siguiente por llamada al back cnd esté
+                                let aux = tokensJugadores;
+                                aux[turnoActual].horizontal = 0;
+                                aux[turnoActual].vertical = 10;
+                                console.log(aux);
+                                setTokensJugador(aux);
+                                setCarcel(true);
+                                cambiarTurno();
+                            }else{
+                                setContadorDobles(contadorDobles+1);
+                            }
+                        }
+                        else if(carcel){
+                            console.log("estas en la carcel");
+                            cambiarTurno();
+                        }
                     }
                 }
                 else if(ack.cod == 2){
@@ -703,29 +709,6 @@ export default function TableroScreen({route}) {
           });
     })
 
-    const tieneCartaJulio = useCallback(() => {
-        console.log("tiene carta julio?");
-        socket.emit('cartaJulio',{
-            socketId: socket.id
-        },
-        (ack) => {
-            console.log("Server acknowledge tiene carta julio: " + ack);
-            if(ack.cod == 0){
-                if(ack.msg == 1){ //TODO: ver que nos pasan
-                    setCartaJulio(true);
-                }
-                else{
-                    setCartaJulio(false);
-                }
-                setModalCarcelVisible(true);
-            }
-            else{
-                alert("Se ha producido un error, intentando de nuevo");
-                tieneCartaJulio();
-            }
-        })
-    })
-
     useEffect(() =>{
         socket.on('infoPartida',(mensaje) => {
             console.log('Mensaje recibido infoPartida: ' + mensaje);
@@ -747,6 +730,25 @@ export default function TableroScreen({route}) {
             setTurnoActual(mensaje.posicion);
             if(mensaje.jugador == username){
                 // setDetenidoActualizaInfo(true);
+                if(jugadores[turnoActual] == username){
+                    socket.emit('estaJulio',{
+                        socketId: socket.id
+                    },
+                    (ack) => {
+                        console.log("Server acknowledge estaJulio "+ mensaje);
+                        if(ack.carcel){
+                            setModalCarcelVisible(true);
+                        }
+                        if(ack.carta != null){
+                            setCartaJulio(true);
+                        }
+                        if(ack.puedePagar){
+                            setPagarJulio(true);
+                        }
+                    })
+                    setDetenidoContador(false);
+        
+                }
                 if(carcel){
                     console.log("comprobar tarjeta julio");
                     tieneCartaJulio();
@@ -766,9 +768,6 @@ export default function TableroScreen({route}) {
         });
 
         console.log(jugadores[turnoActual], username);
-        if(jugadores[turnoActual] == username){
-            setDetenidoContador(false);
-        }
 
     },[])
 
@@ -1425,6 +1424,7 @@ export default function TableroScreen({route}) {
             title={"Estás en la cárcel"}
             text={"¿Como quieres salir?"}
             cartaJulio={cartaJulio}
+            pagarJulio={pagarJulio}
             onClose = { () => {
                 setModalCarcelVisible({modalCarcelVisible: !modalCarcelVisible});
                 setCambio(true);
