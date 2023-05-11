@@ -109,7 +109,7 @@ export default function CrearSalaScreen({route, navigation }) {
     const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
     const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido: ' + mensaje);
+        console.log('Mensaje recibido espera jugadores: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         console.log(subcadenas);
@@ -117,6 +117,7 @@ export default function CrearSalaScreen({route, navigation }) {
     }, [navigation, idPartida]);
 
     const handleComenzarPartida = useCallback((mensaje) => {
+        console.log("Mensaje recibido comenzar " + mensaje);
         navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
     }, [navigation, idPartida]);
 
@@ -161,7 +162,7 @@ export default function CrearSalaScreen({route, navigation }) {
                                     jugar: false,
                                     socketId: socket.id
                                 }, (ack) => {
-                                    console.log('Server acknowledged:', ack);
+                                    console.log('Server acknowledged actualizar partida:', ack);
                                     if(ack.cod == 0){
                                         setPlayers(itemValue);
                                     }
@@ -203,7 +204,7 @@ export default function CrearSalaScreen({route, navigation }) {
                                     jugar: false,
                                     socketId: socket.id
                                 }, (ack) => {
-                                    console.log('Server acknowledged:', ack);
+                                    console.log('Server acknowledged actualizar partida:', ack);
                                     if(ack.cod == 0){
                                         setMoney(itemValue);
                                     }

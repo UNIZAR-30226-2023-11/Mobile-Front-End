@@ -306,50 +306,50 @@ export default function TableroScreen({route}) {
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[0].horizontal-0.75),
+            marginLeft: ancho*(tokensJugadores[1].horizontal-0.4),
+            marginTop: ancho*(tokensJugadores[1].horizontal-0.75),
         },
         token3:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[0].horizontal-1.05),
+            marginLeft: ancho*(tokensJugadores[2].horizontal-0.4),
+            marginTop: ancho*(tokensJugadores[2].horizontal-1.05),
         },
         token4:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[0].horizontal-1.35)
+            marginLeft: ancho*(tokensJugadores[3].horizontal-0.4),
+            marginTop: ancho*(tokensJugadores[3].horizontal-1.35)
         },
         token5:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.82),
-            marginTop:ancho*(tokensJugadores[0].horizontal-0.4),
+            marginLeft: ancho*(tokensJugadores[4].horizontal-0.82),
+            marginTop:ancho*(tokensJugadores[4].horizontal-0.4),
         },
         token6:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.82),
-            marginTop: ancho*(tokensJugadores[0].horizontal-0.75),
+            marginLeft: ancho*(tokensJugadores[5].horizontal-0.82),
+            marginTop: ancho*(tokensJugadores[5].horizontal-0.75),
         },
         token7:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal - 0.82),
-            marginTop: ancho*(tokensJugadores[0].horizontal - 1.05),
+            marginLeft: ancho*(tokensJugadores[6].horizontal - 0.82),
+            marginTop: ancho*(tokensJugadores[6].horizontal - 1.05),
         },
         token8:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal - 0.82),
-            marginTop: ancho*(tokensJugadores[0].horizontal - 1.35),
+            marginLeft: ancho*(tokensJugadores[7].horizontal - 0.82),
+            marginTop: ancho*(tokensJugadores[7].horizontal - 1.35),
         }
     })
 
@@ -367,7 +367,7 @@ export default function TableroScreen({route}) {
             socket.emit('lanzarDados', {
                 socketId: socket.id
               }, (ack) => {
-                console.log('Server acknowledged:', ack);
+                console.log('Server acknowledged dados:', ack);
                 if(ack.cod == 0){
                     // setRandDados(false);
                     setDie1(ack.msg.dado1);
@@ -401,6 +401,7 @@ export default function TableroScreen({route}) {
                         }
                     }
                     else if(carcel){
+                        console.log("estas en la carcel");
                         cambiarTurno();
                     }
                 }
@@ -686,7 +687,7 @@ export default function TableroScreen({route}) {
         socket.emit('siguienteTurno', {
             socketId: socket.id
           }, (ack) => {
-            console.log('Server acknowledged:', ack);
+            console.log('Server acknowledged siguiente turno:', ack);
             if(ack.cod == 0){
                 console.log("TURNO:",ack.msg);
                 setTurnoActual(ack.msg.posicion);
@@ -708,7 +709,7 @@ export default function TableroScreen({route}) {
             socketId: socket.id
         },
         (ack) => {
-            console.log("Server acknowledge: " + ack);
+            console.log("Server acknowledge tiene carta julio: " + ack);
             if(ack.cod == 0){
                 if(ack.msg == 1){ //TODO: ver que nos pasan
                     setCartaJulio(true);
@@ -727,7 +728,7 @@ export default function TableroScreen({route}) {
 
     useEffect(() =>{
         socket.on('infoPartida',(mensaje) => {
-            console.log('Mensaje recibido: ' + mensaje);
+            console.log('Mensaje recibido infoPartida: ' + mensaje);
             setDinero(mensaje.listaDineros);
             let aux = tokensJugadores;
             // console.log(aux);
@@ -741,11 +742,13 @@ export default function TableroScreen({route}) {
         });
             
         socket.on('turnoActual',(mensaje) => {
-            console.log('Mensaje recibido: ' + mensaje);
+            console.log('Mensaje recibido turno: ' + mensaje);
+            console.log(mensaje);
             setTurnoActual(mensaje.posicion);
             if(mensaje.jugador == username){
                 // setDetenidoActualizaInfo(true);
                 if(carcel){
+                    console.log("comprobar tarjeta julio");
                     tieneCartaJulio();
                 }
                 setReiniciarContador(true);
@@ -753,19 +756,18 @@ export default function TableroScreen({route}) {
         });
 
         socket.on('puja',(mensaje)=>{
-            console.log("Mensaje recibido: " + mensaje);
+            console.log("Mensaje recibido puja: " + mensaje);
             //hacer modal de las pujas visible
         });
 
         socket.on('ofertaRecibida',(mensaje) =>{
-            console.log("Mensaje recibido: " + mensaje);
+            console.log("Mensaje recibido oferta: " + mensaje);
             setModalOfertaVisible(true);
         });
 
         console.log(jugadores[turnoActual], username);
         if(jugadores[turnoActual] == username){
-            // setDetenidoContador(false);
-            console.log("te toca");
+            setDetenidoContador(false);
         }
 
     },[])
