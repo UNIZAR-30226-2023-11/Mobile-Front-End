@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     cursos3_1:{
         flex: 5,
         flexDirection:'column',
-        marginLeft:`${ancho*0.075}%`,
         position: 'relative',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -105,9 +104,10 @@ const styles = StyleSheet.create({
     curso1:{
         position: 'absolute',
         flex: 1,
+        marginLeft:`${ancho*0.22}%`,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        marginTop: `${alto*8.89}%`
+        marginTop: `${alto*9}%`
     },
     curso2: {
         position: 'absolute',
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     curso3:{
         position: 'absolute',
         flex: 1,
+        marginLeft:`${ancho*0.22}%`,
         alignItems: 'flex-start',
         flexDirection: 'row',
     },
@@ -132,7 +133,8 @@ const styles = StyleSheet.create({
         flex:1,
         position: 'absolute',
         alignItems: 'center',
-        marginTop:'40%'
+        marginTop:'40%',
+        marginLeft :'0%'
     },
     space:{
         alignSelf: 'stretch',
@@ -145,8 +147,8 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     casilla_1:{
-        width: `${alto*1.01}%` ,
-        height: `${ancho*0.6}%`,
+        width: `${alto*1.1}%` ,
+        height: `${ancho*0.9}%`,
         borderColor: '#000000',
         borderWidth: 1
     },
@@ -177,8 +179,8 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     casilla_3:{
-        width: `${alto*1.01}%` ,
-        height: `${ancho*0.95}%`,
+        width: `${alto*1.1}%` ,
+        height: `${ancho}%`,
         borderColor: '#000000',
         borderWidth: 1
     },
@@ -792,7 +794,7 @@ export default function TableroScreen({route}) {
 
         console.log(jugadores[turnoActual], username);
         if(jugadores[turnoActual] == username){
-            // setDetenidoContador(false);
+            setDetenidoContador(false);
             console.log("te toca");
         }
 
