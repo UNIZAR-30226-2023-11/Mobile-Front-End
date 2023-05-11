@@ -36,7 +36,8 @@ import {
 import StyledButton from '../components/StyledButton';
 import { SocketContext } from '../components/SocketContext';
 
-const ancho = 34.3;
+const ancho = 100;
+const alto = 10;
 
 const tokens = {
     token1: require('../../assets/token1.png'),
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     cursos3_1:{
         flex: 5,
         flexDirection:'column',
+        marginLeft:`${ancho*0.075}%`,
         position: 'relative',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -105,12 +107,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        marginTop: ancho*9 + (ancho*1.5)
+        marginTop: `${alto*8.89}%`
     },
     curso2: {
         position: 'absolute',
-        justifyContent: 'center',
-        flex: 1,
+        justifyContent: 'flex-start',
+        flex: 2,
         flexDirection:'column',
     },
     curso3:{
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     curso4:{
         position: 'absolute',
         alignItems: 'flex-end',
-        flex: 1,
+        flex: 2,
         flexDirection:'column',
         marginLeft: '88%'
     },
@@ -136,21 +138,59 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         backgroundColor: '#EAEAEA'
     },
-    casilla_horizontal:{
-        width: ancho,
-        height: ancho*1.5,
+    casilla_salida:{
+        width: `${ancho}%`,
+        height: `${alto*1.3}%`,
         borderColor: '#000000',
         borderWidth: 1
     },
-    casilla_vertical:{
-        width: ancho*1.5,
-        height: ancho,
+    casilla_1:{
+        width: `${alto*1.01}%` ,
+        height: `${ancho*0.6}%`,
         borderColor: '#000000',
         borderWidth: 1
     },
-    casilla_esquina:{
-        width: ancho*1.5,
-        height: ancho*1.5,
+    casilla_julio:{
+        width: `${ancho*0.6}%`,
+        height: `${alto*0.9}%`,
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    julio:{
+        flex:1,
+        width: '100%',
+        height: '100%',
+        borderColor:'#000000',
+        borderWidth:1,
+        alignSelf:'flex-end'
+    },
+    casilla_2:{
+        width: `${ancho*0.6}%`,
+        height: `${alto*0.67}%`,
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    casilla_beca:{
+        width: `${ancho*0.6}%`,
+        height: `${alto*0.95}%`,
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    casilla_3:{
+        width: `${alto*1.01}%` ,
+        height: `${ancho*0.95}%`,
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    casilla_aJulio:{
+        width: `${ancho}%`,
+        height: `${alto*1.3}%`,
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    casilla_4:{
+        width: `${ancho}%`,
+        height: `${alto*0.91}%`,
         borderColor: '#000000',
         borderWidth: 1
     },
@@ -186,13 +226,6 @@ const styles = StyleSheet.create({
     },
     precio_horizontal_1linea:{
         marginTop:'7%'
-    },
-    julio:{
-        width: ancho*1.1,
-        height: ancho*1.1,
-        borderColor:'#000000',
-        borderWidth:1,
-        alignSelf:'flex-end'
     }
 });
 
@@ -292,59 +325,59 @@ export default function TableroScreen({route}) {
     const stylestoken = StyleSheet.create({
         token1:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[0].horizontal*ancho + ancho*0.4,
-            marginTop: tokensJugadores[0].vertical*ancho + ancho*0.4
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[0].horizontal*ancho + ancho*0.4}%`,
+            marginTop: `${tokensJugadores[0].horizontal*ancho + ancho*0.4}%`,
         },
         token2:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[1].horizontal*ancho + ancho*0.4,
-            marginTop: tokensJugadores[1].vertical*ancho + ancho*0.75
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[1].horizontal*ancho + ancho*0.4}%`,
+            marginTop: `${tokensJugadores[1].horizontal*ancho + ancho*0.75}%`,
         },
         token3:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[2].horizontal*ancho + ancho*0.4,
-            marginTop: tokensJugadores[2].vertical*ancho + ancho*1.05
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[2].horizontal*ancho + ancho*0.4}%`,
+            marginTop: `${tokensJugadores[2].horizontal*ancho + ancho*1.05}%`,
         },
         token4:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[3].horizontal*ancho + ancho*0.4,
-            marginTop: tokensJugadores[3].vertical*ancho + ancho*1.35
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[3].horizontal*ancho + ancho*0.4}%`,
+            marginTop: `${tokensJugadores[3].horizontal*ancho + ancho*1.35}%`
         },
         token5:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[4].horizontal*ancho + ancho*0.82,
-            marginTop: tokensJugadores[4].vertical*ancho + ancho*0.4
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[4].horizontal*ancho + ancho*0.82}%`,
+            marginTop: `${tokensJugadores[4].horizontal*ancho + ancho*0.4}%`,
         },
         token6:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[5].horizontal*ancho + ancho*0.82,
-            marginTop: tokensJugadores[5].vertical*ancho + ancho*0.75
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[5].horizontal*ancho + ancho*0.82}%`,
+            marginTop: `${tokensJugadores[5].horizontal*ancho + ancho*0.75}%`,
         },
         token7:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[6].horizontal*ancho + ancho*0.82,
-            marginTop: tokensJugadores[6].vertical*ancho + ancho*1.05
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[6].horizontal*ancho + ancho*0.82}%`,
+            marginTop: `${tokensJugadores[6].horizontal*ancho + ancho*1.05}%`,
         },
         token8:{
             position: 'absolute',
-            width:ancho-10,
-            height:ancho-10,
-            marginLeft: tokensJugadores[7].horizontal*ancho + ancho*0.82,
-            marginTop: tokensJugadores[7].vertical*ancho + ancho*1.35
+            width:`${ancho-10}%`,
+            height:`${ancho-10}%`,
+            marginLeft: `${tokensJugadores[7].horizontal*ancho + ancho*0.82}%`,
+            marginTop: `${tokensJugadores[7].horizontal*ancho + ancho*1.35}%`,
         }
     })
 
@@ -369,10 +402,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    // aux[turnoActual].horizontal = ack.msg.coordenadas.h;
-                    // aux[turnoActual].vertical = ack.msg.coordenadas.v;
-                    aux[turnoActual].horizontal = 1;
-                    aux[turnoActual].vertical = 10;
+                    aux[turnoActual].horizontal = ack.msg.coordenadas.h;
+                    aux[turnoActual].vertical = ack.msg.coordenadas.v;
+                    // aux[turnoActual].horizontal = 1;
+                    // aux[turnoActual].vertical = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -416,70 +449,6 @@ export default function TableroScreen({route}) {
         )
     }
 
-    const actualizarDinero = useCallback(() =>{
-        console.log("ACTUALIZAR DINERO");
-        // const response =  fetch(listaJugadores, {
-        // method: 'PUT',
-        // headers: {'Content-Type': 'application/json'},
-        // body: JSON.stringify({"idPartida": idPartida})
-        // })
-        // .then((response) => {
-        //   if(response.status != 200){
-        //     throw new Error('Error de estado: '+ response.status+' en la funcion de actualizar Dinero');
-        //   }
-        //   return response.json();
-        // })
-        // .then(data => {
-        //     // console.log("ACTUALIZAR DINERO:",data);
-        //     console.log(data);
-        //     // setJugadores(data.listaJugadores);
-        //     setDinero(data.listaDineros);
-            
-        //     let aux = tokensJugadores;
-        //     // console.log(aux);
-            
-        //     for(var i=0; i<data.listaPosiciones.length; i++){
-        //         aux[i].horizontal = data.listaPosiciones[i].h;
-        //         aux[i].vertical = data.listaPosiciones[i].v;
-        //         console.log(aux[i]);
-        //     }
-        //     setTokensJugador(aux);
-            
-        //     actualizarTurno();
-        // })
-        // .catch((error) => {
-        // //Error
-        // //alert(JSON.stringify(error));
-        // console.error(error);
-        // });
-    },[])
-
-    const actualizarTurno = useCallback(() =>{
-        console.log("Obteniendo turno");
-        // const response = fetch(obtenerTurnoActual,{
-        //     method: 'PUT',
-        //     headers : {'Content-Type': 'application/json'},
-        //     body : JSON.stringify({"idPartida": idPartida})
-        // })
-        // .then((response) => {
-        //     if(response.status != 200){
-        //         throw new Error('Error de estado: ' + response.status+ ' en la función de obtener turno actual');
-        //     }
-        //     return response.json();
-        // })
-        // .then((data) => {
-        //     console.log(data);
-        //     setTurnoActual(data.posicion);
-        //     if(data.jugador == username){
-        //         setDetenidoActualizaInfo(true);
-        //         setIniciarContador(true);
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.error(error);
-        // })
-    })
-
     const comprobarAsignatura = useCallback(() => {
         console.log("comprobando casilla para el turno", turnoActual);
         console.log(tokensJugadores[0]);
@@ -520,46 +489,6 @@ export default function TableroScreen({route}) {
                                 comprobarAsignatura();
                             }
                         })
-                       
-                        // const response = fetch(casillaComprada,{
-                        //     method: 'PUT',
-                        //     headers: {'Content-Type': 'application/json'},
-                        //     body: JSON.stringify({  "username": username,
-                        //                             "coordenadas":{"h": tokensJugadores[turnoActual].horizontal,"v": tokensJugadores[turnoActual].vertical},
-                        //                             "idPartida": idPartida})
-                        // })
-                        // .then((response) => {
-                        //     if(response.status != 200){
-                        //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener la info de las asignaturas');
-                        //     }
-                        //     return response.json();
-                        // })
-                        // .then(data => {
-                        //     console.log("COMPROBAR ASIGNATURA");
-                        //     console.log(data.jugador);
-                        //     console.log(data.dinero)
-                        //     if(data.jugador!=null){
-                        //         if(data.jugador==username){
-                        //             console.log("es mia");
-                        //             infoCasilla(true, data.aumento);
-                        //         }
-                        //         else{
-                        //         console.log("comprada");
-                        //         console.log(data);
-                        //         setPropietario(data.jugador);
-                        //         setPago(data.dinero);
-                        //         setModalAsignaturaCompradaVisible(true);
-                        //         }
-                        //     }
-                        //     else{
-                        //         console.log("no comprada");                
-                        //         infoCasilla(false, false);
-                        // }})
-                        // .catch((error) => {
-                        //     //Error
-                        //     //alert(JSON.stringify(error));
-                        //     console.error(error);
-                        // });
                     }
                     else{
                         console.log("pagos");
@@ -614,34 +543,7 @@ export default function TableroScreen({route}) {
                 else if(ack.cod == 2){
                     comprobarAsignatura();
                 }
-            })
-            // const response = fetch(tarjetaAleatoria,{
-            //     method: 'PUT',
-            //     headers: {'Content-Type': 'application/json'},
-            //     body: JSON.stringify({  "idPartida": idPartida,
-            //                             "username": username,
-            //                             "tipo": "suerte"        
-            //                         })
-            // })
-            // .then((response) => {
-            //     if(response.status != 200){
-            //         throw new Error('Error de estado: '+ response.status+ ' en la funcion de obtener tarjeta de suerte');
-            //     }
-            //     return response.json();
-            // })
-            // .then(data => {
-            //     console.log("SUERTE");
-            //     console.log(data[0]);
-            //     let aux = [data[0].nombre, data[0].descripcion];
-            //     console.log(aux);
-            //     setSuerte(aux);
-            //     setModalSuerteVisible(true);
-            // })
-            // .catch((error) => {
-            //     //Error
-            //     //alert(JSON.stringify(error));
-            //     console.error(error);
-            // }); 
+            }) 
         }
     });
 
@@ -816,7 +718,7 @@ export default function TableroScreen({route}) {
             if(ack.cod == 0){
                 console.log("TURNO:",ack.msg);
                 setTurnoActual(ack.msg.posicion);
-                setDetenidoActualizaInfo(false);
+                // setDetenidoActualizaInfo(false);
                 setContadorDobles(0);
                 // setActualizarPlayers(true);
                 //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
@@ -893,29 +795,8 @@ export default function TableroScreen({route}) {
             // setDetenidoContador(false);
             console.log("te toca");
         }
+
     },[])
-
-    // useEffect(() => {
-    //     if(!randDados){
-    //         clearInterval(intervalContador);
-    //         setIntervalDados(null);
-    //         // setContadorEnEjecucion(false);
-    //     }else{
-    //         const id = setInterval(() => {
-    //             let die_1 =  Math.floor(Math.random() * 6) + 1;
-    //             let die_2 =  Math.floor(Math.random() * 6) + 1;
-    //             setDie1(die1);
-    //             setDie2(die2);
-    //         }, 500);
-        
-    //         setIntervalDados(id);
-    //     }
-
-    //     return () => {
-    //         clearInterval(intervalDados); // Limpiar intervalo al desmontar el componente
-    //         setIntervalDados(null); // Actualizar estado del intervalo a null
-    //       };
-    // },[randDados])
 
     useEffect(() =>{
         console.log("contador cambiado ", contador);
@@ -1010,96 +891,96 @@ export default function TableroScreen({route}) {
         </View>
         <View style={styles.tablero}>
             <View style={styles.curso2}>
-                <View style={styles.casilla_esquina}>
+                <View style={styles.casilla_beca}>
                     <Ionicons name="school" size={26} color="black" style={{marginLeft:'22%', marginTop:'5%'}} />
                     <StyledText titulo_casilla>BECA</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_4]}>
+                <View style={[styles.casilla_2, styles.grupo_4]}>
                     <StyledText titulo_casilla>AOC 2</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>267€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_4]}>
+                <View style={[styles.casilla_2, styles.grupo_4]}>
                     <StyledText titulo_casilla>IPO</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>240€</StyledText>
                 </View>
-                <View style={styles.casilla_vertical}>
+                <View style={styles.casilla_2}>
                     <FontAwesome name="newspaper-o" size={26} color="grey" style={{marginLeft:'15%', marginTop:'5%'}}/>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_4]}>
+                <View style={[styles.casilla_2, styles.grupo_4]}>
                     <StyledText titulo_casilla>TPROG</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>240€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, {flexDirection:'row'}]}>
+                <View style={[styles.casilla_2, {flexDirection:'row'}]}>
                     <MaterialCommunityIcons name="party-popper" size={24} color="black" style={{flex:1}}/>
                     <View style={{flex:1}}>
                         <StyledText casillas_fiesta>PASO</StyledText>
                         <StyledText casillas_fiesta>ECUADOR</StyledText>  
                     </View>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_3]}>
+                <View style={[styles.casilla_2, styles.grupo_3]}>
                     <StyledText titulo_casilla>REDES</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>213€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_3]}>
+                <View style={[styles.casilla_2, styles.grupo_3]}>
                     <StyledText titulo_casilla>EDA</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>187€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, {flexDirection:'row'}]}>
+                <View style={[styles.casilla_2, {flexDirection:'row'}]}>
                     <MaterialIcons name="electrical-services" size={26} color="black" />
                     <StyledText precio_casilla>ELE</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_3]}>
+                <View style={[styles.casilla_2, styles.grupo_3]}>
                     <StyledText titulo_casilla>SO</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>187€</StyledText>
                 </View>
-                <View style={[styles.casilla_esquina, {flex:1, flexDirection:'column'}]}>
-                    <View style={{flex:1, flexDirection:'row'}}>
-                    <View style={{flex:1, flexDirection:'column'}}>
-                    <StyledText titulo_casilla>D</StyledText>
-                    <StyledText titulo_casilla>E</StyledText>
-                    </View>
-                    <View style={styles.julio}>
-                        <StyledText titulo_casilla style={{marginTop:'25%'}}>JULIO</StyledText>
-                    </View>
+                <View style={[styles.casilla_julio, {flexDirection:'column'}]}>
+                    <View style={{flexDirection:'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+                        <View style={{flexDirection:'column'}}>
+                            <StyledText titulo_casilla>D</StyledText>
+                            <StyledText titulo_casilla>E</StyledText>
+                        </View>
+                        <View style={styles.julio}>
+                            <StyledText titulo_casilla style={{marginTop:'25%'}}>JULIO</StyledText>
+                        </View>
                     </View>
                     <StyledText titulo_casilla>PASO</StyledText>
                 </View>
             </View>
             <View style={styles.cursos3_1}>
                 <View style={styles.curso3}>
-                    <View style={[styles.casilla_horizontal, styles.grupo_5]}>
+                    <View style={[styles.casilla_3, styles.grupo_5]}>
                     <StyledText titulo_casilla>IA</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>293€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_3}>
                     <FontAwesome5 name="question" size={26} color="grey" style={{marginLeft:'18%', marginTop:'30%'}}/>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_5]}>
+                    <View style={[styles.casilla_3, styles.grupo_5]}>
                     <StyledText titulo_casilla>SSDD</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>293€</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_5]}>
+                    <View style={[styles.casilla_3, styles.grupo_5]}>
                     <StyledText titulo_casilla>PH</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>320€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_3}>
                     <MaterialCommunityIcons name="party-popper" size={24} color="black" style={{marginLeft:'15%'}}/>
                         <StyledText casillas_fiesta>SAN</StyledText>
                         <StyledText casillas_fiesta>PEPE</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_6]}>
+                    <View style={[styles.casilla_3, styles.grupo_6]}>
                     <StyledText titulo_casilla>SIS INF 2</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_2lineas}>347€</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_6]}>
+                    <View style={[styles.casilla_3, styles.grupo_6]}>
                         <StyledText titulo_casilla>PROC LEN</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_2lineas}>347€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_3}>
                         <MaterialCommunityIcons name="air-conditioner" size={26} color="black" style={{marginLeft:'10%', marginTop:'5%'}} />
                         <StyledText precio_casilla style={{marginTop:'15%'}}>CALEF</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_6]}>
+                    <View style={[styles.casilla_3, styles.grupo_6]}>
                         <StyledText titulo_casilla>PS</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>373€</StyledText>
                     </View>
@@ -1118,86 +999,86 @@ export default function TableroScreen({route}) {
                     <Dice></Dice>
                 </View>
                 <View style={styles.curso1}>
-                    <View style={[styles.casilla_horizontal, styles.grupo_2]}>
+                    <View style={[styles.casilla_1, styles.grupo_2]}>
                         <StyledText titulo_casilla>AOC1</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>160€</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_2]}>
+                    <View style={[styles.casilla_1, styles.grupo_2]}>
                         <StyledText titulo_casilla style>FIS</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>133€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_1}>
                     <FontAwesome5 name="question" size={26} color="grey" style={{marginLeft:'18%', marginTop:'30%'}}/>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_2]}>
+                    <View style={[styles.casilla_1, styles.grupo_2]}>
                         <StyledText titulo_casilla>PROG2</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_2lineas}>133€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_1}>
                         <MaterialCommunityIcons name="party-popper" size={24} color="black" style={{marginLeft:'15%'}}/>
                         <StyledText casillas_fiesta>SAN</StyledText>
                         <StyledText casillas_fiesta>BRAU.</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_1}>
                         <StyledText casillas_fiesta style={{marginTop:'35%'}}>ABRIR</StyledText>
                         <StyledText casillas_fiesta>EXPDTE</StyledText>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_1]}>
+                    <View style={[styles.casilla_1, styles.grupo_1]}>
                         <StyledText titulo_casilla>IC</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_1linea}>80€</StyledText>
                     </View>
-                    <View style={styles.casilla_horizontal}>
+                    <View style={styles.casilla_1}>
                         <FontAwesome name="newspaper-o" size={26} color="grey" style={{marginTop:'35%'}}/>
                     </View>
-                    <View style={[styles.casilla_horizontal, styles.grupo_1]}>
+                    <View style={[styles.casilla_1, styles.grupo_1]}>
                         <StyledText titulo_casilla>PROG 1</StyledText>
                         <StyledText precio_casilla style={styles.precio_vertical_2lineas}>80€</StyledText>
                     </View>
                 </View>
             </View>
             <View style={styles.curso4}>
-                <View style={styles.casilla_esquina}>
+                <View style={styles.casilla_aJulio}>
                     <MaterialCommunityIcons name="file-remove-outline" size={26} color="black" style={{marginLeft:'25%', marginTop:'5%'}} />
                     <StyledText titulo_casilla style={{marginTop:'2%'}}>A JULIO</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_7]}>
+                <View style={[styles.casilla_4, styles.grupo_7]}>
                     <StyledText titulo_casilla>ROB</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>400€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_7]}>
+                <View style={[styles.casilla_4, styles.grupo_7]}>
                     <StyledText titulo_casilla>STW</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>400€</StyledText>
                 </View>
-                <View style={styles.casilla_vertical}>
+                <View style={styles.casilla_4}>
                     <FontAwesome name="newspaper-o" size={26} color="grey" style={{marginLeft:'20%', marginTop:'5%'}}/>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_7]}>
+                <View style={[styles.casilla_4, styles.grupo_7]}>
                 <StyledText titulo_casilla>SEGUR</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>427€</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, {flexDirection:'row'}]}>
+                <View style={[styles.casilla_4, {flexDirection:'row'}]}>
                     <MaterialCommunityIcons name="party-popper" size={24} color="black" style={{flex:1}}/>
                     <View style={{flex:1}}>
                         <StyledText casillas_fiesta>FIN</StyledText>
                         <StyledText casillas_fiesta>CARRERA</StyledText>  
                     </View>
                 </View>
-                <View style={styles.casilla_vertical}>
+                <View style={styles.casilla_4}>
                     <FontAwesome5 name="question" size={26} color="grey" style={{marginLeft:'25%', marginTop:'5%'}}/>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_8]}>
+                <View style={[styles.casilla_4, styles.grupo_8]}>
                     <StyledText titulo_casilla>PRACTS</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>467€</StyledText>
                 </View>
-                <View style={styles.casilla_vertical}>
+                <View style={styles.casilla_4}>
                     <StyledText casillas_fiesta style={{marginTop:'10%'}}>SEGURO</StyledText>
                     <StyledText casillas_fiesta>ESCOLAR</StyledText>
                 </View>
-                <View style={[styles.casilla_vertical, styles.grupo_8]}>
+                <View style={[styles.casilla_4, styles.grupo_8]}>
                     <StyledText titulo_casilla>TFG</StyledText>
                     <StyledText precio_casilla style={styles.precio_horizontal_1linea}>533€</StyledText>
                 </View>
-                <View style={styles.casilla_esquina}>
+                <View style={styles.casilla_salida}>
                     <StyledText titulo_casilla style={{marginTop:'10%'}}>SALIDA</StyledText>
                     <MaterialCommunityIcons name="arrow-left-bottom-bold" size={24} color="red" style={{marginLeft:'20%'}} />
                 </View>

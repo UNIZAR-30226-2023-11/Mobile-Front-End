@@ -122,13 +122,6 @@ export default function HomeScreen({ route, navigation }){
                                         alert("Se ha producido un error en el servidor, por favor, pulse otra vez el boton");
                                     }
                                 });
-
-                                // })
-                                // .catch((error) => {
-                                //     //Error
-                                //     //alert(JSON.stringify(error));
-                                //     console.error(error);
-                                // });
                             }}}
             />
             <StyledButton

@@ -1,10 +1,9 @@
 import React, {useEffect, useCallback} from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Select, NativeBaseProvider, ScrollView  } from "native-base";
+import { NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
-import StyledButton from "../components/StyledButton";
+import { useIsFocused } from '@react-navigation/native';
 
-import { listaJugadores } from "../url/partida";
 import { SocketContext } from "../components/SocketContext";
 
 const styles = StyleSheet.create({
@@ -36,6 +35,8 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     // const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
+    const isFocused = useIsFocused();
+
 
     const {socket} = React.useContext(SocketContext);
     // const [detenido, setDetenido] = React.useState(true);
@@ -48,12 +49,12 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             const subcadenas = mensajeCadena.split(",");
             setJugadores(subcadenas);
         });
-        
+
         socket.on('comenzarPartida', (mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
             navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
-        }); 
-    },[])
+        });
+    },[isFocused])
 
     return (
         <NativeBaseProvider>

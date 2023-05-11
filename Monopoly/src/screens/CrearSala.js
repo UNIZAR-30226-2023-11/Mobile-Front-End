@@ -1,13 +1,11 @@
-import React, { useEffect, useCallback, useState} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View, StyleSheet, Text, Modal, Switch, Pressable } from "react-native";
 import { Select,NativeBaseProvider, ScrollView  } from "native-base";
 import StyledText  from "../components/StyledText";
 import StyledButton from "../components/StyledButton";
-import { actualizarPartida, listaJugadores } from "../url/partida";
 import { Entypo } from '@expo/vector-icons';
 
 import { SocketContext } from "../components/SocketContext";
-import { Socket } from "socket.io-client";
 
 const styles = StyleSheet.create({
     container: {
@@ -110,18 +108,28 @@ export default function CrearSalaScreen({route, navigation }) {
     const [aumentarCreditos, setAumentarCreditos] = useState(false);
     const [reiniciarJuegoBancarrota, setReiniciarJuegoBancarrota] = useState(false);
 
-    useEffect(()=>{
-        socket.on('esperaJugadores', (mensaje) => {
-                console.log('Mensaje recibido: ' + mensaje);
-                const mensajeCadena = mensaje ? mensaje.toString() : "";
-                const subcadenas = mensajeCadena.split(",");
-                setJugadores(subcadenas);
-        });
+    const handleEsperaJugadores = useCallback((mensaje) => {
+        console.log('Mensaje recibido: ' + mensaje);
+        const mensajeCadena = mensaje.toString();
+        const subcadenas = mensajeCadena.split(",");
+        console.log(subcadenas);
+        setJugadores(subcadenas);
+    }, [navigation, idPartida]);
 
-        socket.on('comenzarPartida', (mensaje) => {
-            console.log('Mensaje recibido: ' + mensaje);
-            navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
-        }); 
+    const handleComenzarPartida = useCallback((mensaje) => {
+        navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
+    }, [navigation, idPartida]);
+
+    useEffect(()=>{
+        socket.on('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+
+        socket.on('comenzarPartida', (mensaje) => handleComenzarPartida(mensaje));
+
+        return () => {
+            socket.off('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+            socket.off('comenzarPartida', (mensaje) => handleComenzarPartida(mensaje));
+        };
+
     },[])
 
     return (
@@ -251,7 +259,6 @@ export default function CrearSalaScreen({route, navigation }) {
                             title="GUARDAR"
                             onPress={() => {setModalVisible(false);}}
                         />
-                        {console.log("modal visible" + isModalVisible)}
                     </View>
                     
                 </View>

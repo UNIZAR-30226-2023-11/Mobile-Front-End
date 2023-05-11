@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
-import { SocketContext } from './SocketContext';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -53,18 +52,6 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
         style
     ]
 
-    const {socket} = React.useContext(SocketContext);
-
-
-    useEffect(()=>{
-        socket.on('esperaJugadores', (mensaje) => {
-            console.log('Mensaje recibido: ' + mensaje);
-            const mensajeCadena = mensaje.toString();
-            const subcadenas = mensajeCadena.split(",");
-            navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas})
-        });
-    })
-
     return(
         <Modal
         animationType="slide"
@@ -90,14 +77,17 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
                         socketId: socket.id
                         }, (ack) => {
                             console.log('Server acknowledged:', ack);
+                            if(ack.cod == 0){
+                                onClose();
+                            }
                             if(ack.cod == 4){
                                 alert("No se admiten mas jugadores en la partida");
                             }
-                            else if(ack.cod != 2){
-                                alert(ack.msg);
+                            else if(ack.cod == 2){
+                                alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
                             }
                             else if(ack.cod!=0){
-                                alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
+                                alert(ack.msg);
                             }
                     });
                 }}

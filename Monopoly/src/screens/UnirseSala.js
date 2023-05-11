@@ -1,9 +1,8 @@
-import React from 'react';
-import { View, StyleSheet , Text , Button, Pressable} from'react-native';
+import React, { useEffect, useCallback } from 'react';
+import { View, StyleSheet , Text } from'react-native';
 import {Searchbar} from 'react-native-paper';
 import StyledModalSala from "../components/StyledModalSala";
 import { SocketContext } from '../components/SocketContext';
-import { unirPartida } from '../url/partida';
 
 const styles = StyleSheet.create({
     barra: { 
@@ -30,11 +29,27 @@ export default function UnirseSalaScreen({ route, navigation }) {
     // const user = route.params.user;
     // console.log(user);
 
-    const socket = React.useContext(SocketContext);
-
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
     const [idPartida, setIdPartida] = React.useState(0);
 
+    const {socket} = React.useContext(SocketContext);
+
+    const handleEsperaJugadores = useCallback((mensaje) => {
+        console.log('Mensaje recibido: ' + mensaje);
+        const mensajeCadena = mensaje.toString();
+        const subcadenas = mensajeCadena.split(",");
+        console.log(subcadenas);
+        navigation.replace('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
+      }, [navigation, idPartida]);
+
+    useEffect(()=>{
+        socket.on('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+
+        return () => {
+            socket.off('esperaJugadores', (mensaje) => handleEsperaJugadores(mensaje));
+        };
+
+    },[])
 
     return (
         <View style={styles.barra}>
@@ -56,7 +71,6 @@ export default function UnirseSalaScreen({ route, navigation }) {
                 onClose={ () => {setModalPartidaVisible({setModalPartidaVisible: !modalPartidaVisible})}}
                 visible={modalPartidaVisible}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
                     setModalReglasVisible({modalPartidaVisible: !modalPartidaVisible});
                 }} 
             >
