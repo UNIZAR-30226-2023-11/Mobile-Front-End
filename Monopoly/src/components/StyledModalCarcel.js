@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visible, onRequestClose, title, text, cartaJulio}){
+export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visible, onRequestClose, title, text, cartaJulio, pagarJulio}){
 
     const modalStyles = [
         styles.modalView,

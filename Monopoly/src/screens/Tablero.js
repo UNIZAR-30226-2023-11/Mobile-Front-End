@@ -37,7 +37,7 @@ import { SocketContext } from '../components/SocketContext';
 
 
 const { width } = Dimensions.get('window');
-const ancho = width / 11;
+const ancho = width / 12;
 
 const tokens = {
     token1: require('../../assets/token1.png'),
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         marginLeft: ancho,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        marginTop: ancho*9.7
+        marginTop: ancho*(9+1.5)
     },
     curso2: {
         position: 'absolute',
@@ -141,20 +141,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAEAEA'
     },
     casilla_horizontal:{
-        width: ancho*0.93 ,
-        height: ancho*1.3,
+        width: ancho,
+        height: ancho*1.5,
         borderColor: '#000000',
         borderWidth: 1
     },
     casilla_vertical:{
-        width: ancho*1.3,
-        height: ancho*0.93,
+        width: ancho*1.5,
+        height: ancho,
         borderColor: '#000000',
         borderWidth: 1
     },
     casilla_esquina:{
-        width: ancho*1.3,
-        height: ancho*1.3,
+        width: ancho*1.5,
+        height: ancho*1.5,
         borderColor: '#000000',
         borderWidth: 1
     },
@@ -208,21 +208,25 @@ export default function TableroScreen({route}) {
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
     const idPartida = route.params.idPartida;
-    const jugadores = route.params.jugadores;
+    // const [jugadores, setJugadores] = React.useState(route.params.nombreJugadores);
+    // const [tokensJugadores, setTokensJugador] = React.useState(route.params.posicionJugadores);
+    const [jugadores, setJugadores] = React.useState(["luna","pepe", "lucia", "pilar","luna","pepe", "lucia", "pilar"]);
+    const [tokensJugadores, setTokensJugador] = React.useState([
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10},
+        {h:10, v:10}
+    ]);
+    const [dinero, setDinero] = React.useState(route.params.dineroJugadores);
 
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
     const [dobles, setDobles] = React.useState(false);
     const [contadorDobles, setContadorDobles] = React.useState(0);
-    const [tokensJugadores, setTokensJugador] = React.useState([
-        {horizontal: 10, vertical: 10}, 
-        {horizontal: 10, vertical: 10}, 
-        {horizontal: 10, vertical: 10}, 
-        {horizontal: 10, vertical: 10},
-        {horizontal: 10, vertical: 10},
-        {horizontal: 10, vertical: 10},
-        {horizontal: 10, vertical: 10},
-        {horizontal: 10, vertical: 10}]);
     //pedir a la base de datos
     
     const casillas_suerte=[
@@ -266,7 +270,7 @@ export default function TableroScreen({route}) {
 
     //variables para la info de los jugadores
     // const [jugadores, setJugadores] = React.useState([""]);
-    const [dinero, setDinero] = React.useState([""]);
+
 
     const [carta,setCarta] = React.useState();
     const [propietario, setPropietario] = React.useState("");
@@ -300,57 +304,57 @@ export default function TableroScreen({route}) {
             position: 'absolute',
             width: ancho-15,
             height: ancho-15,
-            marginLeft: ancho*(tokensJugadores[0].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[0].horizontal-0.4)
+            marginLeft: tokensJugadores[0] && ancho*(tokensJugadores[0].h+0.4),
+            marginTop: tokensJugadores[0] && ancho*(tokensJugadores[0].v+0.4)
         },
         token2:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[1].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[1].horizontal-0.75),
+            marginLeft: tokensJugadores[1] && ancho*(tokensJugadores[1].h+0.4),
+            marginTop: tokensJugadores[1] && ancho*(tokensJugadores[1].v+0.75),
         },
         token3:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[2].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[2].horizontal-1.05),
+            marginLeft: tokensJugadores[2] && ancho*(tokensJugadores[2].h+0.4),
+            marginTop: tokensJugadores[2] && ancho*(tokensJugadores[2].v+1.05),
         },
         token4:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[3].horizontal-0.4),
-            marginTop: ancho*(tokensJugadores[3].horizontal-1.35)
+            marginLeft: tokensJugadores[3] && ancho*(tokensJugadores[3].h+0.4),
+            marginTop: tokensJugadores[3] && ancho*(tokensJugadores[3].v+1.35)
         },
         token5:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[4].horizontal-0.82),
-            marginTop:ancho*(tokensJugadores[4].horizontal-0.4),
+            marginLeft: tokensJugadores[4] && ancho*(tokensJugadores[4].h+0.82),
+            marginTop: tokensJugadores[4] && ancho*(tokensJugadores[4].v+0.4),
         },
         token6:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[5].horizontal-0.82),
-            marginTop: ancho*(tokensJugadores[5].horizontal-0.75),
+            marginLeft: tokensJugadores[5] && ancho*(tokensJugadores[5].h+0.82),
+            marginTop: tokensJugadores[5] && ancho*(tokensJugadores[5].v+0.75),
         },
         token7:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[6].horizontal - 0.82),
-            marginTop: ancho*(tokensJugadores[6].horizontal - 1.05),
+            marginLeft: tokensJugadores[6] && ancho*(tokensJugadores[6].h + 0.82),
+            marginTop: tokensJugadores[6] &&  ancho*(tokensJugadores[6].v + 1.05),
         },
         token8:{
             position: 'absolute',
             width:ancho-15,
             height:ancho-15,
-            marginLeft: ancho*(tokensJugadores[7].horizontal - 0.82),
-            marginTop: ancho*(tokensJugadores[7].horizontal - 1.35),
+            marginLeft: tokensJugadores[7] && ancho*(tokensJugadores[7].h + 0.82),
+            marginTop: tokensJugadores[7] && ancho*(tokensJugadores[7].v + 1.35),
         }
     })
 
@@ -375,10 +379,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].horizontal = ack.msg.coordenadas.h;
-                    aux[turnoActual].vertical = ack.msg.coordenadas.v;
-                    // aux[turnoActual].horizontal = 1;
-                    // aux[turnoActual].vertical = 10;
+                    aux[turnoActual].h = ack.msg.coordenadas.h;
+                    aux[turnoActual].v = ack.msg.coordenadas.v;
+                    // aux[turnoActual].h = 2;
+                    // aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -395,8 +399,8 @@ export default function TableroScreen({route}) {
                                 alert("Te toca ir a Julio");
                                 //cambiar lo siguiente por llamada al back cnd esté
                                 let aux = tokensJugadores;
-                                aux[turnoActual].horizontal = 0;
-                                aux[turnoActual].vertical = 10;
+                                aux[turnoActual].h = 0;
+                                aux[turnoActual].v = 10;
                                 console.log(aux);
                                 setTokensJugador(aux);
                                 setCarcel(true);
@@ -431,17 +435,17 @@ export default function TableroScreen({route}) {
     const comprobarAsignatura = useCallback(() => {
         console.log("comprobando casilla para el turno", turnoActual);
         console.log(tokensJugadores[0]);
-        let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+        let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].h && element.vertical===tokensJugadores[turnoActual].v);
         if(found === undefined){
-            let found = casillas_boletin.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+            let found = casillas_boletin.find(element => element.horizontal===tokensJugadores[turnoActual].h && element.vertical===tokensJugadores[turnoActual].v);
             if(found === undefined){
-                let found = casillas_esquinas.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+                let found = casillas_esquinas.find(element => element.horizontal===tokensJugadores[turnoActual].h && element.vertical===tokensJugadores[turnoActual].v);
                 if( found === undefined){
-                    let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].horizontal && element.vertical===tokensJugadores[turnoActual].vertical);
+                    let found = casillas_pagos.find(element => element.horizontal===tokensJugadores[turnoActual].h && element.vertical===tokensJugadores[turnoActual].v);
                     if( found === undefined){
-                        console.log("comprobando asignatura", tokensJugadores[turnoActual].horizontal, tokensJugadores[turnoActual].vertical);
+                        console.log("comprobando asignatura", tokensJugadores[turnoActual].h, tokensJugadores[turnoActual].v);
                         socket.emit('casilla', {
-                            coordenadas: {h: tokensJugadores[turnoActual].horizontal, v: tokensJugadores[turnoActual].vertical},
+                            coordenadas: {h: tokensJugadores[turnoActual].h, v: tokensJugadores[turnoActual].v},
                             socketId: socket.id
                         },
                         (ack)=>{
@@ -476,13 +480,13 @@ export default function TableroScreen({route}) {
                 }else{
                     console.log("esquina");
                     //accion
-                    if(tokensJugadores[turnoActual].horizontal==10 && tokensJugadores[turnoActual].vertical==0 ){
+                    if(tokensJugadores[turnoActual].h==10 && tokensJugadores[turnoActual].v==0 ){
                         console.log("carcel");
                         alert("Te toca ir a Julio");
                         //cambiar lo siguiente por llamada al back cuando este 
                         let aux = tokensJugadores;
-                        aux[turnoActual].horizontal = 0;
-                        aux[turnoActual].vertical = 10;
+                        aux[turnoActual].h = 0;
+                        aux[turnoActual].v = 10;
                         console.log(aux);
                         setTokensJugador(aux);
                         setCarcel(true);
@@ -528,7 +532,7 @@ export default function TableroScreen({route}) {
 
     const infoCasilla= useCallback((esMia, aumento) => {
         socket.emit('infoAsignatura',{
-            coordenadas:{h: tokensJugadores[turnoActual].horizontal,v: tokensJugadores[turnoActual].vertical} 
+            coordenadas:{h: tokensJugadores[turnoActual].h,v: tokensJugadores[turnoActual].v} 
         },
         (ack)=> {
             if(ack.msg.tipo == 'A'){
@@ -712,13 +716,14 @@ export default function TableroScreen({route}) {
     useEffect(() =>{
         socket.on('infoPartida',(mensaje) => {
             console.log('Mensaje recibido infoPartida: ' + mensaje);
-            setDinero(mensaje.listaDineros);
+            console.log(mensaje);
+            setDinero(mensaje.dineroJugadores);
             let aux = tokensJugadores;
             // console.log(aux);
             
-            for(var i=0; i<mensaje.listaPosiciones.length; i++){
-                aux[i].horizontal = mensaje.listaPosiciones[i].h;
-                aux[i].vertical = mensaje.listaPosiciones[i].v;
+            for(var i=0; i<mensaje.posicionJugadores.length; i++){
+                aux[i].h = mensaje.posicionJugadores[i].h;
+                aux[i].v = mensaje.posicionJugadores[i].v;
                 console.log(aux[i]);
             }
             setTokensJugador(aux);
@@ -731,29 +736,25 @@ export default function TableroScreen({route}) {
             if(mensaje.jugador == username){
                 // setDetenidoActualizaInfo(true);
                 if(jugadores[turnoActual] == username){
-                    socket.emit('estaJulio',{
-                        socketId: socket.id
-                    },
-                    (ack) => {
-                        console.log("Server acknowledge estaJulio "+ mensaje);
-                        if(ack.carcel){
-                            setModalCarcelVisible(true);
-                        }
-                        if(ack.carta != null){
-                            setCartaJulio(true);
-                        }
-                        if(ack.puedePagar){
-                            setPagarJulio(true);
-                        }
-                    })
-                    setDetenidoContador(false);
-        
+                    // socket.emit('estaJulio',{
+                    //     socketId: socket.id
+                    // },
+                    // (ack) => {
+                    //     console.log("Server acknowledge estaJulio "+ mensaje);
+                    //     if(ack.carcel){
+                    //         setModalCarcelVisible(true);
+                    //     }
+                    //     if(ack.carta != null){
+                    //         setCartaJulio(true);
+                    //     }
+                    //     if(ack.puedePagar){
+                    //         setPagarJulio(true);
+                    //     }
+                    // })
+                    setReiniciarContador(true);
+                    // setDetenidoContador(false);
                 }
-                if(carcel){
-                    console.log("comprobar tarjeta julio");
-                    tieneCartaJulio();
-                }
-                setReiniciarContador(true);
+                
             }
         });
 
@@ -1192,8 +1193,8 @@ export default function TableroScreen({route}) {
             aumentarCreditos={false}
             esMia={false}
             jugadores={jugadores}
-            c_hor={tokensJugadores[turnoActual].horizontal}
-            c_ver={tokensJugadores[turnoActual].vertical}
+            c_hor={tokensJugadores[turnoActual].h}
+            c_ver={tokensJugadores[turnoActual].v}
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
@@ -1226,8 +1227,8 @@ export default function TableroScreen({route}) {
             aumentarCreditos={true}
             esMia={true}
             jugadores={jugadores}
-            c_hor={tokensJugadores[turnoActual].horizontal}
-            c_ver={tokensJugadores[turnoActual].vertical}
+            c_hor={tokensJugadores[turnoActual].h}
+            c_ver={tokensJugadores[turnoActual].v}
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
@@ -1258,8 +1259,8 @@ export default function TableroScreen({route}) {
             aumentarCreditos={false}
             esMia={true}
             jugadores={jugadores}
-            c_hor={tokensJugadores[turnoActual].horizontal}
-            c_ver={tokensJugadores[turnoActual].vertical}
+            c_hor={tokensJugadores[turnoActual].h}
+            c_ver={tokensJugadores[turnoActual].v}
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}

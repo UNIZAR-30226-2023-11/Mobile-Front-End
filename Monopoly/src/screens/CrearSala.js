@@ -118,7 +118,13 @@ export default function CrearSalaScreen({route, navigation }) {
 
     const handleComenzarPartida = useCallback((mensaje) => {
         console.log("Mensaje recibido comenzar " + mensaje);
-        navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
+        console.log(mensaje.partida.posicionJugadores);
+        navigation.navigate('Tablero', 
+        {user: mensaje.username, 
+            idPartida: mensaje.partida.id, 
+            nombreJugadores: mensaje.partida.nombreJugadores,
+            dineroJugadores: mensaje.partida.dineroJugadores,
+            posicionJugadores: mensaje.partida.posicionJugadores});
     }, [navigation, idPartida]);
 
     const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);

@@ -52,8 +52,13 @@ export default function EsperaUnirseScreen({ route, navigation }) {
 
         socket.on('comenzarPartida', (mensaje) => {
             console.log('Mensaje recibido: ' + mensaje);
-            navigation.navigate('Tablero', {user: mensaje, idPartida: idPartida, jugadores: jugadores});
-        });
+            navigation.navigate('Tablero', 
+            {user: mensaje.username, 
+                idPartida: mensaje.partida.id, 
+                nombreJugadores: mensaje.partida.nombreJugadores,
+                dineroJugadores: mensaje.partida.dineroJugadores,
+                posicionJugadores: mensaje.partida.posicionJugadores});
+            });
     },[isFocused])
 
     return (
