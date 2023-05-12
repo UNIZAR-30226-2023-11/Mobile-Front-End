@@ -4,6 +4,7 @@ import { View, StyleSheet , Text , Button, Pressable, Image, FlatList, Touchable
 //import { unirPartida } from '../url/partida';
 import { SocketContext } from '../components/SocketContext';
 import { encode } from 'base-64';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const styles = StyleSheet.create({
@@ -80,6 +81,9 @@ const styles = StyleSheet.create({
       money: {
         fontSize: 20,
       },
+      spinnerText: {
+        color: '#FFF',
+      }
   })
 
 const Header = ({ username, money }) => {
@@ -98,40 +102,39 @@ export default function TiendaScreen({ route, navigation }){
     //personalizar precio con monedas
     console.log(username);
 
+    const [isLoading, setIsLoading] = React.useState(true);
     const [usados, setUsados] = React.useState([]);
     const [comprados, setComprados] = React.useState([]);  
-    let [fichas, setFichas] = React.useState();  
-    let [avatares, setAvatares] = React.useState();  
+    const [fichas, setFichas] = React.useState([]);  
+    const [avatares, setAvatares] = React.useState();  
 
-    socket.emit('tienda', {socketId: socket.id}, (ack) => {
-      console.log('Server acknowledged:', ack);
-      if (ack.cod === 0) {
-        fichas = ack.msg.map(item => ({
-          nombre: item.nombre,
-          precio: item.precio,
-          usado: item.usado,
-          comprado: item.comprado,
-          imagen: item.imagen
-        }));
-
-        console.log("Fichas:  " + fichas[0].nombre, fichas[0].precio, fichas[0].usado, fichas[0].comprado, fichas[0].imagen);
-        console.log("Fichas:  " + fichas[1].nombre, fichas[1].precio, fichas[1].usado, fichas[1].comprado, fichas[1].imagen);
-    
-        setFichas(fichas);
-        //console.log("Fichas: " + fichas);
-
-      } else if (ack.cod === 2) {
-        alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
-      }
-    });
-
+    useEffect(() => {
+      socket.emit('tienda', {socketId: socket.id}, (ack) => {
+        // console.log('Server acknowledged:', ack);
+        if (ack.cod === 0) {
+          let aux_fichas = ack.msg.map(item => ({
+            nombre: item.nombre,
+            precio: item.precio,
+            usado: item.usado,
+            comprado: item.comprado,
+            imagen: item.imagen
+          }));
+          setFichas(aux_fichas);
+          setIsLoading(false);
+          //console.log("Fichas: " + fichas);
+  
+        } else if (ack.cod === 2) {
+          alert("Se ha producido un error en el servidor. Salga del perfil y vuelva a entrar");
+        }
+      });
+    },[]);
 
     const renderItem = useCallback(({item}) => {
       const img = require('../../assets/bob.png');
     
       return (
         <View style={styles.itemContainer}>
-          <Image style={styles.itemImage} source={`data:image/jpg;base64,${item.imagen}`} />
+          <Image style={styles.itemImage} source={{uri: `data:image/jpg;base64,${item.imagen}`}} />
           <Text style={styles.itemText}>{item.nombre}</Text>
     
           {/*si aun no esta comprado*/}
@@ -141,7 +144,16 @@ export default function TiendaScreen({ route, navigation }){
               <Text style={styles.itemPrecio}>€{item.precio}</Text>
               <TouchableOpacity style={styles.itemButton} onPress={() => {
                 socket.emit('comprarTienda', {socketId: socket.id, producto: item.nombre}, (ack) => {
-                  console.log('Server acknowledged:', ack);
+                  console.log('Server acknowledged comprar Tienda:', ack);
+                  if (ack.cod==0){
+                    let aux = fichas;
+                    for(let i = 0; i < aux.length; i++) {
+                      if(aux[i]==item.nombre){
+                        aux[i].comprado = true;
+                      }
+                    }
+                    setFichas(aux);
+                  }
                 });
               }}>
                 <Text style={styles.itemButtonText}>Comprar</Text>
@@ -153,7 +165,7 @@ export default function TiendaScreen({ route, navigation }){
           {item.comprado && !item.usado && item.nombre.startsWith("Avatar") && (
             <TouchableOpacity style={styles.itemButton} onPress={() => {
               socket.emit('updateImagenPerfil', {socketId: socket.id, imagen: item.imagen}, (ack) => {
-                console.log('Server acknowledged:', ack);
+                // console.log('Server acknowledged:', ack);
               });
             }}>
               <Text style={styles.itemButtonText}>Usar</Text>
@@ -181,9 +193,10 @@ export default function TiendaScreen({ route, navigation }){
     return (
       <SafeAreaView style={{flex: 1}}>
         <Header username={'@' + username} money={40 + ' M'} />
-            <View>
-                <View>
+            <View style={{flex: 1}}>
+                <View style={{flex: 1}}>
                     <Text style={styles.texto}>Fichas y avatares</Text>
+                    
                     <FlatList
                         data={fichas}
                         renderItem={renderItem}
@@ -192,6 +205,11 @@ export default function TiendaScreen({ route, navigation }){
                     />
                     </View>
             </View>    
+                    <Spinner
+                      visible={isLoading}
+                      textContent={'Cargando...'}
+                      textStyle={styles.spinnerText}
+                    />
       </SafeAreaView>       
     );
 }
