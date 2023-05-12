@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 });
 
 export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visible, onRequestClose, doubles, text, 
-    c_hor, c_ver, aumentarCreditos, esMia, jugadores}
+    c_hor, c_ver, aumentarCreditos, esMia, jugadores, puja}
     ){
 
     const {socket} = React.useContext(SocketContext);
@@ -150,7 +150,28 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                 </View>
                 }
                 <View style={styles.botones}>
-                    {!doubles &&
+                    {puja && !esMia &&
+                    <StyledButton 
+                        style={styles.boton}
+                        title="Comenzar puja"
+                        onPress={()=> {
+                            console.log("comenzando puja");
+                            socket.emit('empezarPuja',{
+                                coordenadas: {h:c_hor, v: c_ver},
+                                socketId: socket.id,
+                            },(ack) =>{
+                                if(ack.cod == 0){
+                                    
+                                }
+                                else if(ack.cod == 2){
+                                    alert("Se ha producido un error en el servidor. Intentelo de nuevo");
+                                }
+                            })
+                        }}
+                        purple
+                    />
+                    }
+                    {!doubles && (!puja || esMia) && 
                     <StyledButton
                         style={styles.boton}
                         title="Acabar turno"
@@ -161,13 +182,14 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                         }}
                         purple
                     />}
-                    {doubles &&
+                    {doubles && (!puja || esMia) &&
                     <StyledButton
                         style={styles.boton}
                         title="Tirar otra vez"
                         onPress={onClose}
                         purple
                     />}
+                    
                     {!esMia &&
                     <StyledButton
                         style={styles.boton}

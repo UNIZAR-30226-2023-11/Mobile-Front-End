@@ -9,6 +9,7 @@ import
     Entypo
 } from '@expo/vector-icons';
 import InputSpinner from 'react-native-input-spinner';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 import StyledText from '../components/StyledText';
@@ -17,6 +18,7 @@ import StyledModalCompra from '../components/StyledModalCompra';
 import StyledModalAsignaturas from '../components/StyledModalAsignaturas';
 import StyledModalTimeout from '../components/StyledModalTimeout';
 import StyledModalCarcel from '../components/StyledModalCarcel';
+import StyledModalPuja from '../components/StyledModalPuja';
 import Die from '../components/Die';
 
 import {
@@ -198,7 +200,10 @@ const styles = StyleSheet.create({
     },
     precio_horizontal_1linea:{
         marginTop:'7%'
-    }
+    },
+    spinnerText: {
+        color: '#FFF',
+      },
 });
 
 
@@ -208,19 +213,12 @@ export default function TableroScreen({route}) {
     //const idPartida = route.params.idPartida;
     const username = route.params.user;
     const idPartida = route.params.idPartida;
-    // const [jugadores, setJugadores] = React.useState(route.params.nombreJugadores);
-    // const [tokensJugadores, setTokensJugador] = React.useState(route.params.posicionJugadores);
-    const [jugadores, setJugadores] = React.useState(["luna","pepe", "lucia", "pilar","luna","pepe", "lucia", "pilar"]);
-    const [tokensJugadores, setTokensJugador] = React.useState([
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10},
-        {h:10, v:10}
-    ]);
+    const [jugadores, setJugadores] = React.useState(route.params.nombreJugadores);
+    const [tokensJugadores, setTokensJugador] = React.useState(route.params.posicionJugadores);
+    const normas = {
+        puja: true
+    }
+   
     const [dinero, setDinero] = React.useState(route.params.dineroJugadores);
 
     const [die1, setDie1] = React.useState(1);
@@ -260,6 +258,7 @@ export default function TableroScreen({route}) {
     const [modalTimeoutVisible, setModalTimeoutVisible] = React.useState(false);
     const [modalOfertaVisible, setModalOfertaVisible] = React.useState(false);
     const [modalCarcelVisible, setModalCarcelVisible] = React.useState(false);
+    const [modalPujaVisible, setModalPujaVisible] = React.useState(false);
 
     const [compra, setCompra] = React.useState(false);
     const [aumentoCreditos, setAumentoCreditos] = React.useState(false);
@@ -268,9 +267,7 @@ export default function TableroScreen({route}) {
     const [cambio, setCambio] = React.useState(false);
     const [info, setInfo] = React.useState(false);
 
-    //variables para la info de los jugadores
-    // const [jugadores, setJugadores] = React.useState([""]);
-
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const [carta,setCarta] = React.useState();
     const [propietario, setPropietario] = React.useState("");
@@ -283,8 +280,6 @@ export default function TableroScreen({route}) {
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
-    const [intervalActualizarInfo, setIntervalActualizarInfo] = React.useState(null);
-    const [detenidoActualizarInfo, setDetenidoActualizaInfo] = React.useState(false);
 
     //variable para saber si el jugador está en la carcel
     const [carcel, setCarcel] = React.useState(false);
@@ -298,6 +293,8 @@ export default function TableroScreen({route}) {
     const [contador, setContador] = React.useState(90000);
 
     const [precioTrade, setPrecioTrade] = React.useState(null);
+
+    const [asignaturaPuja, setAsignaturaPuja] = React.useState();
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -366,12 +363,14 @@ export default function TableroScreen({route}) {
                 alert("¡No es tu turno de lanzar los dados! Le toca a "+jugadores[turnoActual]);
                 return;
             }
+            setIsLoading(true);
             setReiniciarContador(true);
             console.log("rolling dice...");
             setDobles(false);
             socket.emit('lanzarDados', {
                 socketId: socket.id
               }, (ack) => {
+                setIsLoading(false);
                 console.log('Server acknowledged dados:', ack);
                 if(ack.cod == 0){
                     // setRandDados(false);
@@ -758,9 +757,14 @@ export default function TableroScreen({route}) {
             }
         });
 
-        socket.on('puja',(mensaje)=>{
+        socket.on('hayPuja',(mensaje)=>{
             console.log("Mensaje recibido puja: " + mensaje);
-            //hacer modal de las pujas visible
+            setAsignaturaPuja(mensaje);
+            setModalPujaVisible(true);
+        });
+
+        socket.on('actualizarPuja',(mensaje)=>{
+
         });
 
         socket.on('ofertaRecibida',(mensaje) =>{
@@ -971,6 +975,12 @@ export default function TableroScreen({route}) {
                     </StyledText>
                     }
                     <Dice></Dice>
+                    <Spinner
+                        visible={isLoading}
+                        textContent={''}
+                        textStyle={styles.spinnerText}
+                        overlayColor={'transparent'}
+                    />
                 </View>
                 <View style={styles.curso1}>
                     <View style={[styles.casilla_horizontal, styles.grupo_2]}>
@@ -1198,6 +1208,7 @@ export default function TableroScreen({route}) {
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
+            puja={normas.puja}
             onClose={() => {
                 setReiniciarContador(true);
                 setCompra(false);
@@ -1232,6 +1243,7 @@ export default function TableroScreen({route}) {
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
+            puja={normas.puja}
             onClose={() => {
                 setReiniciarContador(true);
                 setAumentoCreditos(false);
@@ -1264,6 +1276,7 @@ export default function TableroScreen({route}) {
             username={username}
             idPartida={idPartida}
             InfoCarta = {carta}
+            puja={normas.puja}
             onClose={() => {
                 setReiniciarContador(true);
                 setModalEsMiaVisible({modalEsMiaVisible: !modalEsMiaVisible});
@@ -1440,6 +1453,12 @@ export default function TableroScreen({route}) {
                 setCambio(true);
             }} 
             /> 
+        <StyledModalPuja
+            visible={modalPujaVisible}
+            onClose={() => {setModalPujaVisible({modalPujaVisible: !modalPujaVisible});}}
+            onRequestClose={() => {setModalPujaVisible({modalPujaVisible: !modalPujaVisible});}}
+            infoAsignatura={asignaturaPuja}
+        />
     </View>
     );
 }

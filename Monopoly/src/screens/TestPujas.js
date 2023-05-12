@@ -131,7 +131,7 @@ export default function TestPujas(navigation){
 
             <StyledModalSala
                 title="Partida en juego"
-    text={"Tienes una partida en juego, ¿deseas unirte?" /*idPartida*/}
+                text={"Tienes una partida en juego, ¿deseas unirte?" /*idPartida*/}
                 style={styles.modal}
                 buttonText="Unirme"
                 idPartida="5"

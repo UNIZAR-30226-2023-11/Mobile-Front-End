@@ -255,7 +255,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                                         imageSource={require('../../assets/bob.png')}
                                     />);
                                 }
-                                else if(data.casillaInfo.tipo == 'I'){
+                                else if(ack.msg.casillaInfo.tipo == 'I'){
                                     //console.log("recurso");
                                     setCarta(                                   
                                     <Recurso

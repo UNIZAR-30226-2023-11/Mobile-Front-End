@@ -112,7 +112,6 @@ export default function CrearSalaScreen({route, navigation }) {
         console.log('Mensaje recibido espera jugadores: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
-        console.log(subcadenas);
         setJugadores(subcadenas);
     }, [navigation, idPartida]);
 

@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#CFA8FC'
     },
-
     profile: {
         marginTop: 10,
         marginLeft: 10,
@@ -45,13 +44,13 @@ const styles = StyleSheet.create({
         color: '#CFA8FC'
     },
     titulo_casilla:{
-        fontSize: 11,
+        fontSize: 10,
         fontWeight: 'bold',
         textAlign:'center',
         color: '#000000'
     },
     precio_casilla:{
-        fontSize: 10,
+        fontSize: 9,
         fontWeight:'bold',
         textAlign:'center',
         color: '#000000'
