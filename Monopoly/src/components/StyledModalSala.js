@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { Modal, ScrollView, StyleSheet, View, Pressable, Text, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import StyledButton from "../components/StyledButton";
+import { SocketContext } from './SocketContext';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -51,6 +52,28 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
         styles.modalView,
         style
     ]
+
+    const {socket} = React.useContext(SocketContext);
+
+    const handleEsperaJugadores = useCallback((mensaje) => {
+        console.log('Mensaje recibido: ' + mensaje);
+        const mensajeCadena = mensaje.toString();
+        const subcadenas = mensajeCadena.split(",");
+        console.log(subcadenas);
+        navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
+      }, [navigation, idPartida]);
+
+    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
+
+    useEffect(()=>{
+        socket.on('esperaJugadores', esperaJugadoresListener);
+
+        return () => {
+            socket.off('esperaJugadores', esperaJugadoresListener);
+            console.log("Desmontando");
+        };
+
+    },[])
 
     return(
         <Modal

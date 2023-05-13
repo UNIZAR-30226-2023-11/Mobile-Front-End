@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet, Button, View, Modal, Text, Pressable } from 'react-native';
 import { NativeBaseProvider } from "native-base";
 import StyledButton from "./StyledButton";

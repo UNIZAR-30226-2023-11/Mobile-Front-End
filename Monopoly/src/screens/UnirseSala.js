@@ -2,7 +2,6 @@ import React, { useEffect, useCallback } from 'react';
 import { View, StyleSheet , Text } from'react-native';
 import {Searchbar} from 'react-native-paper';
 import StyledModalSala from "../components/StyledModalSala";
-import { SocketContext } from '../components/SocketContext';
 
 const styles = StyleSheet.create({
     barra: { 
@@ -31,28 +30,6 @@ export default function UnirseSalaScreen({ route, navigation }) {
 
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
     const [idPartida, setIdPartida] = React.useState(0);
-
-    const {socket} = React.useContext(SocketContext);
-
-    const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido: ' + mensaje);
-        const mensajeCadena = mensaje.toString();
-        const subcadenas = mensajeCadena.split(",");
-        console.log(subcadenas);
-        navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
-      }, [navigation, idPartida]);
-
-    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
-
-    useEffect(()=>{
-        socket.on('esperaJugadores', esperaJugadoresListener);
-
-        return () => {
-            socket.off('esperaJugadores', esperaJugadoresListener);
-            console.log("Desmontando");
-        };
-
-    },[])
 
     return (
         <View style={styles.barra}>
