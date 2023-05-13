@@ -54,9 +54,8 @@ export default function StyledModalTimeout({style={}, onClose, visible, onReques
 
     useEffect(() => {
         if(contador == 0){
-            console.log("ECHAR");
             setDetenidoContador(true); 
-            // onClose();
+            onClose();
         }
     },[contador]);
 

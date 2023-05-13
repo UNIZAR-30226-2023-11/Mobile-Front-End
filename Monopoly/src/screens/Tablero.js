@@ -1374,8 +1374,18 @@ export default function TableroScreen({route}) {
         <StyledModalTimeout
             visible={modalTimeoutVisible}
             onClose = { () => {
-                setReiniciarContador(true);
-                setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                //setReiniciarContador(true);
+                socket.emit('bancarrota',{socketId: socket.id}
+                ,(ack)=>{
+                    if(ack.cod == 0){
+                        setModalTimeoutVisible({modalTimeoutVisible: !modalTimeoutVisible});
+                        alert("Se le ha eliminado de la partida");
+                        navigation.navigate('Home');
+                    }
+                    else if(ack.cod == 2){
+                        alert("se ha producido un error en el servidor");
+                    }
+                })
                 // setActualizarPlayers(true);
             }}
             onRequestClose = { () => {
