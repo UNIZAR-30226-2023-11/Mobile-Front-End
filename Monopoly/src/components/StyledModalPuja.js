@@ -90,7 +90,7 @@ export default function StyledModalPuja({visible, onClose, onRequestClose, infoA
     const {socket} = React.useContext(SocketContext);
     const [nombre, setNombre] = React.useState("");
     const [cantidad, setCantidad] = React.useState(0);
-    const [carta,setCarta] = React.useState();
+    const [carta,setCarta] = React.useState(null);
     const [modalCartaVisible, setModalCartaVisible] = React.useState(false);
 
     const handleActualizarPuja = useCallback((mensaje) => {
@@ -111,154 +111,155 @@ export default function StyledModalPuja({visible, onClose, onRequestClose, infoA
         socket.on('actualizarPuja', actualizarPujaListener);
         
         socket.on('terminarPuja', terminarPujaListener);
-        
-        if(infoAsignatura.tipo == 'A'){
-            console.log("asignatura ", infoAsignatura.cuatrimestre);
-            switch(infoAsignatura.cuatrimestre){
-                case 1:
-                    setCarta(<Asignatura_1
+        if(infoAsignatura){
+            if(infoAsignatura.tipo == 'A'){
+                console.log("asignatura ", infoAsignatura.cuatrimestre);
+                switch(infoAsignatura.cuatrimestre){
+                    case 1:
+                        setCarta(<Asignatura_1
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 2:
+                        setCarta(<Asignatura_2
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 3:
+                        setCarta(
+                        <Asignatura_3
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 4:
+                        setCarta(                                            
+                        <Asignatura_4
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 5:
+                        setCarta(                                            
+                        <Asignatura_5
                         title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 2:
-                    setCarta(<Asignatura_2
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 3:
-                    setCarta(
-                    <Asignatura_3
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 4:
-                    setCarta(                                            
-                    <Asignatura_4
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 5:
-                    setCarta(                                            
-                    <Asignatura_5
-                    title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break;  
-                case 6:
-                    setCarta(                                            
-                    <Asignatura_6
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 7:
-                    setCarta(                                            
-                    <Asignatura_7
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
-                case 8:
-                    setCarta(                                            
-                    <Asignatura_8
-                        title={infoAsignatura.nombre}
-                        coste={infoAsignatura.precioCompra}
-                        matricula={infoAsignatura.matricula}
-                        precio1C={infoAsignatura.precio1C}
-                        precio2C={infoAsignatura.precio2C}
-                        precio3C={infoAsignatura.precio3C}
-                        precio4C={infoAsignatura.precio4C}
-                        optatividad={infoAsignatura.devolucionMatricula}
-                        precioCredito={infoAsignatura.precioCompraCreditos}
-                    />);
-                    break; 
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break;  
+                    case 6:
+                        setCarta(                                            
+                        <Asignatura_6
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 7:
+                        setCarta(                                            
+                        <Asignatura_7
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                    case 8:
+                        setCarta(                                            
+                        <Asignatura_8
+                            title={infoAsignatura.nombre}
+                            coste={infoAsignatura.precioCompra}
+                            matricula={infoAsignatura.matricula}
+                            precio1C={infoAsignatura.precio1C}
+                            precio2C={infoAsignatura.precio2C}
+                            precio3C={infoAsignatura.precio3C}
+                            precio4C={infoAsignatura.precio4C}
+                            optatividad={infoAsignatura.devolucionMatricula}
+                            precioCredito={infoAsignatura.precioCompraCreditos}
+                        />);
+                        break; 
+                }
             }
+            else if(infoAsignatura.tipo == 'F'){
+                //console.log("evento");
+                setCarta(                                    
+                <Evento
+                    title={infoAsignatura.nombre}
+                    coste={infoAsignatura.precioCompra}
+                    matricula={infoAsignatura.matricula}
+                    precio1C={infoAsignatura.precio1C}
+                    precio2C={infoAsignatura.precio2C}
+                    precio3C={infoAsignatura.precio3C}
+                    optatividad={infoAsignatura.devolucionMatricula}
+                    imageSource={require('../../assets/bob.png')}
+                />);
+            }
+            else if(infoAsignatura.tipo == 'I'){
+                //console.log("recurso");
+                setCarta(                                   
+                <Recurso
+                    title={infoAsignatura.nombre}
+                    coste={infoAsignatura.precioCompra}
+                    optatividad={infoAsignatura.devolucionMatricula}
+                    imageSource={require('../../assets/bob.png')}
+                />);
+            }
+            //console.log(carta);
         }
-        else if(infoAsignatura.tipo == 'F'){
-            //console.log("evento");
-            setCarta(                                    
-            <Evento
-                title={infoAsignatura.nombre}
-                coste={infoAsignatura.precioCompra}
-                matricula={infoAsignatura.matricula}
-                precio1C={infoAsignatura.precio1C}
-                precio2C={infoAsignatura.precio2C}
-                precio3C={infoAsignatura.precio3C}
-                optatividad={infoAsignatura.devolucionMatricula}
-                imageSource={require('../../assets/bob.png')}
-            />);
-        }
-        else if(infoAsignatura.tipo == 'I'){
-            //console.log("recurso");
-            setCarta(                                   
-            <Recurso
-                title={infoAsignatura.nombre}
-                coste={infoAsignatura.precioCompra}
-                optatividad={infoAsignatura.devolucionMatricula}
-                imageSource={require('../../assets/bob.png')}
-            />);
-        }
-        //console.log(carta);
 
         return () => {
             socket.off('actualizarPuja', actualizarPujaListener);
             socket.off('terminarPuja', terminarPujaListener);
         }
 
-    },[])
+    },[infoAsignatura])
 
     return (
         <View>

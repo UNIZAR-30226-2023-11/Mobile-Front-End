@@ -294,7 +294,7 @@ export default function TableroScreen({route}) {
 
     const [precioTrade, setPrecioTrade] = React.useState(null);
 
-    const [asignaturaPuja, setAsignaturaPuja] = React.useState();
+    const [asignaturaPuja, setAsignaturaPuja] = React.useState(null);
 
     const stylestoken = StyleSheet.create({
         token1:{
@@ -380,7 +380,7 @@ export default function TableroScreen({route}) {
                     let aux = tokensJugadores;
                     aux[turnoActual].h = ack.msg.coordenadas.h;
                     aux[turnoActual].v = ack.msg.coordenadas.v;
-                    // aux[turnoActual].h = 2;
+                    // aux[turnoActual].h = 8;
                     // aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);
@@ -492,40 +492,43 @@ export default function TableroScreen({route}) {
                     }
                 }
             }else{
-                //console.log("boletin");
+                // console.log("boletin");
                 console.log("obteniendo boletín");
-                socket.emit('boletin',{
-                    socketId: socket.id
-                },
-                (ack)=>{
-                    if(ack.cod == 0){
-                        let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
-                        console.log(aux);
-                        setBoletin(aux);
-                        setModalBoletinVisible(true);
-                    }
-                    else if(ack.cod == 2){
-                        comprobarAsignatura();
-                    }
-                })
+                // socket.emit('boletin',{
+                //     socketId: socket.id
+                // },
+                // (ack)=>{
+                //     console.log("Server acknowledge boletin: " + ack);
+                //     if(ack.cod == 0){
+                //         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
+                //         console.log(aux);
+                //         setBoletin(aux);
+                //         setModalBoletinVisible(true);
+                //     }
+                //     else if(ack.cod == 2){
+                //         comprobarAsignatura();
+                //     }
+                // })
                
             }
         }else{
-            // console.log("obteniendo suerte", tarjetaAleatoria);
-            socket.emit('suerte',{
-                socketId: socket.id
-            },
-            (ack)=>{
-                if(ack.cod == 0){
-                    let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
-                    console.log(aux);
-                    setSuerte(aux);
-                    setModalSuerteVisible(true);
-                }
-                else if(ack.cod == 2){
-                    comprobarAsignatura();
-                }
-            }) 
+            console.log("obteniendo suerte");
+            // socket.emit('suerte',{
+            //     socketId: socket.id
+            // },
+            // (ack)=>{
+            //     console.log("Server acknowledge suerte");
+            //     console.log(ack);
+            //     if(ack.cod == 0){
+            //         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
+            //         console.log(aux);
+            //         setSuerte(aux);
+            //         setModalSuerteVisible(true);
+            //     }
+            //     else if(ack.cod == 2){
+            //         comprobarAsignatura();
+            //     }
+            // }) 
         }
     });
 

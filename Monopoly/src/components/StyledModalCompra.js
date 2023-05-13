@@ -153,7 +153,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                     {puja && !esMia &&
                     <StyledButton 
                         style={styles.boton}
-                        title="Comenzar puja"
+                        title="Subastar"
                         onPress={()=> {
                             console.log("comenzando puja");
                             socket.emit('empezarPuja',{
@@ -348,7 +348,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                         title="Realizar intercambio"
                         onPress={() =>{
                             setModalPreguntaIntercambiosVisible({modalPreguntaIntercambiosVisible: !modalPreguntaIntercambiosVisible})
-                            setModalsetModalIntercambiosVisible(true);
+                            setModalIntercambiosVisible(true);
                             }}
                         purple
                     />
@@ -356,6 +356,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
             </View>
         </View>
         </Modal>
+        <NativeBaseProvider>
         <Modal style={styles.modalView} visible={modalIntercambiosVisible}>
                 <View style={styles.centeredView}>
                     <Pressable
@@ -416,8 +417,8 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                             }) 
                         }}/>
                 </View>
- 
             </Modal> 
+            </NativeBaseProvider>
         </View>
     )
 }
