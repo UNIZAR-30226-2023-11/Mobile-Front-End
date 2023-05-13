@@ -31,11 +31,9 @@ export default function UnirseSalaScreen({ route, navigation }) {
 
     const {socket} = React.useContext(SocketContext);
     const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido: ' + mensaje);
+        console.log('Mensaje recibido espera jugadores - unirse sala: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
-        console.log(subcadenas);
-        // console.log("Id partida: " + idPartida);
         navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
       }, [navigation, idPartida]);
 
@@ -46,7 +44,6 @@ export default function UnirseSalaScreen({ route, navigation }) {
 
         return () => {
             socket.off('esperaJugadores', esperaJugadoresListener);
-            // console.log("Desmontando");
         };
 
     },[idPartida])

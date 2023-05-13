@@ -35,7 +35,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     // const user = route.params.user;
     const idPartida = route.params.idPartida;
     // console.log(user, idPartida);
-    const isFocused = useIsFocused();
+    // const isFocused = useIsFocused();
 
 
     const {socket} = React.useContext(SocketContext);
@@ -43,14 +43,15 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
     const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido espera jugadores: ' + mensaje);
+        console.log('Mensaje recibido espera jugadores - espera unirse: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         setJugadores(subcadenas);
-    }, [navigation, idPartida]);
+    }, []);
 
     const handleComenzarPartida = useCallback((mensaje) => {
         console.log("Mensaje recibido comenzar " + mensaje);
+        console.log("Usuario :"+ mensaje.username);
         console.log(mensaje.partida.posicionJugadores);
         navigation.navigate('Tablero', 
         {user: mensaje.username, 
@@ -58,7 +59,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             nombreJugadores: mensaje.partida.nombreJugadores,
             dineroJugadores: mensaje.partida.dineroJugadores,
             posicionJugadores: mensaje.partida.posicionJugadores});
-    }, [navigation, idPartida]);
+    }, [idPartida]);
 
     const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
     const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);

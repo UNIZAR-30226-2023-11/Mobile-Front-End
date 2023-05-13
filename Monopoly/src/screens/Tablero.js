@@ -378,10 +378,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].h = ack.msg.coordenadas.h;
-                    aux[turnoActual].v = ack.msg.coordenadas.v;
-                    // aux[turnoActual].h = 8;
-                    // aux[turnoActual].v = 10;
+                    // aux[turnoActual].h = ack.msg.coordenadas.h;
+                    // aux[turnoActual].v = ack.msg.coordenadas.v;
+                    aux[turnoActual].h = 8;
+                    aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
