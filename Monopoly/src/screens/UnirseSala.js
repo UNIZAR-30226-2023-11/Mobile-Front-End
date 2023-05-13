@@ -25,9 +25,6 @@ const styles = StyleSheet.create({
 
 export default function UnirseSalaScreen({ route, navigation }) {
 
-    // const user = route.params.user;
-    // console.log(user);
-
     const [modalPartidaVisible, setModalPartidaVisible] = React.useState(false);
     const [idPartida, setIdPartida] = React.useState(0);
 

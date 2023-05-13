@@ -54,12 +54,12 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
     ]
 
     const {socket} = React.useContext(SocketContext);
-
     const handleEsperaJugadores = useCallback((mensaje) => {
         console.log('Mensaje recibido: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         console.log(subcadenas);
+        console.log("Id partida: " + idPartida);
         navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
       }, [navigation, idPartida]);
 

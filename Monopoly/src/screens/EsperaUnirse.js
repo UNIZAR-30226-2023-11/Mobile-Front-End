@@ -77,7 +77,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     return (
         <NativeBaseProvider>
         <View style={{flex:1, flexDirection:'column'}}>
-            <StyledText style={styles.titulo} big bold>Partida {idPartida}</StyledText>
+            <StyledText style={styles.titulo} big bold>{`Partida ${idPartida}`}</StyledText>
             <View style={{marginTop:'8%', flex:1, flexDirection:'row', justifyContent: 'center'}}>
                 <StyledText style={{justifyContent: 'center', marginLeft:'8%', marginTop:'3%'}}>Esperando a que el anfitrión inicie la partida.</StyledText>
                 <View style={{marginLeft:'7%'}}>

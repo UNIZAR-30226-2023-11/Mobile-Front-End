@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 export default function SettingsScreen({ route, navigation }){
 
-    const socket = React.useContext(SocketContext);
+    const {socket, loggedIn, setLoggedIn} = React.useContext(SocketContext);
 
     // const user = route.params.user;
     // console.log(user);
@@ -95,7 +95,7 @@ export default function SettingsScreen({ route, navigation }){
             <StyledButton
                 lightblue
                 title='Cerrar sesion' 
-                onPress={() => navigation.navigate('Index')}
+                onPress={() => {setLoggedIn(false); navigation.navigate('Index');}}
             />
             </View>
 
