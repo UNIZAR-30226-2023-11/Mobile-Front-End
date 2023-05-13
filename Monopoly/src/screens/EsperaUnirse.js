@@ -32,14 +32,8 @@ const styles = StyleSheet.create({
 
 export default function EsperaUnirseScreen({ route, navigation }) {
 
-    // const user = route.params.user;
     const idPartida = route.params.idPartida;
-    // console.log(user, idPartida);
-    // const isFocused = useIsFocused();
-
-
     const {socket} = React.useContext(SocketContext);
-    // const [detenido, setDetenido] = React.useState(true);
     const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
     const handleEsperaJugadores = useCallback((mensaje) => {
