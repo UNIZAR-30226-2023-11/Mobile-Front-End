@@ -36,37 +36,39 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const {socket} = React.useContext(SocketContext);
     const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
-    const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido espera jugadores - espera unirse sala: ' + mensaje);
-        const mensajeCadena = mensaje.toString();
-        const subcadenas = mensajeCadena.split(",");
-        setJugadores(subcadenas);
-    }, [navigation, idPartida]);
-
-    const handleComenzarPartida = useCallback((mensaje) => {
-        console.log("Mensaje recibido comenzar " + mensaje);
-        console.log(mensaje.partida.posicionJugadores);
-        navigation.navigate('Tablero', 
-        {user: mensaje.username, 
-            idPartida: mensaje.partida.id, 
-            nombreJugadores: mensaje.partida.nombreJugadores,
-            dineroJugadores: mensaje.partida.dineroJugadores,
-            posicionJugadores: mensaje.partida.posicionJugadores});
-    }, [navigation, idPartida]);
-
-    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
-    const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);
-
     useEffect(()=>{
-        socket.on('esperaJugadores', esperaJugadoresListener);
-        socket.on('comenzarPartida', comenzarPartidaListener);
+
+        console.log("ENTRO AL USE EFFECT DE ESPERA UNIRSE");
+        
+        function handleEsperaJugadoresSalaEspera(mensaje){
+            console.log('Mensaje recibido espera jugadores - espera unirse sala: ' + mensaje);
+            const mensajeCadena = mensaje.toString();
+            const subcadenas = mensajeCadena.split(",");
+            setJugadores(subcadenas);
+        }
+        
+        function handleComenzarPartidaSalaEspera(mensaje){ 
+            console.log("Mensaje recibido comenzar " + mensaje);
+            console.log(mensaje.partida.posicionJugadores);
+            // socket.off('esperaJugadores', handleEsperaJugadoresSalaEspera);
+            // socket.off('comenzarPartida', handleComenzarPartidaSalaEspera);
+            navigation.navigate('Tablero', 
+            {user: mensaje.username, 
+                idPartida: mensaje.partida.id, 
+                nombreJugadores: mensaje.partida.nombreJugadores,
+                dineroJugadores: mensaje.partida.dineroJugadores,
+                posicionJugadores: mensaje.partida.posicionJugadores});
+        }
+
+        socket.on('esperaJugadores', handleEsperaJugadoresSalaEspera);
+        socket.on('comenzarPartida', handleComenzarPartidaSalaEspera);
 
         return () => {
-            socket.off('esperaJugadores', esperaJugadoresListener);
-            socket.off('comenzarPartida', comenzarPartidaListener);
+            socket.off('esperaJugadores', handleEsperaJugadoresSalaEspera);
+            socket.off('comenzarPartida', handleComenzarPartidaSalaEspera);
         };
 
-    },[])
+    },[idPartida])
 
     return (
         <NativeBaseProvider>

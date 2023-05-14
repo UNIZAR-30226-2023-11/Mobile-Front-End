@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function StyledModalSala({style={}, onClose, visible, onRequestClose, title, text, buttonText, idPartida, navigation}){
+export default function StyledModalSala({style={}, onClose, unirse, visible, onRequestClose, title, text, buttonText, idPartida, navigation}){
 
     const modalStyles = [
         styles.modalView,

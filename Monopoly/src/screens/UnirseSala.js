@@ -30,24 +30,35 @@ export default function UnirseSalaScreen({ route, navigation }) {
     const [idPartida, setIdPartida] = React.useState(0);
 
     const {socket} = React.useContext(SocketContext);
-    const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido espera jugadores - unirse sala: ' + mensaje);
-        const mensajeCadena = mensaje.toString();
-        const subcadenas = mensajeCadena.split(",");
-        socket.off('esperaJugadores', esperaJugadoresListener);
-        navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
-      }, [navigation, idPartida]);
+    // const handleEsperaJugadores = useCallback((mensaje) => {
+    //     console.log('Mensaje recibido espera jugadores - unirse sala: ' + mensaje);
+    //     const mensajeCadena = mensaje.toString();
+    //     const subcadenas = mensajeCadena.split(",");
+    //     console.log("Id partida antes de navegar: " + idPartida);
+    //     // socket.off('esperaJugadores', esperaJugadoresListener);
+    //     navigation.replace('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
+    //   }, [navigation, idPartida]);
 
-    const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
+    // const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
 
     useEffect(()=>{
-        socket.on('esperaJugadores', esperaJugadoresListener);
+
+        function handleEsperaJugadoresSalaUnirse(mensaje){
+            console.log('Mensaje recibido espera jugadores - unirse sala: ' + mensaje);
+            const mensajeCadena = mensaje.toString();
+            const subcadenas = mensajeCadena.split(",");
+            console.log("Id partida antes de navegar: " + idPartida);
+            // socket.off('esperaJugadores', esperaJugadoresListener);
+            navigation.replace('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
+        }
+
+        socket.on('esperaJugadores', handleEsperaJugadoresSalaUnirse);
 
         return () => {
-            socket.off('esperaJugadores', esperaJugadoresListener);
+            socket.off('esperaJugadores', handleEsperaJugadoresSalaUnirse);
         };
 
-    },[])
+    },[idPartida])
 
     return (
         <View style={styles.barra}>
@@ -56,7 +67,7 @@ export default function UnirseSalaScreen({ route, navigation }) {
                 placeholder="123456"
                 placeholderTextColor="grey"
                 onChangeText={(id) => setIdPartida(id)}
-                onSubmitEditing={() => setModalPartidaVisible(true)}
+                onSubmitEditing={() => {console.log("ID partida: ", idPartida); setModalPartidaVisible(true)}}
             />
 
             <StyledModalSala
