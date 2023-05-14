@@ -34,6 +34,7 @@ export default function UnirseSalaScreen({ route, navigation }) {
         console.log('Mensaje recibido espera jugadores - unirse sala: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
+        socket.off('esperaJugadores', esperaJugadoresListener);
         navigation.navigate('EsperaUnirse', {idPartida: idPartida, jugadores: subcadenas});
       }, [navigation, idPartida]);
 
@@ -46,7 +47,7 @@ export default function UnirseSalaScreen({ route, navigation }) {
             socket.off('esperaJugadores', esperaJugadoresListener);
         };
 
-    },[idPartida])
+    },[])
 
     return (
         <View style={styles.barra}>

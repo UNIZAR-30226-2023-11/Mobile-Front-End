@@ -81,6 +81,7 @@ export default function StyledModalSala({style={}, onClose, visible, onRequestCl
                         }, (ack) => {
                             console.log('Server acknowledged:', ack);
                             if(ack.cod == 0){
+                                console.log("unido");
                                 onClose();
                             }
                             if(ack.cod == 4){

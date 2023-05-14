@@ -113,7 +113,7 @@ export default function CrearSalaScreen({route, navigation }) {
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         setJugadores(subcadenas);
-    }, []);
+    }, [navigation, idPartida]);
 
     const handleComenzarPartida = useCallback((mensaje) => {
         console.log("Mensaje recibido comenzar " + mensaje);
@@ -124,7 +124,7 @@ export default function CrearSalaScreen({route, navigation }) {
             nombreJugadores: mensaje.partida.nombreJugadores,
             dineroJugadores: mensaje.partida.dineroJugadores,
             posicionJugadores: mensaje.partida.posicionJugadores});
-    }, []);
+    }, [navigation, idPartida]);
 
     const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
     const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);

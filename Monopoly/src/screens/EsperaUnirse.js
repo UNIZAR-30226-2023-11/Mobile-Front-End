@@ -37,15 +37,14 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
     const handleEsperaJugadores = useCallback((mensaje) => {
-        console.log('Mensaje recibido espera jugadores - espera unirse: ' + mensaje);
+        console.log('Mensaje recibido espera jugadores - espera unirse sala: ' + mensaje);
         const mensajeCadena = mensaje.toString();
         const subcadenas = mensajeCadena.split(",");
         setJugadores(subcadenas);
-    }, []);
+    }, [navigation, idPartida]);
 
     const handleComenzarPartida = useCallback((mensaje) => {
         console.log("Mensaje recibido comenzar " + mensaje);
-        console.log("Usuario :"+ mensaje.username);
         console.log(mensaje.partida.posicionJugadores);
         navigation.navigate('Tablero', 
         {user: mensaje.username, 
@@ -53,7 +52,7 @@ export default function EsperaUnirseScreen({ route, navigation }) {
             nombreJugadores: mensaje.partida.nombreJugadores,
             dineroJugadores: mensaje.partida.dineroJugadores,
             posicionJugadores: mensaje.partida.posicionJugadores});
-    }, [idPartida]);
+    }, [navigation, idPartida]);
 
     const esperaJugadoresListener = (mensaje) => handleEsperaJugadores(mensaje);
     const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);
