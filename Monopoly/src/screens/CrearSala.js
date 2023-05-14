@@ -130,8 +130,6 @@ export default function CrearSalaScreen({route, navigation }) {
     // const comenzarPartidaListener = (mensaje) => handleComenzarPartida(mensaje);
 
     useEffect(()=>{
-
-        console.log("ENTRO AL USE EFFECT DE CREAR SALA");
     
         function handleEsperaJugadoresCrearSala(mensaje){
             console.log('Mensaje recibido espera jugadores - espera unirse sala: ' + mensaje);

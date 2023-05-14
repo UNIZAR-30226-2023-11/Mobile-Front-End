@@ -210,7 +210,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                                     setModalPreguntaIntercambiosVisible(true);
                                 }
                                 else if(ack.cod == 9){
-                                    alert("No tienes suficiente dinero");
+                                    alert("No tiene suficiente dinero");
                                     onClose();
                                     setModalPreguntaIntercambiosVisible(true);
                                 }

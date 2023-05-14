@@ -37,8 +37,6 @@ export default function EsperaUnirseScreen({ route, navigation }) {
     const [jugadores, setJugadores] = React.useState(route.params.jugadores);
 
     useEffect(()=>{
-
-        console.log("ENTRO AL USE EFFECT DE ESPERA UNIRSE");
         
         function handleEsperaJugadoresSalaEspera(mensaje){
             console.log('Mensaje recibido espera jugadores - espera unirse sala: ' + mensaje);

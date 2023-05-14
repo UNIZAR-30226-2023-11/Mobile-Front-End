@@ -498,7 +498,7 @@ export default function TableroScreen({route}) {
                     socketId: socket.id
                 },
                 (ack)=>{
-                    console.log("Server acknowledge boletin: " + ack);
+                    console.log("Server acknowledge boletin: " , ack);
                     if(ack.cod == 0){
                         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
                         console.log(aux);
@@ -719,6 +719,7 @@ export default function TableroScreen({route}) {
         socket.on('infoPartida',(mensaje) => {
             console.log('Mensaje recibido infoPartida: ' , mensaje);
             console.log(mensaje);
+            setJugadores(mensaje.nombreJugadores);
             setDinero(mensaje.dineroJugadores);
             let aux = tokensJugadores;
             // console.log(aux);
