@@ -238,7 +238,7 @@ export default function StyledModalPuja({visible, onClose, onRequestClose, infoA
                     precio2C={infoAsignatura.precio2C}
                     precio3C={infoAsignatura.precio3C}
                     optatividad={infoAsignatura.devolucionMatricula}
-                    imageSource={require('../../assets/bob.png')}
+                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
                 />);
             }
             else if(infoAsignatura.tipo == 'I'){
@@ -248,10 +248,9 @@ export default function StyledModalPuja({visible, onClose, onRequestClose, infoA
                     title={infoAsignatura.nombre}
                     coste={infoAsignatura.precioCompra}
                     optatividad={infoAsignatura.devolucionMatricula}
-                    imageSource={require('../../assets/bob.png')}
+                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
                 />);
             }
-            //console.log(carta);
         }
 
         return () => {

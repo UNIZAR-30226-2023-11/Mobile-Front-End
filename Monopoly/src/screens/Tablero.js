@@ -494,41 +494,41 @@ export default function TableroScreen({route}) {
             }else{
                 // console.log("boletin");
                 console.log("obteniendo boletín");
-                // socket.emit('boletin',{
-                //     socketId: socket.id
-                // },
-                // (ack)=>{
-                //     console.log("Server acknowledge boletin: " + ack);
-                //     if(ack.cod == 0){
-                //         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
-                //         console.log(aux);
-                //         setBoletin(aux);
-                //         setModalBoletinVisible(true);
-                //     }
-                //     else if(ack.cod == 2){
-                //         comprobarAsignatura();
-                //     }
-                // })
+                socket.emit('boletin',{
+                    socketId: socket.id
+                },
+                (ack)=>{
+                    console.log("Server acknowledge boletin: " + ack);
+                    if(ack.cod == 0){
+                        let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
+                        console.log(aux);
+                        setBoletin(aux);
+                        setModalBoletinVisible(true);
+                    }
+                    else if(ack.cod == 2){
+                        comprobarAsignatura();
+                    }
+                })
                
             }
         }else{
             console.log("obteniendo suerte");
-            // socket.emit('suerte',{
-            //     socketId: socket.id
-            // },
-            // (ack)=>{
-            //     console.log("Server acknowledge suerte");
-            //     console.log(ack);
-            //     if(ack.cod == 0){
-            //         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
-            //         console.log(aux);
-            //         setSuerte(aux);
-            //         setModalSuerteVisible(true);
-            //     }
-            //     else if(ack.cod == 2){
-            //         comprobarAsignatura();
-            //     }
-            // }) 
+            socket.emit('suerte',{
+                socketId: socket.id
+            },
+            (ack)=>{
+                console.log("Server acknowledge suerte");
+                console.log(ack);
+                if(ack.cod == 0){
+                    let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
+                    console.log(aux);
+                    setSuerte(aux);
+                    setModalSuerteVisible(true);
+                }
+                else if(ack.cod == 2){
+                    comprobarAsignatura();
+                }
+            }) 
         }
     });
 
@@ -672,7 +672,7 @@ export default function TableroScreen({route}) {
                     precio2C={ack.msg.precio2C}
                     precio3C={ack.msg.precio3C}
                     optatividad={ack.msg.devolucionMatricula}
-                    imageSource={require('../../assets/bob.png')}
+                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
                 />);
                 if(!esMia){
                     setCompra(true);
@@ -685,7 +685,7 @@ export default function TableroScreen({route}) {
                     title={ack.msg.nombre}
                     coste={ack.msg.precioCompra}
                     optatividad={ack.msg.devolucionMatricula}
-                    imageSource={require('../../assets/bob.png')}
+                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
                 />);
                 if(!esMia){
                     setCompra(true);
@@ -1170,9 +1170,12 @@ export default function TableroScreen({route}) {
                 small
                 title="Bancarrota"
                 onPress={() => {
+                    console.log("Bancarrota");
                     setReiniciarContador(true);
                     console.log("Bancarrota");
-                    socket.emit('bancarrota',{},
+                    socket.emit('bancarrota',{
+                        socketId: socket.id
+                    },
                     (ack) => {
                         if(ack.cod == 0){
                             //navegar
@@ -1348,8 +1351,8 @@ export default function TableroScreen({route}) {
         />
         <StyledModal
             style={{height: '30%'}}
-            title={boletin[0]}
-            text={boletin[1]}
+            title={boletin.nombre}
+            text={boletin.descripcion}
             onClose = { () => {
                 setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
@@ -1375,6 +1378,7 @@ export default function TableroScreen({route}) {
             visible={modalTimeoutVisible}
             onClose = { () => {
                 //setReiniciarContador(true);
+                console.log("Bancarrota");
                 socket.emit('bancarrota',{socketId: socket.id}
                 ,(ack)=>{
                     if(ack.cod == 0){

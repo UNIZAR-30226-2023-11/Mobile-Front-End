@@ -90,9 +90,9 @@ export default function StyledModalSala({style={}, onClose, unirse, visible, onR
                             else if(ack.cod == 2){
                                 alert("Se ha producido un error en el servidor. Vuelva a intentarlo");
                             }
-                            else if(ack.cod!=0){
-                                alert(ack.msg);
-                            }
+                            // else if(ack.cod!=0){
+                            //     alert(ack.msg);
+                            // }
                     });
                 }}
 
