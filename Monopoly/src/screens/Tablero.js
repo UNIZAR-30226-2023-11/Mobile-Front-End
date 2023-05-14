@@ -224,7 +224,7 @@ export default function TableroScreen({route}) {
     const [die1, setDie1] = React.useState(1);
     const [die2, setDie2] = React.useState(1);
     const [dobles, setDobles] = React.useState(false);
-    const [contadorDobles, setContadorDobles] = React.useState(0);
+    // const [contadorDobles, setContadorDobles] = React.useState(0);
     //pedir a la base de datos
     
     const casillas_suerte=[
@@ -390,23 +390,7 @@ export default function TableroScreen({route}) {
                     }
                     else{
                         if(ack.msg.dado1 == ack.msg.dado2){
-                            // if(carcel){
-                            //     setCarcel(false);
-                            // }
                             setDobles(true);
-                            if(contadorDobles == 2){
-                                alert("Te toca ir a Julio");
-                                //cambiar lo siguiente por llamada al back cnd esté
-                                let aux = tokensJugadores;
-                                aux[turnoActual].h = 0;
-                                aux[turnoActual].v = 10;
-                                console.log(aux);
-                                setTokensJugador(aux);
-                                setCarcel(true);
-                                cambiarTurno();
-                            }else{
-                                setContadorDobles(contadorDobles+1);
-                            }
                         }
                         else if(carcel){
                             console.log("estas en la carcel");
@@ -432,6 +416,7 @@ export default function TableroScreen({route}) {
     }
 
     const comprobarAsignatura = useCallback(() => {
+        setIsLoading(true);
         console.log("comprobando casilla para el turno", turnoActual);
         console.log(tokensJugadores[0]);
         let found = casillas_suerte.find(element => element.horizontal===tokensJugadores[turnoActual].h && element.vertical===tokensJugadores[turnoActual].v);
@@ -468,27 +453,48 @@ export default function TableroScreen({route}) {
                                 infoCasilla(false, false);
                             }
                             else if(ack.cod == 2){
+                                alert("Se ha producido un error en el servidor, volviendo a intentarlo");
                                 comprobarAsignatura();
                             }
                         })
                     }
                     else{
                         console.log("pagos");
-                        //accion
+                        socket.emit('pagosImpuestos',{
+                            coordenadas: {h: tokensJugadores[turnoActual].h, v: tokensJugadores[turnoActual].v},
+                            socketId : socket.id
+                        },(ack) => {
+                            if(ack.cod == 2){
+                                alert("Se ha producido un error en el servidor, volviendo a intentarlo");
+                                comprobarAsignatura();
+                            }
+                            else if(ack.cod != 0){
+                                alert(ack.msg);
+                            }
+                        })
                     }
                 }else{
-                    console.log("esquina");
                     //accion
                     if(tokensJugadores[turnoActual].h==10 && tokensJugadores[turnoActual].v==0 ){
                         console.log("carcel");
                         alert("Te toca ir a Julio");
-                        //cambiar lo siguiente por llamada al back cuando este 
-                        let aux = tokensJugadores;
-                        aux[turnoActual].h = 0;
-                        aux[turnoActual].v = 10;
-                        console.log(aux);
-                        setTokensJugador(aux);
-                        setCarcel(true);
+                    }
+                    else if (tokensJugadores[turnoActual].h==0 && tokensJugadores[turnoActual].v==0){
+                        console.log("beca");
+                        socket.emit('beca',{socketId: socket.id},
+                        (ack)=>{
+                            setIsLoading(false);
+                            if(ack.cod == 0){
+                                alert(`Has recibido ${ack.msg}€`);
+                            }
+                            else if(ack.cod == 2){
+                                alert("Se ha producido un error en el servidor, volviendo a intentarlo");
+                                comprobarAsignatura();
+                            }
+                            else{
+                                alert(ack.msg);
+                            }
+                        })
                     }
                 }
             }else{
@@ -498,14 +504,17 @@ export default function TableroScreen({route}) {
                     socketId: socket.id
                 },
                 (ack)=>{
+                    setIsLoading(false);
                     console.log("Server acknowledge boletin: " , ack);
                     if(ack.cod == 0){
                         let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
                         console.log(aux);
                         setBoletin(aux);
+                        setCarcel(ack.msg.julio);
                         setModalBoletinVisible(true);
                     }
                     else if(ack.cod == 2){
+                        alert("Se ha producido un error en el servidor, volviendo a intentarlo");
                         comprobarAsignatura();
                     }
                 })
@@ -517,15 +526,17 @@ export default function TableroScreen({route}) {
                 socketId: socket.id
             },
             (ack)=>{
-                console.log("Server acknowledge suerte");
+                console.log("Server acknowledge suerte: ", ack);
                 console.log(ack);
                 if(ack.cod == 0){
                     let aux = {nombre: ack.msg.nombre, descripcion: ack.msg.descripcion};
+                    setCarcel(ack.msg.julio);
                     console.log(aux);
                     setSuerte(aux);
                     setModalSuerteVisible(true);
                 }
                 else if(ack.cod == 2){
+                    alert("Se ha producido un error en el servidor, volviendo a intentarlo");
                     comprobarAsignatura();
                 }
             }) 
@@ -702,12 +713,6 @@ export default function TableroScreen({route}) {
             console.log('Server acknowledged siguiente turno:', ack);
             if(ack.cod == 0){
                 console.log("TURNO:",ack.msg);
-                setTurnoActual(ack.msg.posicion);
-                // setDetenidoActualizaInfo(false);
-                setContadorDobles(0);
-                // setActualizarPlayers(true);
-                //console.log("Turno " + turnoActual +". Le toca a "+jugadores[turnoActual] +". Total jugadores: "+totalJugadores);
-                //console.log(data);
             }
             else if(ack.cod == 2){
                 cambiarTurno();
@@ -722,41 +727,39 @@ export default function TableroScreen({route}) {
             setJugadores(mensaje.nombreJugadores);
             setDinero(mensaje.dineroJugadores);
             let aux = tokensJugadores;
-            // console.log(aux);
-            
+            console.log("leyendo posiciones");
             for(var i=0; i<mensaje.posicionJugadores.length; i++){
                 aux[i].h = mensaje.posicionJugadores[i].h;
                 aux[i].v = mensaje.posicionJugadores[i].v;
-                console.log(aux[i]);
             }
             setTokensJugador(aux);
         });
             
         socket.on('turnoActual',(mensaje) => {
             console.log('Mensaje recibido turno: ' , mensaje);
-            setTurnoActual(mensaje.posicion);
-            if(mensaje.jugador == username){
-                // setDetenidoActualizaInfo(true);
-                if(jugadores[turnoActual] == username){
-                    // socket.emit('estaJulio',{
-                    //     socketId: socket.id
-                    // },
-                    // (ack) => {
-                    //     console.log("Server acknowledge estaJulio "+ mensaje);
-                    //     if(ack.carcel){
-                    //         setModalCarcelVisible(true);
-                    //     }
-                    //     if(ack.carta != null){
-                    //         setCartaJulio(true);
-                    //     }
-                    //     if(ack.puedePagar){
-                    //         setPagarJulio(true);
-                    //     }
-                    // })
-                    setReiniciarContador(true);
-                    // setDetenidoContador(false);
-                }
-                
+            setTurnoActual(mensaje);
+            if(jugadores[mensaje] == username){
+                socket.emit('estaJulio',{
+                    socketId: socket.id
+                },
+                (ack) => {
+                    console.log("Server acknowledge estaJulio ", mensaje);
+                    if(ack.carcel){
+                        setModalCarcelVisible(true);
+                        setCarcel(true);
+                    }
+                    else{
+                        setCarcel(false);
+                    }
+                    if(ack.carta != null){
+                        setCartaJulio(true);
+                    }
+                    if(ack.puedePagar){
+                        setPagarJulio(true);
+                    }
+                })
+                setReiniciarContador(true);
+                // setDetenidoContador(false);   
             }
         });
 
@@ -774,8 +777,6 @@ export default function TableroScreen({route}) {
             console.log("Mensaje recibido oferta: " + mensaje);
             setModalOfertaVisible(true);
         });
-
-        console.log(jugadores[turnoActual], username);
 
     },[])
 
@@ -840,23 +841,6 @@ export default function TableroScreen({route}) {
             setModalCreditosVisible(true);
         }
     },[aumentoCreditos]);
-    
-    // useEffect (() => {
-    //     console.log("TURNO ACTUAL CAMBIADO")
-    //     if(detenidoActualizarInfo){
-    //         clearInterval(intervalActualizarInfo);
-    //         setIntervalActualizarInfo(null);
-    //     }else{
-    //         const id = setInterval(() => {
-    //             console.log("TURNO ACTUAL: ", turnoActual);
-    //             actualizarDinero();
-    //             console.log("JUGADORES: ", jugadores);
-    //             console.log("JUGADOR: ",jugadores[turnoActual]);
-    //         },3000);
-    //         setIntervalActualizarInfo(id);
-    //     }
-    //     return () => {clearInterval(intervalActualizarInfo);setIntervalActualizarInfo(null);}
-    // },[detenidoActualizarInfo]);
 
     useEffect(() =>{
         if(cambio){
@@ -1133,36 +1117,6 @@ export default function TableroScreen({route}) {
                             alert("Se ha producido un error en el servidor. Por favor vuelva a intentarlo");
                         }
                     })
-                    // const response =  fetch(listarAsignaturas, {
-                    // method: 'PUT',
-                    // headers: {'Content-Type': 'application/json'},
-                    // body: JSON.stringify({  "username": username,
-                    //                         "idPartida": idPartida})
-                    // })
-                    // .then((response) => {
-                    // if(response.status != 200){
-                    //     throw new Error('Error de estado: '+ response.status+ ' en la función de listar asignaturas');
-                    // }
-                    // return response.json();
-                    // })
-                    // .then(data => {
-                    //     console.log("Asignaturas:\n ",data);
-                    //     let vector = new Array();
-                    //     for(let i = 0; i<data.casillas.length; i++) {
-                    //         let aux = { nombre: data.casillas[i].nombre,
-                    //                     h: data.casillas[i].coordenadas.h, 
-                    //                     v: data.casillas[i].coordenadas.v }
-                    //         vector.push(aux);
-                    //     }
-                    //     console.log(vector);
-                    //     setAsignaturas(vector);
-                    //     setModalAsignaturasVisible(true);
-                    // })
-                    // .catch((error) => {
-                    // //Error
-                    // //alert(JSON.stringify(error));
-                    // console.error(error);
-                    // });
                     }}
                 /><StyledButton
                 style={styles.botones}
@@ -1170,7 +1124,6 @@ export default function TableroScreen({route}) {
                 small
                 title="Bancarrota"
                 onPress={() => {
-                    console.log("Bancarrota");
                     setReiniciarContador(true);
                     console.log("Bancarrota");
                     socket.emit('bancarrota',{
@@ -1184,21 +1137,6 @@ export default function TableroScreen({route}) {
                             alert("Se ha producido un error. Por favor vuelva a intentarlo");
                         }
                     })}}
-                    // const response = fetch(bancarrota,{
-                    //     method: 'POST',
-                    //     headers: {'Content-Type': 'application/json'},
-                    //     body: JSON.stringify({  "idPartida": idPartida, 
-                    //                             "username": username})
-                    //     .then((response) => {
-                    //         if(response.status!= 200){
-                    //             throw new Error('Error de estado: '+ response.status + ' en la función de bancarrota');
-                    //         }
-
-                    //     })
-                    //     .catch((error) => {
-                    //         console.log(error);
-                    //     })
-                    // })}}
                 />
             </View>
         </View>
@@ -1357,7 +1295,8 @@ export default function TableroScreen({route}) {
                 setReiniciarContador(true);
                 setModalBoletinVisible({modalBoletinVisible: !modalBoletinVisible});
                 // setActualizarPlayers(true);
-                if(!dobles){
+                
+                if(!dobles ){
                     console.log("cambiando turno");
                     setCambio(true);
                 }
