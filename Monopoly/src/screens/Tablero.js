@@ -717,7 +717,7 @@ export default function TableroScreen({route}) {
 
     useEffect(() =>{
         socket.on('infoPartida',(mensaje) => {
-            console.log('Mensaje recibido infoPartida: ' + mensaje);
+            console.log('Mensaje recibido infoPartida: ' , mensaje);
             console.log(mensaje);
             setDinero(mensaje.dineroJugadores);
             let aux = tokensJugadores;
@@ -732,8 +732,7 @@ export default function TableroScreen({route}) {
         });
             
         socket.on('turnoActual',(mensaje) => {
-            console.log('Mensaje recibido turno: ' + mensaje);
-            console.log(mensaje);
+            console.log('Mensaje recibido turno: ' , mensaje);
             setTurnoActual(mensaje.posicion);
             if(mensaje.jugador == username){
                 // setDetenidoActualizaInfo(true);
