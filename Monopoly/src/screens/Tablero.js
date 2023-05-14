@@ -355,6 +355,7 @@ export default function TableroScreen({route}) {
         }
     })
 
+
     function Dice(){
 
         function roll(){
@@ -378,10 +379,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    // aux[turnoActual].h = ack.msg.coordenadas.h;
-                    // aux[turnoActual].v = ack.msg.coordenadas.v;
-                    aux[turnoActual].h = 8;
-                    aux[turnoActual].v = 10;
+                    aux[turnoActual].h = ack.msg.coordenadas.h;
+                    aux[turnoActual].v = ack.msg.coordenadas.v;
+                    // aux[turnoActual].h = 8;
+                    // aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -743,18 +744,19 @@ export default function TableroScreen({route}) {
                     socketId: socket.id
                 },
                 (ack) => {
-                    console.log("Server acknowledge estaJulio ", mensaje);
-                    if(ack.carcel){
+                    console.log("Server acknowledge estaJulio ", ack);
+                    if(ack.msg.carcel){
+                        console.log("estas en julio")
                         setModalCarcelVisible(true);
                         setCarcel(true);
                     }
                     else{
                         setCarcel(false);
                     }
-                    if(ack.carta != null){
+                    if(ack.msg.carta != null){
                         setCartaJulio(true);
                     }
-                    if(ack.puedePagar){
+                    if(ack.msg.salirJulio){
                         setPagarJulio(true);
                     }
                 })
@@ -1401,7 +1403,6 @@ export default function TableroScreen({route}) {
             }}
             onCloseRoll={() => {
                 setModalCarcelVisible({modalCarcelVisible: !modalCarcelVisible});
-                roll();
             }}
             visible={modalCarcelVisible}
             onRequestClose={() => {

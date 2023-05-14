@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         width:'60%',
-        height: '40%',
+        height: '60%',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     botones:{
         flex:0.5,
         marginTop:'5%',
-        flexDirection:'row', 
+        flexDirection:'column', 
         justifyContent:'space-between',
     },
     button:{
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'flex-start',
         textAlign: 'center',
+        marginLeft:'10%',
         marginTop: '10%',
         color: '#000',
     },
@@ -60,6 +61,8 @@ export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visi
         styles.modalView,
         style
     ]
+    
+    const {socket} = React.useContext(SocketContext);
 
     return (
         <View>
@@ -96,7 +99,8 @@ export default function StyledModalCarcel ({style={}, onCloseRoll, onClose, visi
                         style={styles.boton}
                         title="Pagar"
                         onPress={() => {
-                            socket.emit('pagarCarcel',{
+                            console.log("pagando");
+                            socket.emit('pagarJulio',{
                                 socketId:socket.id
                             },(ack) =>{
                                 if(ack.cod == 0){
