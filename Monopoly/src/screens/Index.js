@@ -4,12 +4,12 @@ import StyledText from '../components/StyledText';
 import StyledButton from '../components/StyledButton';
 import StyledModal from "../components/StyledModal";
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     logoEmpresa: {
       flex:2, 
-      height: '33%',
+      height: height*0.33,
       width: width*0.9,
       marginTop: '5%',
       alignSelf: 'center'
