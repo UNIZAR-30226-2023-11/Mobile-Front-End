@@ -280,7 +280,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
         <Modal
         animationType="slide"
         visible={modalAumentoVisible}
-        onRequestClose={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})}}
+        onRequestClose={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible}), acabarTurno();}}
         transparent={true}
         props>
         <View style={styles.centeredView}>
@@ -293,7 +293,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                     <StyledButton
                         style={styles.boton}
                         title="Cancelar"
-                        onPress={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible})}}
+                        onPress={() => {setModalAumentoVisible({modalAumentoVisible: !modalAumentoVisible});acabarTurno();}}
                         purple
                     />
                     <StyledButton

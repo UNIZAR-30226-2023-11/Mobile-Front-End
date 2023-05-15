@@ -276,7 +276,7 @@ export default function TableroScreen({route}) {
     const [suerte, setSuerte] = React.useState({nombre:'', descripcion: ''});
 
     //variable para guardar las asignaturas del jugador
-    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", disminuir: false, hipotecar: false}]);
+    const [asignaturas, setAsignaturas] = React.useState([{nombre:"", h:"", v:"", vender: true, disminuir: false, hipotecar: false}]);
 
     //variable para registrar el turno del jugador
     const [turnoActual, setTurnoActual] = React.useState(0);
@@ -379,10 +379,10 @@ export default function TableroScreen({route}) {
                     setDie2(ack.msg.dado2);
                     //setRolling(true);
                     let aux = tokensJugadores;
-                    aux[turnoActual].h = ack.msg.coordenadas.h;
-                    aux[turnoActual].v = ack.msg.coordenadas.v;
-                    // aux[turnoActual].h = 8;
-                    // aux[turnoActual].v = 10;
+                    // aux[turnoActual].h = ack.msg.coordenadas.h;
+                    // aux[turnoActual].v = ack.msg.coordenadas.v;
+                    aux[turnoActual].h = 9;
+                    aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);
                     setComprobar(true);
@@ -461,10 +461,15 @@ export default function TableroScreen({route}) {
                     }
                     else{
                         console.log("pagos");
-                        socket.emit('pagosImpuestos',{
+                        socket.emit('pagoImpuestos',{
                             coordenadas: {h: tokensJugadores[turnoActual].h, v: tokensJugadores[turnoActual].v},
                             socketId : socket.id
                         },(ack) => {
+                            setIsLoading(false);
+                            console.log("Server acknowledged ", ack);
+                            if(ack.cod == 0){
+                                alert(`Te toca pagar ${ack.msg}€ de impuestos.`);
+                            }
                             if(ack.cod == 2){
                                 alert("Se ha producido un error en el servidor, volviendo a intentarlo");
                                 comprobarAsignatura();
@@ -527,6 +532,7 @@ export default function TableroScreen({route}) {
                 socketId: socket.id
             },
             (ack)=>{
+                setIsLoading(false);
                 console.log("Server acknowledge suerte: ", ack);
                 console.log(ack);
                 if(ack.cod == 0){
@@ -546,162 +552,173 @@ export default function TableroScreen({route}) {
 
     const infoCasilla= useCallback((esMia, aumento) => {
         socket.emit('infoAsignatura',{
-            coordenadas:{h: tokensJugadores[turnoActual].h,v: tokensJugadores[turnoActual].v} 
+            coordenadas:{h: tokensJugadores[turnoActual].h,v: tokensJugadores[turnoActual].v},
         },
         (ack)=> {
-            if(ack.msg.tipo == 'A'){
-                console.log("asignatura ", ack.msg.cuatrimestre);
-                switch(ack.msg.cuatrimestre){
-                    case 1:
-                        setCarta(<Asignatura_1
+            console.log("Server acknowledge info casilla :", ack);
+            setIsLoading(false);
+            if(ack.cod == 0){
+                if(ack.msg.tipo == 'A'){
+                    console.log("asignatura ", ack.msg.cuatrimestre);
+                    switch(ack.msg.cuatrimestre){
+                        case 1:
+                            setCarta(<Asignatura_1
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 2:
+                            setCarta(<Asignatura_2
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 3:
+                            setCarta(
+                            <Asignatura_3
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 4:
+                            setCarta(                                            
+                            <Asignatura_4
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 5:
+                            setCarta(                                            
+                            <Asignatura_5
                             title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 2:
-                        setCarta(<Asignatura_2
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 3:
-                        setCarta(
-                        <Asignatura_3
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 4:
-                        setCarta(                                            
-                        <Asignatura_4
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 5:
-                        setCarta(                                            
-                        <Asignatura_5
-                           title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break;  
-                    case 6:
-                        setCarta(                                            
-                        <Asignatura_6
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 7:
-                        setCarta(                                            
-                        <Asignatura_7
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
-                    case 8:
-                        setCarta(                                            
-                        <Asignatura_8
-                            title={ack.msg.nombre}
-                            coste={ack.msg.precioCompra}
-                            matricula={ack.msg.matricula}
-                            precio1C={ack.msg.precio1C}
-                            precio2C={ack.msg.precio2C}
-                            precio3C={ack.msg.precio3C}
-                            precio4C={ack.msg.precio4C}
-                            optatividad={ack.msg.devolucionMatricula}
-                            precioCredito={ack.msg.precioCompraCreditos}
-                        />);
-                        break; 
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break;  
+                        case 6:
+                            setCarta(                                            
+                            <Asignatura_6
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 7:
+                            setCarta(                                            
+                            <Asignatura_7
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                        case 8:
+                            setCarta(                                            
+                            <Asignatura_8
+                                title={ack.msg.nombre}
+                                coste={ack.msg.precioCompra}
+                                matricula={ack.msg.matricula}
+                                precio1C={ack.msg.precio1C}
+                                precio2C={ack.msg.precio2C}
+                                precio3C={ack.msg.precio3C}
+                                precio4C={ack.msg.precio4C}
+                                optatividad={ack.msg.devolucionMatricula}
+                                precioCredito={ack.msg.precioCompraCreditos}
+                            />);
+                            break; 
+                    }
+                    if(esMia && aumento){
+                        console.log("aumentar creditos");
+                        setAumentoCreditos(true);
+                    }
+                    else if(esMia && !aumento){
+                        setModalEsMiaVisible(true);
+                    }else if(!esMia){
+                        setCompra(true);
+                    }
                 }
-                if(esMia && aumento){
-                    console.log("aumentar creditos");
-                    setAumentoCreditos(true);
+                else if(ack.msg.tipo == 'F'){
+                    console.log("evento");
+                    setCarta(                                    
+                    <Evento
+                        title={ack.msg.nombre}
+                        coste={ack.msg.precioCompra}
+                        matricula={ack.msg.matricula}
+                        precio1C={ack.msg.precio1C}
+                        precio2C={ack.msg.precio2C}
+                        precio3C={ack.msg.precio3C}
+                        optatividad={ack.msg.devolucionMatricula}
+                        imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
+                    />);
+                    if(!esMia){
+                        setCompra(true);
+                    }
                 }
-                else if(esMia && !aumento){
-                    setModalEsMiaVisible(true);
-                }else if(!esMia){
-                    setCompra(true);
+                else if(ack.msg.tipo == 'I'){
+                    //console.log("recurso");
+                    setCarta(                                   
+                    <Recurso
+                        title={ack.msg.nombre}
+                        coste={ack.msg.precioCompra}
+                        optatividad={ack.msg.devolucionMatricula}
+                        imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
+                    />);
+                    if(!esMia){
+                        setCompra(true);
+                    }
                 }
             }
-            else if(ack.msg.tipo == 'F'){
-                //console.log("evento");
-                setCarta(                                    
-                <Evento
-                    title={ack.msg.nombre}
-                    coste={ack.msg.precioCompra}
-                    matricula={ack.msg.matricula}
-                    precio1C={ack.msg.precio1C}
-                    precio2C={ack.msg.precio2C}
-                    precio3C={ack.msg.precio3C}
-                    optatividad={ack.msg.devolucionMatricula}
-                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
-                />);
-                if(!esMia){
-                    setCompra(true);
-                }
+            else if(ack.cod == 2){
+                alert("Se ha producido un error en el servidor. Volviendolo a intentar");
+                infoCasilla(esMia, aumento);
             }
-            else if(ack.msg.tipo == 'I'){
-                //console.log("recurso");
-                setCarta(                                   
-                <Recurso
-                    title={ack.msg.nombre}
-                    coste={ack.msg.precioCompra}
-                    optatividad={ack.msg.devolucionMatricula}
-                    imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
-                />);
-                if(!esMia){
-                    setCompra(true);
-                }
+            else{
+                alert(ack.msg);
             }
             //console.log(carta);
         })
@@ -1107,7 +1124,8 @@ export default function TableroScreen({route}) {
                                 let aux = { nombre: ack.msg[i].nombre,
                                             h: ack.msg[i].coordenadas.h, 
                                             v: ack.msg[i].coordenadas.v,
-                                            disminuir: true,
+                                            vender: ack.msg[i].vender,
+                                            disminuir: ack.msg[i].disminuir,
                                             hipotecar: true}
                                 vector.push(aux);
                             }

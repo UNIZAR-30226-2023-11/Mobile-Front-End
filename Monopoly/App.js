@@ -131,19 +131,6 @@ export default function App() {
           component={TiendaScreen}
           options={{title: 'Tienda'}}
         />
-
-        <Stack.Screen 
-          name="TestTrade" 
-          component={TestTradeScreen}
-          options={{title: 'Intercambios'}}   
-          />
-
-        <Stack.Screen 
-          name="TestPujas" 
-          component={TestPujasScreen}
-          options={{title: 'Pujas'}}   
-          />  
-
       </Stack.Navigator>
     </NavigationContainer>
     </SocketProvider>
