@@ -755,8 +755,8 @@ export default function TableroScreen({route}) {
             
         socket.on('turnoActual',(mensaje) => {
             console.log('Mensaje recibido turno: ' , mensaje);
-            setTurnoActual(mensaje);
-            if(jugadores[mensaje] == username){
+            setTurnoActual(mensaje.posicion);
+            if(mensaje.jugador == username){
                 socket.emit('estaJulio',{
                     socketId: socket.id
                 },
@@ -1157,17 +1157,28 @@ export default function TableroScreen({route}) {
                 onPress={() => {
                     setReiniciarContador(true);
                     console.log("Bancarrota");
-                    socket.emit('bancarrota',{
+                    socket.emit('siguienteTurno', {
                         socketId: socket.id
-                    },
-                    (ack) => {
+                    }, (ack) => {
+                        console.log('Server acknowledged siguiente turno:', ack);
                         if(ack.cod == 0){
-                            //navegar
+                            socket.emit('bancarrota',{
+                            socketId: socket.id
+                        },
+                        (ack) => {
+                            if(ack.cod == 0){
+                               
+                            }
+                            else if(ack.cod == 2){
+                                alert("Se ha producido un error. Por favor vuelva a intentarlo");
+                            }
+                        })
                         }
                         else if(ack.cod == 2){
-                            alert("Se ha producido un error. Por favor vuelva a intentarlo");
+                           alert("Se ha producido un error. Vuelva a intentarlo por favor.");
                         }
-                    })}}
+                    });
+                    }}
                 />
             </View>
         </View>

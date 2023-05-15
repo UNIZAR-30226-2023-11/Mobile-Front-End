@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, StyleSheet, View, Pressable, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { SocketContext } from './SocketContext';
 
 
 const styles = StyleSheet.create({
@@ -42,6 +43,8 @@ export default function StyledModalTimeout({style={}, onClose, visible, onReques
         style
     ]
 
+    const {socket} = React.useContext(SocketContext);
+
     const [intervalContador, setIntervalContador] = React.useState(null);
     const [contador, setContador] = React.useState(-1);
     const [detenidoContador, setDetenidoContador] = React.useState(false);
@@ -55,7 +58,6 @@ export default function StyledModalTimeout({style={}, onClose, visible, onReques
     useEffect(() => {
         if(contador == 0){
             setDetenidoContador(true); 
-            onClose();
         }
     },[contador]);
 
@@ -64,7 +66,27 @@ export default function StyledModalTimeout({style={}, onClose, visible, onReques
                 clearInterval(intervalContador);
                 setIntervalContador(null);
                 onClose();
-                alert("Se le ha retirado de la partida por no jugar su turno");
+                socket.emit('siguienteTurno', {
+                    socketId: socket.id
+                }, (ack) => {
+                    console.log('Server acknowledged siguiente turno:', ack);
+                    if(ack.cod == 0){
+                        socket.emit('bancarrota',{
+                        socketId: socket.id
+                    },
+                    (ack) => {
+                        if(ack.cod == 0){
+                            alert("Se le ha retirado de la partida por no jugar su turno");   
+                        }
+                        else if(ack.cod == 2){
+                            alert("Se ha producido un error. Por favor vuelva a intentarlo");
+                        }
+                    })
+                    }
+                    else if(ack.cod == 2){
+                       alert("Se ha producido un error. Vuelva a intentarlo por favor.");
+                    }
+                });
             }else{
 
                 const id = setInterval(() => {
