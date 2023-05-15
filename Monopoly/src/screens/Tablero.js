@@ -692,9 +692,9 @@ export default function TableroScreen({route}) {
                         title={ack.msg.nombre}
                         coste={ack.msg.precioCompra}
                         matricula={ack.msg.matricula}
-                        precio1C={ack.msg.precio1C}
-                        precio2C={ack.msg.precio2C}
-                        precio3C={ack.msg.precio3C}
+                        precio1C={ack.msg.precio2M}
+                        precio2C={ack.msg.precio3M}
+                        precio3C={ack.msg.precio4M}
                         optatividad={ack.msg.devolucionMatricula}
                         imageSource={ require('../../assets/logo_juego_monopoly.png')}
                     />);
