@@ -797,6 +797,17 @@ export default function TableroScreen({route}) {
             setModalOfertaVisible(true);
         });
 
+        socket.on('finPartida',(mensaje) =>{
+            console.log("ganador: " + mensaje);
+            if(mensaje == username){
+                alert("¡Enhorabuena, eres el ganador!")
+            }
+            else{
+                alert(`El ganador es ${mensaje}`);
+            }
+            navigation.navigate('Home');
+        })
+
     },[])
 
     useEffect(() =>{
