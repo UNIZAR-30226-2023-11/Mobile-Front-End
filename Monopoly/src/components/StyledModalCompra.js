@@ -177,7 +177,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                         title="Acabar turno"
                         onPress={() =>{
                             onClose();
-                            setModalPreguntaIntercambiosVisible(true);
+                           acabarTurno();
                         }}
                         purple
                     />}
@@ -206,12 +206,12 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                                 }
                                 else if(ack.cod == 7){
                                     onClose();
-                                    setModalPreguntaIntercambiosVisible(true);
+                                    acabarTurno();
                                 }
                                 else if(ack.cod == 9){
                                     alert("No tiene suficiente dinero");
                                     onClose();
-                                    setModalPreguntaIntercambiosVisible(true);
+                                    acabarTurno();
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, vuelva a intentarlo.");
@@ -233,8 +233,8 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                             (ack) =>{
                                 if(ack.cod == 0){
                                     console.log("aumentados");
-                                    setModalPreguntaIntercambiosVisible(true);
                                     onClose();
+                                    acabarTurno();
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, intentelo de nuevo.");
@@ -308,7 +308,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                                 if(ack.cod == 0){
                                     console.log("aumentados");
                                     onClose();
-                                    setModalPreguntaIntercambiosVisible();
+                                    acabarTurno();
                                 }
                                 else if(ack.cod == 2){
                                     alert("Se ha producido un error en el servidor. Por favor, intentelo de nuevo.");
