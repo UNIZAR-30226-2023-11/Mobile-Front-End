@@ -752,6 +752,10 @@ export default function TableroScreen({route}) {
             }
             setTokensJugador(aux);
         });
+
+        if(jugadores[turnoActual]== username){
+            setDetenidoContador(false);
+        }
             
         socket.on('turnoActual',(mensaje) => {
             console.log('Mensaje recibido turno: ' , mensaje);
@@ -778,7 +782,7 @@ export default function TableroScreen({route}) {
                     }
                 })
                 setReiniciarContador(true);
-                // setDetenidoContador(false);   
+                setDetenidoContador(false);   
             }
         });
 
@@ -811,7 +815,7 @@ export default function TableroScreen({route}) {
     },[])
 
     useEffect(() =>{
-        console.log("contador cambiado ", contador);
+        // console.log("contador cambiado ", contador);
         if(contador == 0){
             setDetenidoContador(true);
             setModalTimeoutVisible(true);
