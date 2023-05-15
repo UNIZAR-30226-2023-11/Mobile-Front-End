@@ -216,7 +216,7 @@ export default function TableroScreen({route}) {
     const [jugadores, setJugadores] = React.useState(route.params.nombreJugadores);
     const [tokensJugadores, setTokensJugador] = React.useState(route.params.posicionJugadores);
     const normas = {
-        puja: true
+        puja: false
     }
    
     const [dinero, setDinero] = React.useState(route.params.dineroJugadores);
@@ -502,6 +502,9 @@ export default function TableroScreen({route}) {
                             }
                         })
                     }
+                    else{
+                        acabarTurno();
+                    }
                 }
             }else{
                 // console.log("boletin");
@@ -693,7 +696,7 @@ export default function TableroScreen({route}) {
                         precio2C={ack.msg.precio2C}
                         precio3C={ack.msg.precio3C}
                         optatividad={ack.msg.devolucionMatricula}
-                        imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
+                        imageSource={ require('../../assets/logo_juego_monopoly.png')}
                     />);
                     if(!esMia){
                         setCompra(true);
@@ -706,7 +709,7 @@ export default function TableroScreen({route}) {
                         title={ack.msg.nombre}
                         coste={ack.msg.precioCompra}
                         optatividad={ack.msg.devolucionMatricula}
-                        imageSource={{uri:`data:image/jpg;base64,${ack.msg.imagen}`}}
+                        imageSource={require('../../assets/logo_juego_monopoly.png')}
                     />);
                     if(!esMia){
                         setCompra(true);

@@ -253,7 +253,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                                             precio2C={ack.msg.casillaInfo.precio2C}
                                             precio3C={ack.msg.casillaInfo.precio3C}
                                             optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                                            imageSource={require('../../assets/bob.png')}
+                                            imageSource={require('../../assets/logo_juego_monopoly.png')}
                                         />);
                                     }
                                     else if(ack.msg.casillaInfo.tipo == 'I'){
@@ -263,7 +263,7 @@ export default function StyledModalAsignaturas({style={}, onClose, visible, onRe
                                             title={ack.msg.casillaInfo.nombre}
                                             coste={ack.msg.casillaInfo.precioCompra}
                                             optatividad={ack.msg.casillaInfo.devolucionMatricula}
-                                            imageSource={require('../../assets/bob.png')}
+                                            imageSource={require('../../assets/logo_juego_monopoly.png')}
                                         />);
                                     }
                                 }
