@@ -381,7 +381,7 @@ export default function TableroScreen({route}) {
                     let aux = tokensJugadores;
                     // aux[turnoActual].h = ack.msg.coordenadas.h;
                     // aux[turnoActual].v = ack.msg.coordenadas.v;
-                    aux[turnoActual].h = 9;
+                    aux[turnoActual].h = 7;
                     aux[turnoActual].v = 10;
                     console.log(aux);
                     setTokensJugador(aux);

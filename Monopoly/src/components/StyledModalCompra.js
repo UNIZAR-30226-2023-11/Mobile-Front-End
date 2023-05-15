@@ -177,7 +177,6 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                         title="Acabar turno"
                         onPress={() =>{
                             onClose();
-                            acabarTurno();
                             setModalPreguntaIntercambiosVisible(true);
                         }}
                         purple
@@ -339,7 +338,7 @@ export default function StyledModalCompra({InfoCarta, onClose, acabarTurno, visi
                         title="Acabar turno"
                         onPress={() => {
                             setModalPreguntaIntercambiosVisible({modalPreguntaIntercambiosVisible: !modalPreguntaIntercambiosVisible})
-                            acabarTurno();
+                            
                         }}
                         purple
                     />
